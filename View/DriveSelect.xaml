@@ -4,10 +4,46 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
+			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
+			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 			 mc:Ignorable="d"
 			 d:DesignHeight="600"
-			 d:DesignWidth="160">
+			 d:DesignWidth="100">
+	<d:UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</d:UserControl.Resources>
 	<Grid>
-		
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="40" />
+			</Grid.RowDefinitions>
+			<ListBox Grid.Row="0"
+					 BorderBrush="Transparent"
+					 Background="Transparent"
+					 Foreground="WhiteSmoke"
+					 FontSize="20"
+					 ItemsSource="{Binding DriveSelectViewModel.Drives}"
+					 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+					 SelectionChanged="ListBox_SelectionChanged"
+					 d:ItemsSource="{d:SampleData ItemCount=3}" />
+			<Button Grid.Row="1"
+					Content="🔄 Refresh"
+					ToolTip="Refresh logical drives."
+					FontSize="14"
+					Template="{DynamicResource ButtonTemplate1}"
+					Background="Transparent"
+					Foreground="WhiteSmoke"
+					Command="{Binding DriveSelectViewModel.RefreshDrivesCommand}" />
+		</Grid>
 	</Grid>
 </UserControl>
