@@ -1,0 +1,10 @@
+Name|ur c drive
+Path|C:\
+Name|ur d drive
+Path|D:\
+Honesty You Can Put Anything Here|fuck this shit im out
+Because it's seperated by the last '|'|C:\Users\Default
+Name|If you add new entry, please keep the formatting.
+Path|Don't forget the new line in the end.
+Name|
+Path|
