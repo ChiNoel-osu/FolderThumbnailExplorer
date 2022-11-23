@@ -49,7 +49,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		}   //Bind target for slider maximum.
 
 		[RelayCommand]
-		public void OpenInExplorer(string path)
+		public static void OpenInExplorer(string path)
 		{
 			Process.Start("explorer.exe", path);
 		}

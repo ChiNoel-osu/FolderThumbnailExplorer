@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using FolderThumbnailExplorer.ViewModel;
+using System.Windows.Controls;
 
 namespace FolderThumbnailExplorer.View
 {
@@ -15,7 +16,7 @@ namespace FolderThumbnailExplorer.View
 		private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (e.AddedItems.Count > 0)
-				MainWindow.MainVM.MainPageViewModel.PATHtoShow = e.AddedItems[0] as string;
+				((MainViewModel)DataContext).MainPageViewModel.PATHtoShow = e.AddedItems[0] as string;
 		}
 	}
 }

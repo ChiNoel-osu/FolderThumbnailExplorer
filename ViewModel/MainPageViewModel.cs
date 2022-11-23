@@ -23,20 +23,20 @@ namespace FolderThumbnailExplorer.ViewModel
 		public static Stack<Window> wnds = new Stack<Window>();
 
 		[ObservableProperty]
-		string _PATHtoShow;		//DirBox.Text
+		string _PATHtoShow;     //DirBox.Text
 		[ObservableProperty]
 		ObservableCollection<CustomContentItem> _Content = new ObservableCollection<CustomContentItem>();
 		[ObservableProperty]
 		ushort _SliderValue = 156;
 
-		string _selectedPath;   //Open new explorer window when right clicked.
+		string _SelectedPath;   //Open new explorer window when right clicked.
 		public string SelectedPath
 		{
-			get { return _selectedPath; }
+			get { return _SelectedPath; }
 			set
 			{
-				_selectedPath = value;
-				Process.Start("explorer.exe", _selectedPath);
+				_SelectedPath = value;
+				Process.Start("explorer.exe", _SelectedPath);
 			}
 		}
 
@@ -88,45 +88,40 @@ namespace FolderThumbnailExplorer.ViewModel
 									unauthorizedFolders.Add(dir);
 									continue;   //Skip folder and continue with the next dir.
 								}
-								BitmapImage bitmapImage = new BitmapImage();
-								bitmapImage.BeginInit();
-								bitmapImage.UriSource = new Uri(firstFilePath);
-								bitmapImage.DecodePixelWidth = SliderValue + 128;   //Make it sharper
-								try
-								{
-									bitmapImage.EndInit();
-								}
-								catch (NotSupportedException)   //Bad file, ignoring.
-								{
-									bitmapImage = new BitmapImage();
-									bitmapImage.BeginInit();
-									bitmapImage.UriSource = new Uri(firstFilePath);
-									bitmapImage.DecodePixelWidth = SliderValue + 128;
-									bitmapImage.UriSource = new Uri(Directory.GetCurrentDirectory() + "\\folder.png");
-									bitmapImage.EndInit();
-								}
-								finally
-								{
-									//This is VITAL for it to be passed between threads.
-									bitmapImage.Freeze();
-									//Manual lagging the non-UI thread to leave some time for the UI to
-									//response to user input (scrolling/clicking etc.).
-									//Because the UI thread is doing the addimage work, it won't respond
-									//while it's adding. This ensures it. But will cause slower loadtime overall.
-									Thread.Sleep(10);
-								}
-								//Items must be created in UI thread, and Dispatcher.Invoke does it.
-								Application.Current.Dispatcher.Invoke(() =>
-								{
-									CustomContentItem newItem = new CustomContentItem
+								BitmapImage bitmap = new BitmapImage();
+								using (FileStream stream = File.OpenRead(firstFilePath))
+								{   //Use stream sourec instead of regular uri source to improve responsiveness.
+									bitmap.BeginInit();
+									//Use BitmapCacheOption.OnLoad to even make it display.
+									bitmap.CacheOption = BitmapCacheOption.OnLoad;
+									bitmap.StreamSource = stream;
+									bitmap.DecodePixelWidth = SliderValue + 128;   //Make it sharper
+									try
 									{
-										ThumbNail = bitmapImage,
-										Header = dirShit.GetFileFolderName(dir)
-									};
-									lastAdded = newItem;
-									//Now this takes fucking forever and must be done on the UI thread. It's fucked.
-									Content.Add(lastAdded);
-								});
+										bitmap.EndInit();
+									}
+									catch (NotSupportedException)   //Bad image file, use default.
+									{
+										bitmap = new BitmapImage();
+										using (FileStream def = File.OpenRead(Directory.GetCurrentDirectory() + "\\folder.png"))
+										{
+											bitmap.BeginInit();
+											bitmap.CacheOption = BitmapCacheOption.OnLoad;
+											bitmap.StreamSource = def;
+											bitmap.DecodePixelWidth = SliderValue + 128;
+											bitmap.EndInit();
+										}
+									}
+									finally
+									{
+										//This is VITAL for it to be passed between threads.
+										bitmap.Freeze();
+									}
+								}
+								CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = dirShit.GetFileFolderName(dir) };
+								lastAdded = newItem;
+								//Items should be created in UI thread, and Dispatcher.Invoke does it.
+								Application.Current.Dispatcher.Invoke(() => Content.Add(lastAdded));    //This code can cause exception as Application.Current will be null when the app is closed. But user have to close it anyway so yeah ill just leave it there.
 							}
 						}
 						//Done adding stuff, notify user about unauthorized folder if any.
@@ -152,8 +147,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				if (_cbBoxSelected == null) //When user added new favorite, _cbBoxSelected will be null
 				{   //because it causes the combobox to update and end up with nothing selected.
-					_cbBoxSelected = new ComboBoxItem();
-					_cbBoxSelected.ToolTip = "";
+					_cbBoxSelected = new ComboBoxItem { ToolTip = "" };
 					return _cbBoxSelected;
 				}
 				_cbBoxSelected.ToolTip = FavItem[_cbBoxSelected.Content.ToString()];
@@ -162,7 +156,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			set
 			{ _cbBoxSelected = value; }
 		}
-		private ObservableCollection<ComboBoxItem> _comboBoxItems = new ObservableCollection<ComboBoxItem>();
+		private ObservableCollection<ComboBoxItem> _ComboBoxItems = new ObservableCollection<ComboBoxItem>();
 		public ObservableCollection<ComboBoxItem> ComboBoxItems
 		{
 			get
@@ -178,7 +172,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					string tempName = string.Empty;
 					//Clear everything first to refresh.
 					FavItem.Clear();
-					_comboBoxItems.Clear();
+					_ComboBoxItems.Clear();
 					foreach (string str in favTexts)
 					{
 						if (isDuplicate)
@@ -188,7 +182,7 @@ namespace FolderThumbnailExplorer.ViewModel
 						}
 						if (isOddLine)  //Getting Name
 						{
-							tempName = str.Substring(str.LastIndexOf('|') + 1);
+							tempName = str[(str.LastIndexOf('|') + 1)..];
 							if (nameList.Contains(tempName))    //Check for duplicates
 							{
 								isDuplicate = true;
@@ -203,26 +197,26 @@ namespace FolderThumbnailExplorer.ViewModel
 							ComboBoxItem comboBoxItem = null;
 							Application.Current.Dispatcher.Invoke(() =>
 							{
-								comboBoxItem = new ComboBoxItem() { Content = tempName };
-								comboBoxItem.ToolTip = str[(str.LastIndexOf('|') + 1)..];
+								comboBoxItem = new ComboBoxItem
+								{ Content = tempName, ToolTip = str[(str.LastIndexOf('|') + 1)..] };
 							});
-							_comboBoxItems.Add(comboBoxItem);
+							_ComboBoxItems.Add(comboBoxItem);
 						}
 						isOddLine = !isOddLine;
 					}
 					if (duplicateFound)
 						MessageBox.Show("Duplicated name found in Favorites.txt and are ignored, please fix that.", "NO", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 				});
-				return _comboBoxItems;
+				return _ComboBoxItems;
 			}
-			set { _comboBoxItems = value; }
+			set { _ComboBoxItems = value; }
 		}
 		#endregion
 		public MainPageViewModel()
 		{
 			//Do this so the ObservableCollection can be shared between threads
 			BindingOperations.EnableCollectionSynchronization(Content, new object());
-			BindingOperations.EnableCollectionSynchronization(_comboBoxItems, new object());
+			BindingOperations.EnableCollectionSynchronization(_ComboBoxItems, new object());
 		}
 	}
 }

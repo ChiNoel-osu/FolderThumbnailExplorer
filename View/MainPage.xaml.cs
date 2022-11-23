@@ -1,8 +1,10 @@
 ﻿using FolderThumbnailExplorer.ViewModel;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace FolderThumbnailExplorer.View
 {
@@ -54,7 +56,7 @@ namespace FolderThumbnailExplorer.View
 		#region ListBox item event. Had to use code-behind bc i suck
 		private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			string imagePath = ((Image)sender).Source.ToString()[8..].Replace('/', '\\');
+			string imagePath = ((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name;
 			string imageFolder = ((Image)sender).ToolTip.ToString();
 			if (imagePath.EndsWith("folder.png"))
 			{   //No image found (default folder.png), advance path.
@@ -65,10 +67,9 @@ namespace FolderThumbnailExplorer.View
 			}
 			else
 			{   //Image found, start Photo Viewer.
-				string folderToView = ((Image)sender).Source.ToString()[8..].Replace('/', '\\');
-				if (folderToView.EndsWith("folder.png")) return;    //No image in folder, return.
-				folderToView = folderToView.Remove(folderToView.LastIndexOf('\\'));
-				PhotoViewer photoViewer = new PhotoViewer(folderToView);
+				if (imagePath.EndsWith("folder.png")) return;    //No image in folder, return.
+				imagePath = imagePath.Remove(imagePath.LastIndexOf('\\'));
+				PhotoViewer photoViewer = new PhotoViewer(imagePath);
 				photoViewer.Left = 0; photoViewer.Top = 0;  //Spawns window at top left corner.
 
 				MainPageViewModel.wnds.Push(photoViewer); //Add this to opened windows list to close it when mainwindows closes
