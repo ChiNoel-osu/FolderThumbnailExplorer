@@ -18,7 +18,7 @@ namespace FolderThumbnailExplorer.View
 			InitializeComponent();
 		}
 
-		private void DirBox_TextChanged(object sender, TextChangedEventArgs e)
+		private void DirBox_TextChanged(object sender, TextChangedEventArgs e)  //TODO: This code-behind is marked to be eliminated.
 		{   //Update folder view.
 			MainWindow.MainVM.MainPageViewModel.PATHtoShow = DirBox.Text;
 			if (MainWindow.MainVM.MainPageViewModel.addItemTask != null && !MainWindow.MainVM.MainPageViewModel.addItemTask.IsCompleted)
@@ -44,11 +44,6 @@ namespace FolderThumbnailExplorer.View
 					DirBox.Text = DirBox.Text.Remove(DirBox.Text.LastIndexOf('\\'));
 		}
 		#endregion
-
-		private void RefreshButton_Click(object sender, RoutedEventArgs e)
-		{
-			DirBox_TextChanged(null, null);
-		}
 		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			DirBox.Text = MainWindow.MainVM.MainPageViewModel.CBBoxSelected.ToolTip.ToString();
@@ -101,28 +96,5 @@ namespace FolderThumbnailExplorer.View
 				DirBox.Text = string.Format("{0}\\{1}", DirBox.Text, imageFolder);
 		}
 		#endregion
-
-		private void NewFav_Click(object sender, RoutedEventArgs e)
-		{
-			AddNewFav addNewFav = new AddNewFav(DirBox.Text);
-			MainPageViewModel.wnds.Push(addNewFav);   //Add this to opened windows list to close it when mainwindow closes
-			addNewFav.Show();
-			addNewFav.Closed += AddNewFav_Closed;
-			AddButton.IsEnabled = false;
-		}
-		private void AddNewFav_Closed(object sender, EventArgs e)
-		{
-			//Update ItemsSource
-			int beforeUpdateCnt = FavCB.Items.Count;
-			int beforeUpdateIndex = FavCB.SelectedIndex;
-			//This will trigger the <get> block of ComboBoxitems
-			var thing = MainWindow.MainVM.MainPageViewModel.ComboBoxItems; thing = null;
-			if (beforeUpdateCnt == FavCB.Items.Count)
-				FavCB.SelectedIndex = beforeUpdateIndex;
-			else
-				FavCB.SelectedIndex = FavCB.Items.Count - 1;
-			GC.Collect();   //Does it delete the thing? idk.
-			AddButton.IsEnabled = true;
-		}
 	}
 }

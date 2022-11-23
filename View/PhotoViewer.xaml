@@ -84,8 +84,8 @@
 					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
 					 ItemsSource="{Binding Images}"
+					 SelectedItem="{Binding SelectedImg, Mode=OneWayToSource}"
 					 SelectedIndex="{Binding ListSelectedIndex, Mode=TwoWay}"
-					 SelectionChanged="ImageBox_SelectionChanged"
 					 d:ItemsSource="{d:SampleData ItemCount=5}">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
@@ -115,6 +115,7 @@
 						  ToolTip="Drag to resize." />
 			<Image x:Name="BigImage"
 				   Grid.Column="2"
+				   Source="{Binding BigImage}"
 				   MouseWheel="BigImage_MouseWheel"
 				   MouseMove="BigImage_MouseMove">
 				<Image.RenderTransform>

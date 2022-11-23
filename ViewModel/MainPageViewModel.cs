@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FolderThumbnailExplorer.Model;
+using FolderThumbnailExplorer.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,8 +42,11 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 		}
 
+		[RelayCommand]
 		public void ReGetContent()
 		{
+			if (MainWindow.MainVM.MainPageViewModel.addItemTask != null && !MainWindow.MainVM.MainPageViewModel.addItemTask.IsCompleted)
+				MainWindow.MainVM.MainPageViewModel.cts.Cancel();   //Cancel the task to avoid old folder being added to the list
 			Content.Clear();
 			//Setup cancellation token for cancelling use.
 			cts = new CancellationTokenSource();
@@ -138,6 +143,24 @@ namespace FolderThumbnailExplorer.ViewModel
 			addItemTask.Start();
 		}
 
+		#region AddNewFavorite
+		private Button addBtn;
+		[RelayCommand]
+		public void AddNewFav(Button button)
+		{
+			addBtn = button;
+			AddNewFav addNewFav = new AddNewFav(_PATHtoShow);
+			wnds.Push(addNewFav);   //Add this to opened windows list to close it when mainwindow closes
+			addNewFav.Show();
+			addNewFav.Closed += AddNewFav_Closed;
+			addBtn.IsEnabled = false;
+		}
+		private void AddNewFav_Closed(object? sender, EventArgs e)
+		{
+			OnPropertyChanged(nameof(ComboBoxItems));
+			addBtn.IsEnabled = true;
+		}
+		#endregion
 		#region Favorites ComboBox section.
 		private Dictionary<string, string> FavItem = new Dictionary<string, string>();
 		private ComboBoxItem _cbBoxSelected = new ComboBoxItem();

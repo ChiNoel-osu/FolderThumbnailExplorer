@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 
 namespace FolderThumbnailExplorer.ViewModel
 {

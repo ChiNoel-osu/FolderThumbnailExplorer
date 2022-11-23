@@ -65,7 +65,8 @@
 						Cursor="Pen"
 						FontWeight="Black"
 						Padding="1,1,1,1"
-						Click="NewFav_Click">
+						Command="{Binding MainPageViewModel.AddNewFavCommand}"
+						CommandParameter="{Binding RelativeSource={x:Static RelativeSource.Self}}">
 					<Button.Style>
 						<Style TargetType="Button">
 							<Style.Triggers>
@@ -139,7 +140,7 @@
 						FontSize="8"
 						Padding="0,-2,0,0"
 						Foreground="White"
-						Click="RefreshButton_Click">
+						Command="{Binding MainPageViewModel.ReGetContentCommand}">
 					<Button.Style>
 						<Style TargetType="Button">
 							<Style.Triggers>

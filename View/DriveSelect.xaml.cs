@@ -1,4 +1,5 @@
 ﻿using FolderThumbnailExplorer.ViewModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FolderThumbnailExplorer.View
@@ -11,12 +12,6 @@ namespace FolderThumbnailExplorer.View
 		public DriveSelect()
 		{
 			InitializeComponent();
-		}
-
-		private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (e.AddedItems.Count > 0)
-				((MainViewModel)DataContext).MainPageViewModel.PATHtoShow = e.AddedItems[0] as string;
 		}
 	}
 }

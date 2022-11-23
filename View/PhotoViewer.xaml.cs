@@ -14,22 +14,13 @@ namespace FolderThumbnailExplorer.View
 	public partial class PhotoViewer : Window
 	{
 		private PhotoViewerViewModel PVVM;  //Each viewer gets its own viewmodel.
-		private int timeStamp = 0;
+		private int timeStamp = 0;	//For user double clicking things.
 		public PhotoViewer(string folderPath)
 		{
-			InitializeComponent();
 			this.Tag = folderPath;  //Set tag so ImageControl can use it.
 			PVVM = new PhotoViewerViewModel(folderPath);
 			this.DataContext = PVVM;
-		}
-		private void ImageBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			GC.Collect();
-			BitmapImage bigImage = new BitmapImage();
-			bigImage.BeginInit();
-			bigImage.UriSource = new Uri(((CustomListItem)e.AddedItems[0]).Path);
-			bigImage.EndInit();
-			BigImage.Source = bigImage;
+			InitializeComponent();
 		}
 		#region Shown image zoom & pan
 		private void BigImage_MouseWheel(object sender, MouseWheelEventArgs e)

@@ -29,8 +29,11 @@ namespace FolderThumbnailExplorer.ViewModel
 	public partial class PhotoViewerViewModel : ObservableObject
 	{
 		private readonly string path;
+
 		[ObservableProperty]
 		ushort _ListSelectedIndex;   //Shared between PhotoViewer & ImageControl, and they need to be in the same DataContext.
+		[ObservableProperty]
+		BitmapImage _BigImage = new BitmapImage();
 
 		private ushort _imageCount;
 		public ushort ImageCount
@@ -47,6 +50,21 @@ namespace FolderThumbnailExplorer.ViewModel
 			private set
 			{ _imageCount = value; }
 		}   //Bind target for slider maximum.
+
+		public CustomListItem SelectedImg
+		{
+			set
+			{
+				if(value is not null)
+				{	//The image viewer still uses actual image as source rather than using stream reader.
+					_BigImage = new BitmapImage();
+					_BigImage.BeginInit();
+					_BigImage.UriSource = new Uri(value.Path);
+					_BigImage.EndInit();
+					OnPropertyChanged(nameof(BigImage));
+				}
+			}
+		}
 
 		[RelayCommand]
 		public static void OpenInExplorer(string path)

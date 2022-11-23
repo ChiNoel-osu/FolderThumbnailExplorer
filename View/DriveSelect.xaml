@@ -34,7 +34,7 @@
 					 ItemsSource="{Binding DriveSelectViewModel.Drives, Mode=OneWay}"
 					 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
 					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
-					 SelectionChanged="ListBox_SelectionChanged"
+					 SelectedItem="{Binding MainPageViewModel.PATHtoShow, Mode=OneWayToSource}"
 					 d:ItemsSource="{d:SampleData ItemCount=3}" />
 			<Button Grid.Row="1"
 					Content="🔄 Refresh"
