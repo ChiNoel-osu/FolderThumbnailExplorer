@@ -8,6 +8,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
 namespace FolderThumbnailExplorer.ViewModel
@@ -35,28 +38,28 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		BitmapImage _BigImage = new BitmapImage();
 
-		private ushort _imageCount;
+		private ushort _ImageCount;
 		public ushort ImageCount
 		{
 			get
 			{
-				if (_imageCount == 1)   //1 pictures
+				if (_ImageCount == 1)   //1 pictures
 					return 1;
-				else if (_imageCount == 0)  //Sorting errors
+				else if (_ImageCount == 0)  //Sorting errors
 					return 0;
 				else
-					return (ushort)(_imageCount - 1);   //Index issues so subtract by 1
+					return (ushort)(_ImageCount - 1);   //Index issues so subtract by 1
 			}
 			private set
-			{ _imageCount = value; }
+			{ _ImageCount = value; }
 		}   //Bind target for slider maximum.
 
 		public CustomListItem SelectedImg
 		{
 			set
 			{
-				if(value is not null)
-				{	//The image viewer still uses actual image as source rather than using stream reader.
+				if (value is not null)
+				{   //The image viewer still uses actual image as source rather than using stream reader.
 					_BigImage = new BitmapImage();
 					_BigImage.BeginInit();
 					_BigImage.UriSource = new Uri(value.Path);
@@ -73,51 +76,61 @@ namespace FolderThumbnailExplorer.ViewModel
 		}
 
 		//Use this as the ListBoxItem binding target
-		private ObservableCollection<CustomListItem> images = new ObservableCollection<CustomListItem>();
+		private ObservableCollection<CustomListItem> _Images = new ObservableCollection<CustomListItem>();
 		public ObservableCollection<CustomListItem> Images
 		{
 			get
 			{
 				AddImgs(path);
-				return images;
+				return _Images;
 			}
-			private set { images = value; }
+			private set { _Images = value; }
 		}
 		private void AddImgs(string path)
 		{
-			IEnumerable<string> imgs;
-			string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
-			try
-			{   //Get image files
-				imgs = Directory.EnumerateFiles(path, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith));
-			}
-			catch (InvalidOperationException) { return; }
-			//Left value for name (sorting target), right value for path (displaying).
-			//Natural sorting.
-			SortedDictionary<string, string> map = new SortedDictionary<string, string>(new NaturalStringComparer());
-			foreach (string filePath in imgs)
-			{   //Use of range operator
-				string fileNameWOExt = filePath[(filePath.LastIndexOf('\\') + 1)..];        //001.jpg
-				fileNameWOExt = fileNameWOExt[..fileNameWOExt.LastIndexOf('.')];            //001
-				map.Add(fileNameWOExt, filePath);   //The dictionary will sort itself as valuesa are being added.
-			}
-			foreach (KeyValuePair<string, string> img in map)
+			Task.Run(() =>
 			{
-				CustomListItem imgItem = new CustomListItem();
-				BitmapImage bitmapImage = new BitmapImage();
-				bitmapImage.BeginInit();
-				bitmapImage.UriSource = new Uri(img.Value);
-				bitmapImage.DecodePixelWidth = 128; //TODO: make it configurable.
-				bitmapImage.EndInit();
-				imgItem.Path = img.Value;
-				imgItem.Name = img.Value[(img.Value.LastIndexOf('\\') + 1)..];
-				imgItem.Image = bitmapImage;
-				images.Add(imgItem);
-				_imageCount++;
-			}
+				IEnumerable<string> imgs;
+				string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
+				try
+				{   //Get image files
+					imgs = Directory.EnumerateFiles(path, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith));
+				}
+				catch (InvalidOperationException) { return; }
+				//Left value for name (sorting target), right value for path (displaying).
+				//Natural sorting.
+				SortedDictionary<string, string> map = new SortedDictionary<string, string>(new NaturalStringComparer());
+				foreach (string filePath in imgs)
+				{   //Use of range operator
+					string fileNameWOExt = filePath[(filePath.LastIndexOf('\\') + 1)..];        //001.jpg
+					fileNameWOExt = fileNameWOExt[..fileNameWOExt.LastIndexOf('.')];            //001
+					map.Add(fileNameWOExt, filePath);   //The dictionary will sort itself when value's being added.
+				}
+				foreach (KeyValuePair<string, string> img in map)
+				{
+					CustomListItem imgItem = new CustomListItem();
+					BitmapImage bitmapImage = new BitmapImage();
+					using(FileStream stream = File.OpenRead(img.Value))
+					{
+						bitmapImage.BeginInit();
+						bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+						bitmapImage.StreamSource = stream;
+						bitmapImage.DecodePixelWidth = 128; //TODO: make it configurable.
+						bitmapImage.EndInit();
+					}
+					bitmapImage.Freeze();
+					imgItem.Path = img.Value;
+					imgItem.Name = img.Value[(img.Value.LastIndexOf('\\') + 1)..];
+					imgItem.Image = bitmapImage;
+					Application.Current.Dispatcher.Invoke(() => _Images.Add(imgItem));
+					_ImageCount++;
+					OnPropertyChanged(nameof(ImageCount));	//Update ImageCount.
+				}
+			});
 		}
 		public PhotoViewerViewModel(string folderPath)
 		{
+			BindingOperations.EnableCollectionSynchronization(_Images, new object());
 			this.path = folderPath;
 		}
 	}

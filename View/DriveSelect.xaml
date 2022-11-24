@@ -35,7 +35,8 @@
 					 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
 					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
 					 SelectedItem="{Binding MainPageViewModel.PATHtoShow, Mode=OneWayToSource}"
-					 d:ItemsSource="{d:SampleData ItemCount=3}" />
+					 d:ItemsSource="{d:SampleData ItemCount=3}"
+					 KeyDown="ListBox_KeyDown"/>
 			<Button Grid.Row="1"
 					Content="🔄 Refresh"
 					ToolTip="Refresh logical drives.&#x0a;Doesn't work for some reason."

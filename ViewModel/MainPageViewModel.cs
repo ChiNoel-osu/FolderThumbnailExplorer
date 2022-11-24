@@ -8,12 +8,14 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace FolderThumbnailExplorer.ViewModel
@@ -24,29 +26,28 @@ namespace FolderThumbnailExplorer.ViewModel
 		public Task addItemTask;
 		public static Stack<Window> wnds = new Stack<Window>();
 
-		[ObservableProperty]
-		string _PATHtoShow;     //DirBox.Text
+		string _PATHtoShow; //DirBox.Text
+		public string PATHtoShow
+		{
+			get => _PATHtoShow;
+			set
+			{
+				_PATHtoShow = value;
+				OnPropertyChanged(nameof(PATHtoShow));
+				ReGetContent();
+			}
+		}
+
 		[ObservableProperty]
 		ObservableCollection<CustomContentItem> _Content = new ObservableCollection<CustomContentItem>();
 		[ObservableProperty]
 		ushort _SliderValue = 156;
 
-		string _SelectedPath;   //Open new explorer window when right clicked.
-		public string SelectedPath
-		{
-			get { return _SelectedPath; }
-			set
-			{
-				_SelectedPath = value;
-				Process.Start("explorer.exe", _SelectedPath);
-			}
-		}
-
 		[RelayCommand]
 		public void ReGetContent()
 		{
-			if (MainWindow.MainVM.MainPageViewModel.addItemTask != null && !MainWindow.MainVM.MainPageViewModel.addItemTask.IsCompleted)
-				MainWindow.MainVM.MainPageViewModel.cts.Cancel();   //Cancel the task to avoid old folder being added to the list
+			if (addItemTask != null && !addItemTask.IsCompleted)
+				cts.Cancel();   //Cancel the task to avoid old folder being added to the list
 			Content.Clear();
 			//Setup cancellation token for cancelling use.
 			cts = new CancellationTokenSource();
@@ -141,6 +142,55 @@ namespace FolderThumbnailExplorer.ViewModel
 				}
 			}, ct);
 			addItemTask.Start();
+		}
+		[RelayCommand]
+		public void ThumbnailClicked(Image img)
+		{   //The LeftClick MouseAction only considers mouse down, I need mouse up for this.
+			Mouse.RemoveMouseUpHandler(img, ThumbnailMouseUpHandler);
+			Mouse.AddMouseUpHandler(img, ThumbnailMouseUpHandler);
+		}
+		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e)
+		{
+			if (e.ChangedButton == MouseButton.Left)
+			{
+				string imagePath = ((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name;
+				string imageFolder = ((Image)sender).ToolTip.ToString();
+				if (imagePath.EndsWith("folder.png"))
+				{   //No image found (default folder.png), advance path.
+					if (PATHtoShow.EndsWith('\\')) //Check drive root
+						PATHtoShow = string.Format("{0}{1}", PATHtoShow, imageFolder);
+					else
+						PATHtoShow = string.Format("{0}\\{1}", PATHtoShow, imageFolder);
+				}
+				else
+				{   //Image found, start Photo Viewer.
+					if (imagePath.EndsWith("folder.png")) return;    //No image in folder, return.
+					imagePath = imagePath.Remove(imagePath.LastIndexOf('\\'));
+					PhotoViewer photoViewer = new PhotoViewer(imagePath);
+					photoViewer.Left = 0; photoViewer.Top = 0;  //Spawns window at top left corner.
+					wnds.Push(photoViewer); //Add this to opened windows list to close it when mainwindows closes
+					photoViewer.Show();
+				}
+			}
+			else if (e.ChangedButton == MouseButton.Right)
+			{   //Right click to Start explorer.exe
+				string imageFolder = ((Image)sender).ToolTip.ToString();
+				string path;
+				if (PATHtoShow.EndsWith('\\'))
+					path = PATHtoShow + imageFolder;
+				else
+					path = PATHtoShow + '\\' + imageFolder;
+				Process.Start("explorer.exe", path);
+			}
+		}
+		[RelayCommand]
+		public void LabelDoubleClicked(Label label)
+		{   //Double click advance folder
+			string imageFolder = label.Content.ToString();
+			if (PATHtoShow.EndsWith('\\'))  //Check drive root
+				PATHtoShow = string.Format("{0}{1}", PATHtoShow, imageFolder);
+			else
+				PATHtoShow = string.Format("{0}\\{1}", PATHtoShow, imageFolder);
 		}
 
 		#region AddNewFavorite
