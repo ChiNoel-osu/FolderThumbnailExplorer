@@ -1,10 +1,6 @@
-﻿using FolderThumbnailExplorer.Model;
-using FolderThumbnailExplorer.ViewModel;
-using System;
+﻿using FolderThumbnailExplorer.ViewModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace FolderThumbnailExplorer.View
 {
@@ -14,11 +10,11 @@ namespace FolderThumbnailExplorer.View
 	public partial class PhotoViewer : Window
 	{
 		private PhotoViewerViewModel PVVM;  //Each viewer gets its own viewmodel.
-		private int timeStamp = 0;	//For user double clicking things.
+		private int timeStamp = 0;  //For user double clicking things.
 		public PhotoViewer(string folderPath)
 		{
 			this.Tag = folderPath;  //Set tag so ImageControl can use it.
-			PVVM = new PhotoViewerViewModel(folderPath);
+			PVVM = new PhotoViewerViewModel(folderPath, this);
 			this.DataContext = PVVM;
 			InitializeComponent();
 		}

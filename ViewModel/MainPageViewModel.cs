@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,10 +41,13 @@ namespace FolderThumbnailExplorer.ViewModel
 		ObservableCollection<CustomContentItem> _Content = new ObservableCollection<CustomContentItem>();
 		[ObservableProperty]
 		ushort _SliderValue = 156;
+		[ObservableProperty]
+		bool _IsNotAddingItem = true;   //For RefreshButton IsEnabled.
 
 		[RelayCommand]
 		public void ReGetContent()
 		{
+			IsNotAddingItem = false;
 			if (addItemTask != null && !addItemTask.IsCompleted)
 				cts.Cancel();   //Cancel the task to avoid old folder being added to the list
 			Content.Clear();
@@ -138,8 +140,11 @@ namespace FolderThumbnailExplorer.ViewModel
 								stringBuilder.AppendLine(dir);
 							MessageBox.Show("One or more folder(s) has been skipped due to lack of permission:\n" + stringBuilder + "\nIf you want to access these folder(s), try running the app as Administrator.", "Unauthorized access to folder is denied.", MessageBoxButton.OK, MessageBoxImage.Asterisk);
 						}
+						IsNotAddingItem = true;
 					}
 				}
+				else
+					IsNotAddingItem = true;
 			}, ct);
 			addItemTask.Start();
 		}
@@ -227,7 +232,10 @@ namespace FolderThumbnailExplorer.ViewModel
 				return _cbBoxSelected;
 			}
 			set
-			{ _cbBoxSelected = value; }
+			{
+				_cbBoxSelected = value;
+				PATHtoShow = _cbBoxSelected?.ToolTip.ToString() ?? string.Empty;
+			}
 		}
 		private ObservableCollection<ComboBoxItem> _ComboBoxItems = new ObservableCollection<ComboBoxItem>();
 		public ObservableCollection<ComboBoxItem> ComboBoxItems

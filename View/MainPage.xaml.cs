@@ -1,10 +1,6 @@
-﻿using FolderThumbnailExplorer.ViewModel;
-using System;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace FolderThumbnailExplorer.View
 {
@@ -36,9 +32,5 @@ namespace FolderThumbnailExplorer.View
 					DirBox.Text = DirBox.Text.Remove(DirBox.Text.LastIndexOf('\\'));
 		}
 		#endregion
-		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			DirBox.Text = MainWindow.MainVM.MainPageViewModel.CBBoxSelected.ToolTip.ToString();
-		}
 	}
 }

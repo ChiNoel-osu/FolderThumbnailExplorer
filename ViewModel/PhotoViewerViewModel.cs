@@ -32,6 +32,7 @@ namespace FolderThumbnailExplorer.ViewModel
 	public partial class PhotoViewerViewModel : ObservableObject
 	{
 		private readonly string path;
+		private bool closing = false;
 
 		[ObservableProperty]
 		ushort _ListSelectedIndex;   //Shared between PhotoViewer & ImageControl, and they need to be in the same DataContext.
@@ -108,9 +109,10 @@ namespace FolderThumbnailExplorer.ViewModel
 				}
 				foreach (KeyValuePair<string, string> img in map)
 				{
+					if (closing) break; //Break out if the window is closing.
 					CustomListItem imgItem = new CustomListItem();
 					BitmapImage bitmapImage = new BitmapImage();
-					using(FileStream stream = File.OpenRead(img.Value))
+					using (FileStream stream = File.OpenRead(img.Value))
 					{
 						bitmapImage.BeginInit();
 						bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
@@ -124,14 +126,22 @@ namespace FolderThumbnailExplorer.ViewModel
 					imgItem.Image = bitmapImage;
 					Application.Current.Dispatcher.Invoke(() => _Images.Add(imgItem));
 					_ImageCount++;
-					OnPropertyChanged(nameof(ImageCount));	//Update ImageCount.
+					OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
 				}
 			});
 		}
-		public PhotoViewerViewModel(string folderPath)
+
+		public PhotoViewerViewModel(string folderPath, object view)
 		{
 			BindingOperations.EnableCollectionSynchronization(_Images, new object());
 			this.path = folderPath;
+			((Window)view).Closed += PhotoViewerClosed;
+		}
+
+		private void PhotoViewerClosed(object? sender, EventArgs e)
+		{
+			closing = true;
+			GC.Collect();
 		}
 	}
 }

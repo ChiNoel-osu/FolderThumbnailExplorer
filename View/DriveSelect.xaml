@@ -36,7 +36,7 @@
 					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
 					 SelectedItem="{Binding MainPageViewModel.PATHtoShow, Mode=OneWayToSource}"
 					 d:ItemsSource="{d:SampleData ItemCount=3}"
-					 KeyDown="ListBox_KeyDown"/>
+					 KeyDown="ListBox_KeyDown" />
 			<Button Grid.Row="1"
 					Content="🔄 Refresh"
 					ToolTip="Refresh logical drives.&#x0a;Doesn't work for some reason."
@@ -46,5 +46,37 @@
 					Foreground="WhiteSmoke"
 					Command="{Binding DriveSelectViewModel.RefreshDrivesCommand}" />
 		</Grid>
+		<Label Grid.Row="1"
+			   Content="ℹ"
+			   Foreground="Cyan"
+			   HorizontalAlignment="Right"
+			   VerticalAlignment="Bottom"
+			   Height="20"
+			   Width="20"
+			   Margin="5"
+			   Padding="0"
+			   MouseDoubleClick="Label_MouseDoubleClick"
+			   ToolTipService.InitialShowDelay="0"
+			   ToolTipService.ShowDuration="88888888">
+			<Label.ToolTip>
+				<ToolTip Placement="Top">
+					<ToolTip.Content>
+						<Grid>
+							<Rectangle Fill="Black"
+									   Margin="-8" />
+							<StackPanel>
+								<Label Content="ℹ Quick Tip"
+									   Foreground="White"
+									   FontWeight="Medium"
+									   Padding="5,2,5,0" />
+								<Separator Margin="0,7,0,0" />
+								<Label Foreground="White"
+									   Content="Left Click on normal folder - Advance folder.&#x0a;Left Click on thumbnailed folder - Open Photo Viewer.&#x0a;Right Click on any folder - Open in Explorer.&#x0a;Double Click on any folder's name - Advance folder." />
+							</StackPanel>
+						</Grid>
+					</ToolTip.Content>
+				</ToolTip>
+			</Label.ToolTip>
+		</Label>
 	</Grid>
 </UserControl>

@@ -24,202 +24,248 @@
 		</Grid.RowDefinitions>
 		<Grid Grid.Row="0"
 			  Margin="4,4,4,0">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="25" />
-					<ColumnDefinition Width="8*" />
-					<ColumnDefinition Width="30" />
-					<ColumnDefinition Width="2*" />
-					<ColumnDefinition Width="3*" />
-					<ColumnDefinition Width="32" />
-				</Grid.ColumnDefinitions>
-				<Button Grid.Column="0"
-						Content="▲"
-						ToolTip="Go Up"
-						Cursor="UpArrow"
-						Template="{DynamicResource ButtonTemplate1}"
-						Background="{x:Null}"
-						Foreground="MediumPurple"
-						Margin="1,1,3,0"
-						Padding="0,-2,0,0"
-						FontSize="10"
-						BorderBrush="CornflowerBlue"
-						Click="GoUpBtnClicked" />
-				<TextBox Name="DirBox"
-						 Text="{Binding MainPageViewModel.PATHtoShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						 Grid.Column="1"
-						 FontSize="16"
-						 Style="{StaticResource UniTextBoxStyle}"
-						 Margin="0,1,0,0"
-						 Padding="5,-2.5,0,0"
-						 ToolTip="Use &lt;Backspace&gt; to go back" />
-				<Button Name="AddButton"
-						Grid.Column="2"
-						Template="{DynamicResource ButtonTemplate1}"
-						Background="{x:Null}"
-						Margin="6,3,6,2"
-						Content="*"
-						ToolTip="Add current folder to Favorites."
-						Foreground="White"
-						Cursor="Pen"
-						FontWeight="Black"
-						Padding="1"
-						Command="{Binding MainPageViewModel.AddNewFavCommand}"
-						CommandParameter="{Binding RelativeSource={x:Static RelativeSource.Self}}">
-					<Button.Style>
-						<Style TargetType="Button">
-							<Style.Triggers>
-								<Trigger Property="IsMouseOver"
-										 Value="True">
-									<Trigger.EnterActions>
-										<BeginStoryboard>
-											<Storyboard>
-												<ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-																To="Lime"
-																Duration="0:0:0.2" />
-											</Storyboard>
-										</BeginStoryboard>
-									</Trigger.EnterActions>
-									<Trigger.ExitActions>
-										<BeginStoryboard>
-											<Storyboard>
-												<ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-																To="White"
-																Duration="0:0:0.8" />
-											</Storyboard>
-										</BeginStoryboard>
-									</Trigger.ExitActions>
-								</Trigger>
-							</Style.Triggers>
-						</Style>
-					</Button.Style>
-				</Button>
-				<ComboBox x:Name="FavCB"
-						  Grid.Column="3"
-						  Template="{DynamicResource ComboBoxTemplate1}"
-						  Foreground="White"
-						  Margin="0,1,1,0"
-						  Padding="3,2,0,3"
-						  SelectionChanged="ComboBox_SelectionChanged"
-						  ItemsSource="{Binding MainPageViewModel.ComboBoxItems}"
-						  SelectedItem="{Binding MainPageViewModel.CBBoxSelected, Mode=OneWayToSource}">
-					<ComboBox.ItemContainerStyle>
-						<Style TargetType="ComboBoxItem">
-							<Setter Property="Background"
-									Value="#1E1E1E" />
-							<Setter Property="Foreground"
-									Value="White" />
-							<Setter Property="Effect">
-								<Setter.Value>
-									<DropShadowEffect ShadowDepth="0"
-													  BlurRadius="4"
-													  Direction="0" />
-								</Setter.Value>
-							</Setter>
-						</Style>
-					</ComboBox.ItemContainerStyle>
-				</ComboBox>
-				<Slider x:Name="ScaleSlider"
-						Style="{DynamicResource SliderStyle1}"
-						Grid.Column="4"
-						Margin="2,3,2,0"
-						Minimum="40"
-						Maximum="500"
-						LargeChange="50"
-						SmallChange="20"
-						Value="{Binding MainPageViewModel.SliderValue}"
-						ToolTip="Resize the ListBox." />
-				<Button Grid.Column="5"
-						x:Name="RefreshButton"
-						Focusable="False"
-						Template="{DynamicResource ButtonTemplate1}"
-						Background="{x:Null}"
-						Margin="0,1,1,0"
-						Content="Refresh&#x0A;  View"
-						FontSize="8"
-						Padding="0,-2,0,0"
-						Foreground="White"
-						Command="{Binding MainPageViewModel.ReGetContentCommand}">
-					<Button.Style>
-						<Style TargetType="Button">
-							<Style.Triggers>
-								<Trigger Property="IsMouseOver"
-										 Value="True">
-									<Trigger.EnterActions>
-										<BeginStoryboard>
-											<Storyboard>
-												<ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-																To="Lime"
-																Duration="0:0:0.2" />
-											</Storyboard>
-										</BeginStoryboard>
-									</Trigger.EnterActions>
-									<Trigger.ExitActions>
-										<BeginStoryboard>
-											<Storyboard>
-												<ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
-																To="White"
-																Duration="0:0:0.8" />
-											</Storyboard>
-										</BeginStoryboard>
-									</Trigger.ExitActions>
-								</Trigger>
-							</Style.Triggers>
-						</Style>
-					</Button.Style>
-				</Button>
-			</Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="25" />
+				<ColumnDefinition Width="8*" />
+				<ColumnDefinition Width="30" />
+				<ColumnDefinition Width="2*" />
+				<ColumnDefinition Width="3*" />
+				<ColumnDefinition Width="32" />
+			</Grid.ColumnDefinitions>
+			<Button Grid.Column="0"
+					Content="▲"
+					ToolTip="Go Up"
+					Cursor="UpArrow"
+					Template="{DynamicResource ButtonTemplate1}"
+					Background="{x:Null}"
+					Foreground="MediumPurple"
+					Margin="1,1,3,0"
+					Padding="0,-2,0,0"
+					FontSize="10"
+					BorderBrush="CornflowerBlue"
+					Click="GoUpBtnClicked">
+				<Button.Style>
+					<Style>
+						<Style.Triggers>
+							<Trigger Property="Button.IsMouseOver"
+									 Value="True">
+								<Trigger.EnterActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<ThicknessAnimation Storyboard.TargetProperty="Padding"
+																From="0,-2,0,0"
+																To="0,-14,0,0"
+																Duration="0:0:0.2"
+																AccelerationRatio="0.1" />
+											<DoubleAnimation Storyboard.TargetProperty="FontSize"
+															 From="10"
+															 To="0"
+															 Duration="0:0:0.2" />
+											<ThicknessAnimation Storyboard.TargetProperty="Padding"
+																From="0,15,0,0"
+																To="0,-2,0,0"
+																BeginTime="0:0:0.2"
+																Duration="0:0:0.4"
+																AccelerationRatio="0.1" />
+											<DoubleAnimation Storyboard.TargetProperty="FontSize"
+															 From="0"
+															 To="10"
+															 BeginTime="0:0:0.2"
+															 Duration="0:0:0.4" />
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.EnterActions>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</Button.Style>
+			</Button>
+			<TextBox Name="DirBox"
+					 Text="{Binding MainPageViewModel.PATHtoShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 Grid.Column="1"
+					 FontSize="16"
+					 Style="{StaticResource UniTextBoxStyle}"
+					 Margin="0,1,0,0"
+					 Padding="5,-2.5,0,0"
+					 ToolTip="Use &lt;Backspace&gt; to go back" />
+			<Button Grid.Column="2"
+					Template="{DynamicResource ButtonTemplate1}"
+					Background="{x:Null}"
+					Margin="6,3,6,2"
+					Content="*"
+					ToolTip="Add current folder to Favorites."
+					Foreground="White"
+					Cursor="Pen"
+					FontWeight="Black"
+					Padding="0,0.6,0.1,0"
+					Command="{Binding MainPageViewModel.AddNewFavCommand}"
+					CommandParameter="{Binding RelativeSource={x:Static RelativeSource.Self}}">
+				<Button.Style>
+					<Style TargetType="Button">
+						<Style.Triggers>
+							<Trigger Property="IsMouseOver"
+									 Value="True">
+								<Trigger.EnterActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+															To="Lime"
+															Duration="0:0:0.2" />
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.EnterActions>
+								<Trigger.ExitActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+															To="White"
+															Duration="0:0:0.8" />
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.ExitActions>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</Button.Style>
+			</Button>
+			<ComboBox Grid.Column="3"
+					  Template="{DynamicResource ComboBoxTemplate1}"
+					  Foreground="White"
+					  Margin="0,1,1,0"
+					  Padding="3,2,0,3"
+					  ItemsSource="{Binding MainPageViewModel.ComboBoxItems}"
+					  SelectedItem="{Binding MainPageViewModel.CBBoxSelected, Mode=OneWayToSource}">
+				<ComboBox.ItemContainerStyle>
+					<Style TargetType="ComboBoxItem">
+						<Setter Property="Background"
+								Value="#1E1E1E" />
+						<Setter Property="Foreground"
+								Value="White" />
+						<Setter Property="Effect">
+							<Setter.Value>
+								<DropShadowEffect ShadowDepth="0"
+												  BlurRadius="4"
+												  Direction="0" />
+							</Setter.Value>
+						</Setter>
+					</Style>
+				</ComboBox.ItemContainerStyle>
+			</ComboBox>
+			<Slider x:Name="ScaleSlider"
+					Style="{DynamicResource SliderStyle1}"
+					Grid.Column="4"
+					Margin="2,3,2,0"
+					Minimum="40"
+					Maximum="500"
+					LargeChange="50"
+					SmallChange="20"
+					Value="{Binding MainPageViewModel.SliderValue}"
+					ToolTip="Resize the ListBox." />
+			<Button Grid.Column="5"
+					Focusable="False"
+					IsEnabled="{Binding MainPageViewModel.IsNotAddingItem, Mode=OneWay}"
+					Template="{DynamicResource ButtonTemplate1}"
+					Background="{x:Null}"
+					ToolTip="Refresh the view."
+					Margin="0,1,1,0"
+					FontSize="20"
+					Padding="0,-6,1,0"
+					Foreground="White"
+					Command="{Binding MainPageViewModel.ReGetContentCommand}">
+				<Button.Style>
+					<Style TargetType="Button">
+						<Style.Triggers>
+							<Trigger Property="IsMouseOver"
+									 Value="True">
+								<Trigger.EnterActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+															To="Lime"
+															Duration="0:0:0.2" />
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.EnterActions>
+								<Trigger.ExitActions>
+									<BeginStoryboard>
+										<Storyboard>
+											<ColorAnimation Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"
+															To="White"
+															Duration="0:0:0.8" />
+										</Storyboard>
+									</BeginStoryboard>
+								</Trigger.ExitActions>
+							</Trigger>
+						</Style.Triggers>
+					</Style>
+				</Button.Style>
+				↻
+			</Button>
 		</Grid>
-		<Border x:Name="ContentBorder"
-				Grid.Row="1"
-				Margin="5"
-				BorderBrush="Transparent">
-			<ListBox x:Name="Content"
-					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-					 Background="{x:Null}"
-					 Foreground="White"
-					 ItemsSource="{Binding MainPageViewModel.Content}"
-					 d:ItemsSource="{d:SampleData ItemCount=88}">
-				<ListBox.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel IsItemsHost="True" />
-					</ItemsPanelTemplate>
-				</ListBox.ItemsPanel>
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<StackPanel>
-							<Image MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"
-								   SnapsToDevicePixels="True"
-								   Source="{Binding ThumbNail}"
-								   ToolTip="{Binding Header}"
-								   Cursor="Hand">
-								<Image.InputBindings>
-									<MouseBinding MouseAction="LeftClick"
-												  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.ThumbnailClickedCommand}"
-												  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}}" />
-									<MouseBinding MouseAction="RightClick"
-												  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.ThumbnailClickedCommand}"
-												  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}}" />
-								</Image.InputBindings>
-							</Image>
-							<Label Content="{Binding Header}"
-								   ToolTip="Double-click here to advance."
-								   Foreground="White"
-								   MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"
-								   FontSize="{Binding ElementName=ScaleSlider, Path=Value, Converter={StaticResource LSConverter}}"
-								   HorizontalAlignment="Center"
-								   VerticalAlignment="Center"
-								   Margin="0,-4,0,0">
-								<Label.InputBindings>
-									<MouseBinding MouseAction="LeftDoubleClick"
-												  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.LabelDoubleClickedCommand}"
-												  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Label}, Mode=FindAncestor,AncestorLevel=1}}" />
-								</Label.InputBindings>
-							</Label>
-						</StackPanel>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-		</Border>
+		<ListBox Grid.Row="1"
+				 Margin="5"
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				 Background="{x:Null}"
+				 Foreground="White"
+				 ItemsSource="{Binding MainPageViewModel.Content}"
+				 d:ItemsSource="{d:SampleData ItemCount=88}">
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel IsItemsHost="True" />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel>
+						<Image MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"
+							   SnapsToDevicePixels="True"
+							   Source="{Binding ThumbNail}"
+							   ToolTip="{Binding Header}"
+							   Cursor="Hand">
+							<Image.InputBindings>
+								<MouseBinding MouseAction="LeftClick"
+											  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.ThumbnailClickedCommand}"
+											  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}}" />
+								<MouseBinding MouseAction="RightClick"
+											  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.ThumbnailClickedCommand}"
+											  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}}" />
+							</Image.InputBindings>
+						</Image>
+						<Label Content="{Binding Header}"
+							   ToolTip="Double-click here to advance."
+							   Foreground="White"
+							   MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"
+							   FontSize="{Binding ElementName=ScaleSlider, Path=Value, Converter={StaticResource LSConverter}}"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Center"
+							   Margin="0,-4,0,0">
+							<Label.InputBindings>
+								<MouseBinding MouseAction="LeftDoubleClick"
+											  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.LabelDoubleClickedCommand}"
+											  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Label}, Mode=FindAncestor,AncestorLevel=1}}" />
+							</Label.InputBindings>
+						</Label>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+			<ListBox.ItemContainerStyle>
+				<Style TargetType="{x:Type ListBoxItem}">
+					<Style.Triggers>
+						<EventTrigger RoutedEvent="Loaded">
+							<EventTrigger.Actions>
+								<BeginStoryboard>
+									<Storyboard>
+										<DoubleAnimation Storyboard.TargetProperty="Opacity"
+														 From="0"
+														 To="1"
+														 Duration="0:0:0.2" />
+									</Storyboard>
+								</BeginStoryboard>
+							</EventTrigger.Actions>
+						</EventTrigger>
+					</Style.Triggers>
+				</Style>
+			</ListBox.ItemContainerStyle>
+		</ListBox>
 	</Grid>
 </UserControl>

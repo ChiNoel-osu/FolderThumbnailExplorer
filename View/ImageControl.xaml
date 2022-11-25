@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="FolderThumbnailExplorer.View.ImageControl"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:converter="clr-namespace:FolderThumbnailExplorer.Converter"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
@@ -30,9 +30,11 @@
 					Content="▲"
 					Click="PreviousClick"
 					Margin="0,5" />
+			<!--The "FocusVisualStyle="{x:Null}"" line makes it not showing the focus visual (the black dot border) unaffecting Focusable-->
 			<Slider x:Name="ImgPosition"
 					Style="{DynamicResource SliderStyle1}"
 					Foreground="DodgerBlue"
+					FocusVisualStyle="{x:Null}"
 					HorizontalAlignment="Center"
 					VerticalAlignment="Center"
 					SmallChange="1"
@@ -40,7 +42,7 @@
 					Maximum="{Binding ImageCount}"
 					Value="{Binding ListSelectedIndex, Mode=TwoWay}"
 					Width="25"
-					Height="{Binding ElementName=ImgPosition, Path=Maximum, Converter={StaticResource SLConverter}}"
+					Height="{Binding ElementName=ImgPosition, Path=Maximum, Converter={StaticResource SLConverter}, Mode=OneWay}"
 					MaxHeight="420"
 					IsDirectionReversed="True"
 					IsSnapToTickEnabled="True"
@@ -62,7 +64,8 @@
 					Foreground="White"
 					Content="📁"
 					Command="{Binding OpenInExplorerCommand}"
-					CommandParameter="{Binding ElementName=ShowInExplorer, Path=ToolTip}" />
+					CommandParameter="{Binding ElementName=ShowInExplorer, Path=ToolTip}"
+					Padding="1.6,1,1,1" />
 		</StackPanel>
 
 	</Grid>
