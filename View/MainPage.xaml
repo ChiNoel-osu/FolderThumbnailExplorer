@@ -4,18 +4,22 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
+			 xmlns:converter="clr-namespace:FolderThumbnailExplorer.Converter"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 			 mc:Ignorable="d"
 			 d:DesignHeight="600"
 			 d:DesignWidth="600"
 			 KeyDown="UserControl_KeyDown">
-	<UserControl.Resources>
+	<d:UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
+	</d:UserControl.Resources>
+	<UserControl.Resources>
+		<converter:LabelSizeConverter x:Key="LSConverter" />
 	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -84,7 +88,7 @@
 					 Text="{Binding MainPageViewModel.PATHtoShow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 					 Grid.Column="1"
 					 FontSize="16"
-					 Style="{StaticResource UniTextBoxStyle}"
+					 Style="{DynamicResource UniTextBoxStyle}"
 					 Margin="0,1,0,0"
 					 Padding="5,-2.5,0,0"
 					 ToolTip="Use &lt;Backspace&gt; to go back" />
