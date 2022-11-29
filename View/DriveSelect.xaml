@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
@@ -38,8 +39,8 @@
 					 d:ItemsSource="{d:SampleData ItemCount=3}"
 					 KeyDown="ListBox_KeyDown" />
 			<Button Grid.Row="1"
-					Content="🔄 Refresh"
-					ToolTip="Refresh logical drives.&#x0a;Doesn't work for some reason."
+					Content="{x:Static loc:Loc.RefreshDriveBtn}"
+					ToolTip="{x:Static loc:Loc.RefreshDriveBtnTT}"
 					FontSize="14"
 					Template="{DynamicResource ButtonTemplate1}"
 					Background="Transparent"
@@ -65,13 +66,13 @@
 							<Rectangle Fill="Black"
 									   Margin="-8" />
 							<StackPanel>
-								<Label Content="ℹ Quick Tip"
+								<Label Content="{x:Static loc:Loc.MainToolTipTitle}"
 									   Foreground="White"
 									   FontWeight="Medium"
 									   Padding="5,2,5,0" />
 								<Separator Margin="0,7,0,0" />
 								<Label Foreground="White"
-									   Content="Left Click on normal folder - Advance folder.&#x0a;Left Click on thumbnailed folder - Open Photo Viewer.&#x0a;Right Click on any folder - Open in Explorer.&#x0a;Double Click on any folder's name - Advance folder." />
+									   Content="{x:Static loc:Loc.MainToolTip}" />
 							</StackPanel>
 						</Grid>
 					</ToolTip.Content>

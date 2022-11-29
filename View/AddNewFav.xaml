@@ -3,11 +3,12 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 		xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 		xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 		d:DataContext="{d:DesignInstance Type=viewmodel:AddNewFavoriteViewModel}"
 		mc:Ignorable="d"
-		Title="Add new favorites."
+		Title="{x:Static loc:Loc.AddNewFavTitle}"
 		d:Height="100"
 		Height="120"
 		Width="180"
@@ -32,7 +33,7 @@
 			<RowDefinition Height="6*" />
 		</Grid.RowDefinitions>
 		<Label Grid.Row="0"
-			   Content=" Path"
+			   Content="{x:Static loc:Loc.ANFPath}"
 			   Foreground="White"
 			   Padding="0"
 			   Margin="0,-1,0,-2" />
@@ -53,7 +54,7 @@
 				<ColumnDefinition Width="53*" />
 			</Grid.ColumnDefinitions>
 			<Label Grid.Row="0"
-				   Content=" Name"
+				   Content="{x:Static loc:Loc.ANFName}"
 				   Foreground="White"
 				   Padding="0"
 				   Margin="0,-1,53,23"
@@ -72,7 +73,7 @@
 					Grid.RowSpan="2"
 					Template="{DynamicResource ButtonTemplate1}"
 					Margin="10,10,0,4"
-					Content="Save"
+					Content="{x:Static loc:Loc.ANFSave}"
 					Background="{x:Null}"
 					BorderBrush="LightSkyBlue"
 					Foreground="White"

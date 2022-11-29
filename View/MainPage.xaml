@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:converter="clr-namespace:FolderThumbnailExplorer.Converter"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
@@ -38,7 +39,7 @@
 			</Grid.ColumnDefinitions>
 			<Button Grid.Column="0"
 					Content="▲"
-					ToolTip="Go Up"
+					ToolTip="{x:Static loc:Loc.GoUpBtnTT}"
 					Cursor="UpArrow"
 					Template="{DynamicResource ButtonTemplate1}"
 					Background="{x:Null}"
@@ -90,14 +91,13 @@
 					 FontSize="16"
 					 Style="{DynamicResource UniTextBoxStyle}"
 					 Margin="0,1,0,0"
-					 Padding="5,-2.5,0,0"
-					 ToolTip="Use &lt;Backspace&gt; to go back" />
+					 Padding="5,-2.5,0,0"/>
 			<Button Grid.Column="2"
 					Template="{DynamicResource ButtonTemplate1}"
 					Background="{x:Null}"
 					Margin="6,3,6,2"
 					Content="*"
-					ToolTip="Add current folder to Favorites."
+					ToolTip="{x:Static loc:Loc.AddNewFavBtnTT}"
 					Foreground="White"
 					Cursor="Pen"
 					FontWeight="Black"
@@ -156,6 +156,7 @@
 				</ComboBox.ItemContainerStyle>
 			</ComboBox>
 			<Slider x:Name="ScaleSlider"
+					Focusable="False"
 					Style="{DynamicResource SliderStyle1}"
 					Grid.Column="4"
 					Margin="2,3,2,0"
@@ -164,13 +165,13 @@
 					LargeChange="50"
 					SmallChange="20"
 					Value="{Binding MainPageViewModel.SliderValue}"
-					ToolTip="Resize the ListBox." />
+					ToolTip="{x:Static loc:Loc.ScaleSliderTT}" />
 			<Button Grid.Column="5"
 					Focusable="False"
 					IsEnabled="{Binding MainPageViewModel.IsNotAddingItem, Mode=OneWay}"
 					Template="{DynamicResource ButtonTemplate1}"
 					Background="{x:Null}"
-					ToolTip="Refresh the view."
+					ToolTip="{x:Static loc:Loc.RefreshViewTT}"
 					Margin="0,1,1,0"
 					FontSize="20"
 					Padding="0,-6,1,0"
@@ -236,7 +237,6 @@
 							</Image.InputBindings>
 						</Image>
 						<Label Content="{Binding Header}"
-							   ToolTip="Double-click here to advance."
 							   Foreground="White"
 							   MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"
 							   FontSize="{Binding ElementName=ScaleSlider, Path=Value, Converter={StaticResource LSConverter}}"

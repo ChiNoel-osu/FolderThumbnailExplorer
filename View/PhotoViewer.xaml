@@ -3,6 +3,7 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 		xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 		xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 		d:DataContext="{d:DesignInstance Type=viewmodel:PhotoViewerViewModel}"
@@ -26,7 +27,7 @@
 		<Rectangle Fill="#222222"
 				   MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"
 				   MouseLeave="Rectangle_MouseLeave"
-				   ToolTip="Drag to move the window."
+				   ToolTip="{x:Static loc:Loc.PhotoViewerTitleBarTT}"
 				   Grid.ColumnSpan="2" />
 		<StackPanel Orientation="Horizontal"
 					FlowDirection="RightToLeft"
@@ -51,7 +52,7 @@
 					Style="{StaticResource BtnStyle}"
 					Background="#FF605C"
 					Click="CloseClick"
-					ToolTip=".Close the window&#x0a;.You can also use Esc on your keyboard for this"
+					ToolTip="{x:Static loc:Loc.PVCloseTT}"
 					Margin="-1,-2,1,0" />
 			<Button Height="15"
 					Width="18"
@@ -59,14 +60,14 @@
 					Style="{StaticResource BtnStyle}"
 					Background="#FFBD44"
 					Click="MaxResClick"
-					ToolTip=".Maximize or Restore the window" />
+					ToolTip="{x:Static loc:Loc.PVMaxTT}" />
 			<Button Height="10"
 					Width="18"
 					Margin="1,0,1,0"
 					Style="{StaticResource BtnStyle}"
 					Background="#00CA4E"
 					Click="MinClick"
-					ToolTip=".Minimize the window" />
+					ToolTip="{x:Static loc:Loc.PVMinTT}" />
 		</StackPanel>
 		<Grid Grid.Row="0"
 			  Grid.RowSpan="2"
@@ -123,13 +124,13 @@
 								<Rectangle Fill="Black"
 										   Margin="-8" />
 								<StackPanel>
-									<Label Content="ℹ Quick Tip"
+									<Label Content="{x:Static loc:Loc.MainToolTipTitle}"
 										   Foreground="White"
 										   FontWeight="Medium"
 										   Padding="5,2,5,0" />
 									<Separator Margin="0,7,0,0" />
 									<Label Foreground="White"
-										   Content="Mouse Wheel on image - Next/Previous.&#xA;Right Click + Mouse Wheel on image - Zoom &amp; Pan.&#xA;Move Mouse while zoomed in - Pan Up &amp; Down." />
+										   Content="{x:Static loc:Loc.PVToolTip}" />
 								</StackPanel>
 							</Grid>
 						</ToolTip.Content>
@@ -143,7 +144,7 @@
 						  VerticalAlignment="Bottom"
 						  HorizontalAlignment="Center"
 						  ResizeDirection="Columns"
-						  ToolTip="Drag to resize." />
+						  ToolTip="{x:Static loc:Loc.PVGridSplitterTT}" />
 			<Image x:Name="BigImage"
 				   Grid.Column="2"
 				   Source="{Binding BigImage}"

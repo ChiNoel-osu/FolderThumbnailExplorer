@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="RefreshDriveBtn" xml:space="preserve">
+    <value>🔄 刷新</value>
+  </data>
+  <data name="RefreshDriveBtnTT" xml:space="preserve">
+    <value>刷新逻辑驱动器列表.
+好像没用的样子.</value>
+  </data>
+  <data name="MainToolTipTitle" xml:space="preserve">
+    <value>ℹ 提示</value>
+  </data>
+  <data name="MainToolTip" xml:space="preserve">
+    <value>左键单击普通文件夹 - 进入此文件夹.
+左键单击有封面的文件夹 - 打开图片浏览器.
+右键单击任何文件夹 - 在文件资源管理器中打开.
+双击任何文件夹的名字 - 进入此文件夹.</value>
+  </data>
+  <data name="AddNewFavTitle" xml:space="preserve">
+    <value>添加新收藏.</value>
+  </data>
+  <data name="ANFPath" xml:space="preserve">
+    <value> 路径</value>
+  </data>
+  <data name="ANFName" xml:space="preserve">
+    <value> 名称</value>
+  </data>
+  <data name="ANFSave" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="GoUpBtnTT" xml:space="preserve">
+    <value>上一级目录
+你也可以使用&lt;退格键&gt;来返回上一级.</value>
+  </data>
+  <data name="AddNewFavBtnTT" xml:space="preserve">
+    <value>将当前目录添加到收藏夹.</value>
+  </data>
+  <data name="ScaleSliderTT" xml:space="preserve">
+    <value>调整缩略图大小.</value>
+  </data>
+  <data name="RefreshViewTT" xml:space="preserve">
+    <value>刷新视图.</value>
+  </data>
+  <data name="PhotoViewerTitleBarTT" xml:space="preserve">
+    <value>拖拽此处可移动窗口.</value>
+  </data>
+  <data name="PVCloseTT" xml:space="preserve">
+    <value>.关闭窗口</value>
+  </data>
+  <data name="PVMaxTT" xml:space="preserve">
+    <value>.最大化或还原窗口</value>
+  </data>
+  <data name="PVMinTT" xml:space="preserve">
+    <value>.最小化窗口</value>
+  </data>
+  <data name="PVToolTip" xml:space="preserve">
+    <value>在图像上鼠标滚轮 - 浏览图片.
+在图像上按住右键时滚轮 - 缩放&amp;平移.
+图像被放大时移动鼠标 - 上下平移.
+Esc - 关闭图片浏览器.</value>
+  </data>
+  <data name="PVGridSplitterTT" xml:space="preserve">
+    <value>拖拽此处可改变宽度.</value>
+  </data>
+</root>
