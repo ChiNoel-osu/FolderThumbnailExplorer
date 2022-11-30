@@ -2,8 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FolderThumbnailExplorer.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="TestSetting" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">DefaultTestString123123123 I suck at coding.</Value>
+    <Setting Name="Locale" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">zh-CN</Value>
     </Setting>
   </Settings>
 </SettingsFile>

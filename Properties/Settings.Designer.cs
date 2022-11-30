@@ -25,10 +25,10 @@ namespace FolderThumbnailExplorer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DefaultTestString123123123 I suck at coding.")]
-        public string TestSetting {
+        [global::System.Configuration.DefaultSettingValueAttribute("zh-CN")]
+        public string Locale {
             get {
-                return ((string)(this["TestSetting"]));
+                return ((string)(this["Locale"]));
             }
         }
     }

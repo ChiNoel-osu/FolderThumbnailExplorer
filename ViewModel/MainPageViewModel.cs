@@ -62,7 +62,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				if (dirShit.ContentExistsInPath(_PATHtoShow))
 				{
 					string[] dirs = dirShit.DirInPath(_PATHtoShow);
-					if (dirs != null)
+					if (dirs is not null)
 					{
 						CustomContentItem lastAdded = null;  //Mark the last added item.
 						List<string> unauthorizedFolders = new List<string>();
@@ -78,58 +78,53 @@ namespace FolderThumbnailExplorer.ViewModel
 								break;
 							}
 							FileAttributes dirAtt = new DirectoryInfo(dir).Attributes;
-							if (!(dirAtt.HasFlag(FileAttributes.System) || dirAtt.HasFlag(FileAttributes.Hidden)))  //Actually hidden folders can be read now, it's handled.
+							if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
 							{
 								string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
 								string firstFilePath;
-								try
-								{
-									//Get first image file
-									firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First();
-								}
-								catch (InvalidOperationException)
-								{   //No such image file, set default
-									firstFilePath = Directory.GetCurrentDirectory() + "\\folder.png";
-								}
+								try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
+								{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
+								catch (InvalidOperationException)   //No such image file, set default
+								{ firstFilePath = "Bruh"; }
 								catch (UnauthorizedAccessException)
 								{   //Some top secret folder encounted
 									unauthorizedFolders.Add(dir);
 									continue;   //Skip folder and continue with the next dir.
 								}
 								BitmapImage bitmap = new BitmapImage();
-								using (FileStream stream = File.OpenRead(firstFilePath))
-								{   //Use stream sourec instead of regular uri source to improve responsiveness.
+								if (firstFilePath == "Bruh")
+								{   //Default thumbnail.
 									bitmap.BeginInit();
-									//Use BitmapCacheOption.OnLoad to even make it display.
-									bitmap.CacheOption = BitmapCacheOption.OnLoad;
-									bitmap.StreamSource = stream;
-									bitmap.DecodePixelWidth = SliderValue + 128;   //Make it sharper
-									try
-									{
-										bitmap.EndInit();
-									}
-									catch (NotSupportedException)   //Bad image file, use default.
-									{
-										bitmap = new BitmapImage();
-										using (FileStream def = File.OpenRead(Directory.GetCurrentDirectory() + "\\folder.png"))
+									bitmap.DecodePixelWidth = SliderValue + 128;
+									bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
+									bitmap.EndInit();
+									bitmap.Freeze();
+								}
+								else
+									using (FileStream stream = File.OpenRead(firstFilePath))
+									{   //Use stream sourec instead of regular uri source to improve responsiveness.
+										bitmap.BeginInit();
+										//Use BitmapCacheOption.OnLoad to even make it display.
+										bitmap.CacheOption = BitmapCacheOption.OnLoad;
+										bitmap.StreamSource = stream;
+										bitmap.DecodePixelWidth = SliderValue + 128;   //Make it sharper
+										try { bitmap.EndInit(); }
+										catch (NotSupportedException)   //Bad image file, use default.
 										{
+											bitmap = new BitmapImage();
 											bitmap.BeginInit();
-											bitmap.CacheOption = BitmapCacheOption.OnLoad;
-											bitmap.StreamSource = def;
 											bitmap.DecodePixelWidth = SliderValue + 128;
+											bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
 											bitmap.EndInit();
 										}
+										finally //This is VITAL for it to be passed between threads.
+										{ bitmap.Freeze(); }
 									}
-									finally
-									{
-										//This is VITAL for it to be passed between threads.
-										bitmap.Freeze();
-									}
-								}
 								CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = dirShit.GetFileFolderName(dir) };
 								lastAdded = newItem;
 								//Items should be created in UI thread, and Dispatcher.Invoke does it.
-								Application.Current.Dispatcher.Invoke(() => Content.Add(lastAdded));    //This code can cause exception as Application.Current will be null when the app is closed. But user have to close it anyway so yeah ill just leave it there.
+								Application.Current.Dispatcher.Invoke(() => Content.Add(lastAdded));
+								//The above line can cause exception as Application.Current will be null when the app is closed. But user have to close it anyway so yeah ill just leave it there.
 							}
 						}
 						//Done adding stuff, notify user about unauthorized folder if any.
@@ -154,22 +149,23 @@ namespace FolderThumbnailExplorer.ViewModel
 			Mouse.RemoveMouseUpHandler(img, ThumbnailMouseUpHandler);
 			Mouse.AddMouseUpHandler(img, ThumbnailMouseUpHandler);
 		}
+		[RelayCommand]
+		public void LabelDoubleClicked(Label label)
+		{   //Double click advance folder
+			string imageFolder = label.Content.ToString();
+			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}\\{1}", PATHtoShow, imageFolder);
+		}
+
 		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e)
 		{
+			string imageFolder = ((Image)sender).ToolTip.ToString();
 			if (e.ChangedButton == MouseButton.Left)
 			{
-				string imagePath = ((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name;
-				string imageFolder = ((Image)sender).ToolTip.ToString();
-				if (imagePath.EndsWith("folder.png"))
-				{   //No image found (default folder.png), advance path.
-					if (PATHtoShow.EndsWith('\\')) //Check drive root
-						PATHtoShow = string.Format("{0}{1}", PATHtoShow, imageFolder);
-					else
-						PATHtoShow = string.Format("{0}\\{1}", PATHtoShow, imageFolder);
-				}
+				if (((Image)sender).Source.ToString().EndsWith("folder.png"))   //No image found (default folder.png), advance path.
+					PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}\\{1}", PATHtoShow, imageFolder);
 				else
 				{   //Image found, start Photo Viewer.
-					if (imagePath.EndsWith("folder.png")) return;    //No image in folder, return.
+					string imagePath = ((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name;
 					imagePath = imagePath.Remove(imagePath.LastIndexOf('\\'));
 					PhotoViewer photoViewer = new PhotoViewer(imagePath);
 					photoViewer.Left = 0; photoViewer.Top = 0;  //Spawns window at top left corner.
@@ -177,29 +173,14 @@ namespace FolderThumbnailExplorer.ViewModel
 					photoViewer.Show();
 				}
 			}
-			else if (e.ChangedButton == MouseButton.Right)
-			{   //Right click to Start explorer.exe
-				string imageFolder = ((Image)sender).ToolTip.ToString();
-				string path;
-				if (PATHtoShow.EndsWith('\\'))
-					path = PATHtoShow + imageFolder;
-				else
-					path = PATHtoShow + '\\' + imageFolder;
-				Process.Start("explorer.exe", path);
-			}
-		}
-		[RelayCommand]
-		public void LabelDoubleClicked(Label label)
-		{   //Double click advance folder
-			string imageFolder = label.Content.ToString();
-			if (PATHtoShow.EndsWith('\\'))  //Check drive root
-				PATHtoShow = string.Format("{0}{1}", PATHtoShow, imageFolder);
-			else
-				PATHtoShow = string.Format("{0}\\{1}", PATHtoShow, imageFolder);
+			else if (e.ChangedButton == MouseButton.Right)  //Right click to Start explorer.exe
+				Process.Start("explorer.exe", PATHtoShow.EndsWith('\\') ? (PATHtoShow + imageFolder) : (PATHtoShow + '\\' + imageFolder));
 		}
 
 		#region AddNewFavorite
 		private Button addBtn;
+		[ObservableProperty]
+		int _CBBoxSelectedIndex = -1;
 		[RelayCommand]
 		public void AddNewFav(Button button)
 		{
@@ -241,7 +222,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		public ObservableCollection<ComboBoxItem> ComboBoxItems
 		{
 			get
-			{   //Read Favorite file
+			{
 				Task.Run(() =>
 				{
 					string favPath = Directory.GetCurrentDirectory() + "\\Favorites.txt";
@@ -276,11 +257,7 @@ namespace FolderThumbnailExplorer.ViewModel
 						{
 							FavItem.Add(tempName, str[(str.LastIndexOf('|') + 1)..]);
 							ComboBoxItem comboBoxItem = null;
-							Application.Current.Dispatcher.Invoke(() =>
-							{
-								comboBoxItem = new ComboBoxItem
-								{ Content = tempName, ToolTip = str[(str.LastIndexOf('|') + 1)..] };
-							});
+							Application.Current.Dispatcher.Invoke(() => comboBoxItem = new ComboBoxItem { Content = tempName, ToolTip = str[(str.LastIndexOf('|') + 1)..] });
 							_ComboBoxItems.Add(comboBoxItem);
 						}
 						isOddLine = !isOddLine;

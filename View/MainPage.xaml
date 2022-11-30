@@ -137,6 +137,7 @@
 					  Foreground="White"
 					  Margin="0,1,1,0"
 					  Padding="3,2,0,3"
+					  SelectedIndex="{Binding MainPageViewModel.CBBoxSelectedIndex}"
 					  ItemsSource="{Binding MainPageViewModel.ComboBoxItems}"
 					  SelectedItem="{Binding MainPageViewModel.CBBoxSelected, Mode=OneWayToSource}">
 				<ComboBox.ItemContainerStyle>

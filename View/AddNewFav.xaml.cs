@@ -13,5 +13,10 @@ namespace FolderThumbnailExplorer.View
 			InitializeComponent();
 			DataContext = new AddNewFavoriteViewModel(defaultPath);
 		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			NameBox.Focus();
+		}
 	}
 }
