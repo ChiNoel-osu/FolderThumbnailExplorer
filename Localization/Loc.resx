@@ -179,4 +179,7 @@ Esc - Close Photo Viewer.</value>
   <data name="PVGridSplitterTT" xml:space="preserve">
     <value>Drag to resize.</value>
   </data>
+  <data name="HasSubfolderTT" xml:space="preserve">
+    <value>This folder has subfolder(s).</value>
+  </data>
 </root>

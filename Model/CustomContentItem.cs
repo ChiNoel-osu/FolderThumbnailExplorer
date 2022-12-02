@@ -6,5 +6,6 @@ namespace FolderThumbnailExplorer.Model
 	{
 		public BitmapImage ThumbNail { get; set; }
 		public string Header { get; set; }
+		public bool HasSubfolder { get; set; } = false;
 	}
 }

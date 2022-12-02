@@ -179,4 +179,7 @@ Esc - 关闭图片浏览器.</value>
   <data name="PVGridSplitterTT" xml:space="preserve">
     <value>拖拽此处可改变宽度.</value>
   </data>
+  <data name="HasSubfolderTT" xml:space="preserve">
+    <value>此文件夹有子文件夹.</value>
+  </data>
 </root>

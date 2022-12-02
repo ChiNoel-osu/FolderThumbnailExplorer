@@ -21,6 +21,7 @@
 	</d:UserControl.Resources>
 	<UserControl.Resources>
 		<converter:LabelSizeConverter x:Key="LSConverter" />
+		<converter:Bool2VisivilityConverter x:Key="B2VConverter" />
 	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -91,7 +92,7 @@
 					 FontSize="16"
 					 Style="{DynamicResource UniTextBoxStyle}"
 					 Margin="0,1,0,0"
-					 Padding="5,-2.5,0,0"/>
+					 Padding="5,-2.5,0,0" />
 			<Button Grid.Column="2"
 					Template="{DynamicResource ButtonTemplate1}"
 					Background="{x:Null}"
@@ -137,9 +138,10 @@
 					  Foreground="White"
 					  Margin="0,1,1,0"
 					  Padding="3,2,0,3"
-					  SelectedIndex="{Binding MainPageViewModel.CBBoxSelectedIndex}"
 					  ItemsSource="{Binding MainPageViewModel.ComboBoxItems}"
-					  SelectedItem="{Binding MainPageViewModel.CBBoxSelected, Mode=OneWayToSource}">
+					  SelectedItem="{Binding MainPageViewModel.CBBoxSelected, Mode=OneWayToSource}"
+					  Height="21"
+					  VerticalAlignment="Top">
 				<ComboBox.ItemContainerStyle>
 					<Style TargetType="ComboBoxItem">
 						<Setter Property="Background"
@@ -223,20 +225,36 @@
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<StackPanel>
-						<Image MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"
-							   SnapsToDevicePixels="True"
-							   Source="{Binding ThumbNail}"
-							   ToolTip="{Binding Header}"
-							   Cursor="Hand">
-							<Image.InputBindings>
-								<MouseBinding MouseAction="LeftClick"
-											  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.ThumbnailClickedCommand}"
-											  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}}" />
-								<MouseBinding MouseAction="RightClick"
-											  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.ThumbnailClickedCommand}"
-											  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}}" />
-							</Image.InputBindings>
-						</Image>
+						<Grid>
+							<Image MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"
+								   SnapsToDevicePixels="True"
+								   Source="{Binding ThumbNail}"
+								   ToolTip="{Binding Header}"
+								   Cursor="Hand">
+								<Image.InputBindings>
+									<MouseBinding MouseAction="LeftClick"
+												  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.ThumbnailClickedCommand}"
+												  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}}" />
+									<MouseBinding MouseAction="RightClick"
+												  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.ThumbnailClickedCommand}"
+												  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}}" />
+								</Image.InputBindings>
+							</Image>
+							<Image Source="pack://application:,,,/folder.png"
+								   VerticalAlignment="Bottom"
+								   HorizontalAlignment="Right"
+								   Width="20"
+								   Visibility="{Binding HasSubfolder, Mode=OneWay, Converter={StaticResource B2VConverter}}"
+								   ToolTip="{x:Static loc:Loc.HasSubfolderTT}"
+								   Tag="{Binding Header}"
+								   Cursor="ArrowCD">
+								<Image.InputBindings>
+									<MouseBinding MouseAction="LeftClick"
+												  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}, Path=DataContext.MainPageViewModel.SubfolderIconClickedCommand}"
+												  CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Image}, Mode=FindAncestor,AncestorLevel=1}, Path=Tag}" />
+								</Image.InputBindings>
+							</Image>
+						</Grid>
 						<Label Content="{Binding Header}"
 							   Foreground="White"
 							   MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"

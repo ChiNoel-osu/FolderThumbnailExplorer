@@ -116,6 +116,15 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   查找类似 This folder has subfolder(s). 的本地化字符串。
+        /// </summary>
+        public static string HasSubfolderTT {
+            get {
+                return ResourceManager.GetString("HasSubfolderTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Left Click on normal folder - Advance folder.
         ///Left Click on thumbnailed folder - Open Photo Viewer.
         ///Right Click on any folder - Open in Explorer.

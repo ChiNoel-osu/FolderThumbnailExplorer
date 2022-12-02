@@ -101,12 +101,8 @@ namespace FolderThumbnailExplorer.ViewModel
 				//Left value for name (sorting target), right value for path (displaying).
 				//Natural sorting.
 				SortedDictionary<string, string> map = new SortedDictionary<string, string>(new NaturalStringComparer());
-				foreach (string filePath in imgs)
-				{   //Use of range operator
-					string fileNameWOExt = filePath[(filePath.LastIndexOf('\\') + 1)..];        //001.jpg
-					fileNameWOExt = fileNameWOExt[..fileNameWOExt.LastIndexOf('.')];            //001
-					map.Add(fileNameWOExt, filePath);   //The dictionary will sort itself when value's being added.
-				}
+				foreach (string filePath in imgs)   //The dictionary will sort itself when value's being added.
+					map.Add(filePath[(filePath.LastIndexOf('\\') + 1)..], filePath);	//Use filename to compare.
 				foreach (KeyValuePair<string, string> img in map)
 				{
 					if (closing) break; //Break out if the window is closing.

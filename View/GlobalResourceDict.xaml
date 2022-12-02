@@ -483,7 +483,9 @@
 				  UseLayoutRounding="False"
 				  VerticalAlignment="Center">
 				<Path.Data>
-					<RectangleGeometry RadiusX="10" RadiusY="2" Rect="10,10 10 10"/>
+					<RectangleGeometry RadiusX="10"
+									   RadiusY="2"
+									   Rect="10,10 10 10" />
 				</Path.Data>
 			</Path>
 		</Grid>
@@ -1415,4 +1417,5 @@
 	<!--#endregion-->
 	<converter:LabelSizeConverter x:Key="LSConverter" />
 	<converter:SliderLengthConverter x:Key="SLConverter" />
+	<converter:Bool2VisivilityConverter x:Key="B2VConverter" />
 </ResourceDictionary>

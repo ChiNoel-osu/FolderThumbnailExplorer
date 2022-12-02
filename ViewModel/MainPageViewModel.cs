@@ -56,7 +56,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			CancellationToken ct = cts.Token;
 			//Long ass task, offload to another thread.
 			//This took me forever.
-			addItemTask = new Task(() =>
+			addItemTask = new Task(async () =>
 			{
 				DirShit dirShit = new DirShit();
 				if (dirShit.ContentExistsInPath(_PATHtoShow))
@@ -68,6 +68,7 @@ namespace FolderThumbnailExplorer.ViewModel
 						List<string> unauthorizedFolders = new List<string>();
 						foreach (string dir in dirs)
 						{
+							bool showSubfolderIcon = false;
 							try
 							{
 								ct.ThrowIfCancellationRequested();  //When task is canceled
@@ -81,6 +82,8 @@ namespace FolderThumbnailExplorer.ViewModel
 							if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
 							{
 								string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
+								Task<string[]> task = dirShit.DirInPathTask(dir);
+								string[] subfolders;
 								string firstFilePath;
 								try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
 								{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
@@ -101,6 +104,7 @@ namespace FolderThumbnailExplorer.ViewModel
 									bitmap.Freeze();
 								}
 								else
+								{   //Picture in folder, load thumbnail.
 									using (FileStream stream = File.OpenRead(firstFilePath))
 									{   //Use stream sourec instead of regular uri source to improve responsiveness.
 										bitmap.BeginInit();
@@ -120,7 +124,11 @@ namespace FolderThumbnailExplorer.ViewModel
 										finally //This is VITAL for it to be passed between threads.
 										{ bitmap.Freeze(); }
 									}
+								}
 								CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = dirShit.GetFileFolderName(dir) };
+								subfolders = task.Result;
+								if (subfolders.Length > 0 && bitmap.UriSource is null)
+									newItem.HasSubfolder = true;
 								lastAdded = newItem;
 								//Items should be created in UI thread, and Dispatcher.Invoke does it.
 								Application.Current.Dispatcher.Invoke(() => Content.Add(lastAdded));
@@ -155,6 +163,11 @@ namespace FolderThumbnailExplorer.ViewModel
 			string imageFolder = label.Content.ToString();
 			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}\\{1}", PATHtoShow, imageFolder);
 		}
+		[RelayCommand]
+		public void SubfolderIconClicked(string folderName)
+		{
+			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, folderName) : string.Format("{0}\\{1}", PATHtoShow, folderName);
+		}
 
 		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e)
 		{
@@ -179,8 +192,6 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		#region AddNewFavorite
 		private Button addBtn;
-		[ObservableProperty]
-		int _CBBoxSelectedIndex = -1;
 		[RelayCommand]
 		public void AddNewFav(Button button)
 		{
