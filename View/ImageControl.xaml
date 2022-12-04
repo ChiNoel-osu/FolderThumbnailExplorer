@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:converter="clr-namespace:FolderThumbnailExplorer.Converter"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
@@ -21,6 +22,15 @@
 	<Grid>
 		<StackPanel HorizontalAlignment="Center"
 					VerticalAlignment="Center">
+			<Button x:Name="ShowInExplorer"
+					Width="20"
+					Template="{DynamicResource ButtonTemplate1}"
+					Background="{x:Null}"
+					Foreground="White"
+					Content="📁"
+					Command="{Binding OpenInExplorerCommand}"
+					CommandParameter="{Binding ElementName=ShowInExplorer, Path=ToolTip}"
+					Padding="1.6,1,1,1" />
 			<Button x:Name="Previous"
 					Width="20"
 					Template="{DynamicResource ButtonTemplate1}"
@@ -56,16 +66,71 @@
 					Content="▼"
 					Click="NextClick"
 					Margin="0,5" />
-			<Button x:Name="ShowInExplorer"
-					Width="20"
-					Template="{DynamicResource ButtonTemplate1}"
-					Background="{x:Null}"
-					Foreground="White"
-					Content="📁"
-					Command="{Binding OpenInExplorerCommand}"
-					CommandParameter="{Binding ElementName=ShowInExplorer, Path=ToolTip}"
-					Padding="1.6,1,1,1" />
+			<Label Content="..."
+				   Padding="0"
+				   Foreground="WhiteSmoke"
+				   FontSize="22"
+				   MouseEnter="Label_MouseEnter"
+				   MouseLeave="Label_MouseLeave"
+				   HorizontalContentAlignment="Center"
+				   VerticalContentAlignment="Center"
+				   Margin="0,-15,0,0"
+				   Panel.ZIndex="-1" />
 		</StackPanel>
-
+		<Popup Name="SettingsPopup"
+			   AllowsTransparency="True"
+			   IsOpen="True"
+			   MouseLeave="SettingsPopup_MouseLeave">
+			<Border BorderBrush="Gray"
+					BorderThickness="2">
+				<StackPanel Height="100"
+							Width="200"
+							Background="#CC000000">
+					<Label Content="{x:Static loc:Loc.PVPopUpSettingsTitle}"
+						   Foreground="AntiqueWhite"
+						   FontWeight="Medium"
+						   Padding="4,2,2,3" />
+					<Separator Margin="-1,0,0,0" />
+					<StackPanel Orientation="Horizontal">
+						<Label Content="{x:Static loc:Loc.PVPopUpSettingsSlideshowInterval}"
+							   Foreground="White"/>
+						<TextBox Style="{DynamicResource UniTextBoxStyle}"
+								 VerticalContentAlignment="Center"
+								 HorizontalContentAlignment="Center"
+								 Text="1"
+								 Height="20" />
+						<Label Content="s."
+							   Foreground="White" />
+						<Button Template="{DynamicResource ButtonTemplate1}"
+								BorderBrush="Transparent"
+								Background="Transparent"
+								Focusable="False"
+								Content="⏯"
+								FontSize="14"
+								Padding="0"
+								Width="25"
+								Height="25"
+								Command="{Binding ToggleSlideShowCommand}">
+							<Button.Style>
+								<Style TargetType="{x:Type Button}">
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding Path=DataContext.SlideShow, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+													 Value="True">
+											<Setter Property="Button.Foreground"
+													Value="Lime" />
+										</DataTrigger>
+										<DataTrigger Binding="{Binding Path=DataContext.SlideShow, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+													 Value="False">
+											<Setter Property="Button.Foreground"
+													Value="DarkSlateGray" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Button.Style>
+						</Button>
+					</StackPanel>
+				</StackPanel>
+			</Border>
+		</Popup>
 	</Grid>
 </UserControl>

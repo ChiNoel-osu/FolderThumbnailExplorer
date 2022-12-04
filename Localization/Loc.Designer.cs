@@ -191,6 +191,24 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   查找类似 Slide show interval 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsSlideshowInterval {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsSlideshowInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 ⚙ Settings 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsTitle {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Mouse Wheel on image - Next/Previous.
         ///Right Click + Mouse Wheel on image - Zoom &amp; Pan.
         ///Move Mouse while zoomed in - Pan Up &amp; Down.

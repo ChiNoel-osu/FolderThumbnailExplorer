@@ -38,6 +38,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		ushort _ListSelectedIndex;   //Shared between PhotoViewer & ImageControl, and they need to be in the same DataContext.
 		[ObservableProperty]
 		BitmapImage _BigImage = new BitmapImage();
+		[ObservableProperty]
+		bool _SlideShow = false;
 
 		private ushort _ImageCount;
 		public ushort ImageCount
@@ -74,6 +76,14 @@ namespace FolderThumbnailExplorer.ViewModel
 		public static void OpenInExplorer(string path)
 		{
 			Process.Start("explorer.exe", path);
+		}
+		[RelayCommand]
+		public void ToggleSlideShow()
+		{
+			if(SlideShow = !_SlideShow)
+			{
+			
+			}
 		}
 
 		//Use this as the ListBoxItem binding target

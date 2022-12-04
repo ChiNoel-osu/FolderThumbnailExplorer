@@ -182,4 +182,10 @@ Esc - 关闭图片浏览器.</value>
   <data name="HasSubfolderTT" xml:space="preserve">
     <value>此文件夹有子文件夹.</value>
   </data>
+  <data name="PVPopUpSettingsTitle" xml:space="preserve">
+    <value>⚙ 设置</value>
+  </data>
+  <data name="PVPopUpSettingsSlideshowInterval" xml:space="preserve">
+    <value>幻灯片间隔</value>
+  </data>
 </root>

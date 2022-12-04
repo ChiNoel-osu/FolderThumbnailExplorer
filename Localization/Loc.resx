@@ -182,4 +182,10 @@ Esc - Close Photo Viewer.</value>
   <data name="HasSubfolderTT" xml:space="preserve">
     <value>This folder has subfolder(s).</value>
   </data>
+  <data name="PVPopUpSettingsTitle" xml:space="preserve">
+    <value>⚙ Settings</value>
+  </data>
+  <data name="PVPopUpSettingsSlideshowInterval" xml:space="preserve">
+    <value>Slide show interval</value>
+  </data>
 </root>

@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 namespace FolderThumbnailExplorer.Model
-{
+{	//God damnit what have I done.
 	public class DirShit
 	{
 		public string[] GetLDrives() => Directory.GetLogicalDrives();

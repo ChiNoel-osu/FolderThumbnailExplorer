@@ -28,5 +28,20 @@ namespace FolderThumbnailExplorer.View
 		{
 			ImgPosition.Value++;
 		}
+		#region Settings Popup events
+		private void Label_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			SettingsPopup.IsOpen = true;
+		}
+		private void Label_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			if (!SettingsPopup.IsMouseOver)
+				SettingsPopup.IsOpen = false;
+		}
+		private void SettingsPopup_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			SettingsPopup.IsOpen = false;
+		}
+		#endregion
 	}
 }
