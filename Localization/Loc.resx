@@ -188,4 +188,13 @@ Esc - Close Photo Viewer.</value>
   <data name="PVPopUpSettingsSlideshowInterval" xml:space="preserve">
     <value>Slide show interval</value>
   </data>
+  <data name="PVPopUpSettingsSlideshowValueError" xml:space="preserve">
+    <value>Please give me a short number between -32768~32767.
+Also, don't give me zeros.</value>
+  </data>
+  <data name="PVPopUpSettingsSlideshowValue" xml:space="preserve">
+    <value>Milliseconds to wait before switching images.
+You can also use mouse wheel on this.
+Negative value = Reverse order.</value>
+  </data>
 </root>

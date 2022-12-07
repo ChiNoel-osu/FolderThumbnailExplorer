@@ -200,6 +200,27 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   查找类似 Milliseconds to wait before switching images.
+        ///You can also use mouse wheel on this.
+        ///Negative value = Reverse order. 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsSlideshowValue {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsSlideshowValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please give me a short number between -32768~32767.
+        ///Also, don&apos;t give me zeros. 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsSlideshowValueError {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsSlideshowValueError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ⚙ Settings 的本地化字符串。
         /// </summary>
         public static string PVPopUpSettingsTitle {

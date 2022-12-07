@@ -1418,4 +1418,5 @@
 	<converter:LabelSizeConverter x:Key="LSConverter" />
 	<converter:SliderLengthConverter x:Key="SLConverter" />
 	<converter:Bool2VisivilityConverter x:Key="B2VConverter" />
+	<converter:FlipBooleanConverter x:Key="FBC" />
 </ResourceDictionary>

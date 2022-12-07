@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace FolderThumbnailExplorer.View
@@ -40,8 +41,23 @@ namespace FolderThumbnailExplorer.View
 		}
 		private void SettingsPopup_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			SettingsPopup.IsOpen = false;
+			if (!SettingsPopup.IsKeyboardFocusWithin)
+				SettingsPopup.IsOpen = false;
 		}
 		#endregion
+
+		private void SlideInterval_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+		{
+			if (short.TryParse((string?)((TextBox)sender).Text, out short parsed))
+			{
+				try
+				{
+					checked
+					{ parsed = (short)(e.Delta > 0 ? parsed + 400 : parsed - 400); }
+					((TextBox)sender).Text = parsed.ToString();
+				}
+				catch (OverflowException) { }
+			}
+		}
 	}
 }

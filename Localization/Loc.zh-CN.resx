@@ -188,4 +188,13 @@ Esc - 关闭图片浏览器.</value>
   <data name="PVPopUpSettingsSlideshowInterval" xml:space="preserve">
     <value>幻灯片间隔</value>
   </data>
+  <data name="PVPopUpSettingsSlideshowValueError" xml:space="preserve">
+    <value>请输入一个位于-32768到32767之间的整数.
+不要只输入零哦.</value>
+  </data>
+  <data name="PVPopUpSettingsSlideshowValue" xml:space="preserve">
+    <value>加载另一张图片前要等待的秒数.
+可以用鼠标滚轮调整.
+负值则为倒序播放.</value>
+  </data>
 </root>

@@ -4,10 +4,12 @@ using FolderThumbnailExplorer.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -29,7 +31,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			return string.Compare(leftPadded, rightPadded);
 		}
 	}
-	public partial class PhotoViewerViewModel : ObservableObject
+	public partial class PhotoViewerViewModel : ObservableObject, IDataErrorInfo
 	{
 		private readonly string path;
 		private bool closing = false;
@@ -39,7 +41,11 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		BitmapImage _BigImage = new BitmapImage();
 		[ObservableProperty]
-		bool _SlideShow = false;
+		/*volatile */bool _SlideShow = false;
+		[ObservableProperty]
+		string _SlideInterval = "1000";
+
+		short realSlideInterval = 1000;
 
 		private ushort _ImageCount;
 		public ushort ImageCount
@@ -80,11 +86,29 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void ToggleSlideShow()
 		{
-			if(SlideShow = !_SlideShow)
+			SlideShow = !_SlideShow;
+		}
+		
+		#region IDataErrorInfo
+		public string Error => throw new NotImplementedException();
+
+		public string this[string data2Validate]
+		{
+			get
 			{
-			
+				switch (data2Validate)
+				{
+					case nameof(SlideInterval):
+						if (short.TryParse(SlideInterval, out realSlideInterval) && realSlideInterval != 0)
+							return null;    //null for no error.
+						else
+							return "ShortParseFailed[DBG]";
+					default:
+						throw new NotImplementedException();
+				}
 			}
 		}
+		#endregion
 
 		//Use this as the ListBoxItem binding target
 		private ObservableCollection<CustomListItem> _Images = new ObservableCollection<CustomListItem>();
@@ -97,6 +121,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 			private set { _Images = value; }
 		}
+
 		private void AddImgs(string path)
 		{
 			Task.Run(() =>
@@ -112,7 +137,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				//Natural sorting.
 				SortedDictionary<string, string> map = new SortedDictionary<string, string>(new NaturalStringComparer());
 				foreach (string filePath in imgs)   //The dictionary will sort itself when value's being added.
-					map.Add(filePath[(filePath.LastIndexOf('\\') + 1)..], filePath);	//Use filename to compare.
+					map.Add(filePath[(filePath.LastIndexOf('\\') + 1)..], filePath);    //Use filename to compare.
 				foreach (KeyValuePair<string, string> img in map)
 				{
 					if (closing) break; //Break out if the window is closing.
@@ -142,6 +167,21 @@ namespace FolderThumbnailExplorer.ViewModel
 			BindingOperations.EnableCollectionSynchronization(_Images, new object());
 			this.path = folderPath;
 			((Window)view).Closed += PhotoViewerClosed;
+
+			Task.Run(() =>
+			{	//Not the best solution, idk how to pause a task properly.
+				while (true)
+				{
+					if (SlideShow)
+					{
+						Thread.Sleep(Math.Abs(realSlideInterval));
+						if (realSlideInterval < 0 && _ListSelectedIndex > 0)
+							ListSelectedIndex--;
+						else if (realSlideInterval > 0 && (_ListSelectedIndex + 1 < _ImageCount))
+							ListSelectedIndex++;
+					}
+				}
+			});
 		}
 
 		private void PhotoViewerClosed(object? sender, EventArgs e)

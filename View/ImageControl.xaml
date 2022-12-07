@@ -79,12 +79,10 @@
 		</StackPanel>
 		<Popup Name="SettingsPopup"
 			   AllowsTransparency="True"
-			   IsOpen="True"
 			   MouseLeave="SettingsPopup_MouseLeave">
 			<Border BorderBrush="Gray"
 					BorderThickness="2">
-				<StackPanel Height="100"
-							Width="200"
+				<StackPanel MinHeight="100"
 							Background="#CC000000">
 					<Label Content="{x:Static loc:Loc.PVPopUpSettingsTitle}"
 						   Foreground="AntiqueWhite"
@@ -93,18 +91,42 @@
 					<Separator Margin="-1,0,0,0" />
 					<StackPanel Orientation="Horizontal">
 						<Label Content="{x:Static loc:Loc.PVPopUpSettingsSlideshowInterval}"
-							   Foreground="White"/>
-						<TextBox Style="{DynamicResource UniTextBoxStyle}"
+							   Foreground="White" />
+						<TextBox Name="SlideInterval"
+								 Text="{Binding SlideInterval, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
 								 VerticalContentAlignment="Center"
 								 HorizontalContentAlignment="Center"
-								 Text="1"
-								 Height="20" />
-						<Label Content="s."
+								 MouseWheel="SlideInterval_MouseWheel"
+								 ToolTip="{x:Static loc:Loc.PVPopUpSettingsSlideshowValue}"
+								 Height="20"
+								 MinWidth="20">
+							<TextBox.Style>
+								<Style TargetType="{x:Type TextBox}">
+									<Setter Property="Background"
+											Value="Transparent" />
+									<Setter Property="Foreground"
+											Value="WhiteSmoke" />
+									<Setter Property="CaretBrush"
+											Value="Azure" />
+									<Style.Triggers>
+										<Trigger Property="Validation.HasError"
+												 Value="True">
+											<Setter Property="BorderBrush"
+													Value="Red" />
+											<Setter	Property="ToolTip"
+													Value="{x:Static loc:Loc.PVPopUpSettingsSlideshowValueError}" />
+										</Trigger>
+									</Style.Triggers>
+								</Style>
+							</TextBox.Style>
+						</TextBox>
+						<Label Content="ms."
 							   Foreground="White" />
 						<Button Template="{DynamicResource ButtonTemplate1}"
 								BorderBrush="Transparent"
 								Background="Transparent"
 								Focusable="False"
+								IsEnabled="{Binding ElementName=SlideInterval, Converter={StaticResource FBC}, Path=(Validation.HasError)}"
 								Content="⏯"
 								FontSize="14"
 								Padding="0"
