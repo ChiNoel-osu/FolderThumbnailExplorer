@@ -27,8 +27,8 @@ namespace FolderThumbnailExplorer.ViewModel
 
 			var leftPadded = Regex.Replace(left, @"\d+", m => m.Value.PadLeft(max, '0'));
 			var rightPadded = Regex.Replace(right, @"\d+", m => m.Value.PadLeft(max, '0'));
-
-			return string.Compare(leftPadded, rightPadded);
+			//If the string is the same, return 1 meaning that left comes behind of right, similar to explorer.exe.
+			return leftPadded == rightPadded ? 1 : string.Compare(leftPadded, rightPadded);
 		}
 	}
 	public partial class PhotoViewerViewModel : ObservableObject, IDataErrorInfo
@@ -41,7 +41,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		BitmapImage _BigImage = new BitmapImage();
 		[ObservableProperty]
-		/*volatile */bool _SlideShow = false;
+		/*volatile */
+		bool _SlideShow = false;
 		[ObservableProperty]
 		string _SlideInterval = "1000";
 
@@ -88,7 +89,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			SlideShow = !_SlideShow;
 		}
-		
+
 		#region IDataErrorInfo
 		public string Error => throw new NotImplementedException();
 
@@ -169,9 +170,10 @@ namespace FolderThumbnailExplorer.ViewModel
 			((Window)view).Closed += PhotoViewerClosed;
 
 			Task.Run(() =>
-			{	//Not the best solution, idk how to pause a task properly.
+			{   //TODO: Not the best solution, idk how to pause a task properly.
 				while (true)
-				{
+				{   //This shit is CPU heavy
+					if (closing) break;	//Window is closed, release thread (Complete the Task).
 					if (SlideShow)
 					{
 						Thread.Sleep(Math.Abs(realSlideInterval));
@@ -180,6 +182,8 @@ namespace FolderThumbnailExplorer.ViewModel
 						else if (realSlideInterval > 0 && (_ListSelectedIndex + 1 < _ImageCount))
 							ListSelectedIndex++;
 					}
+					else
+						Thread.Sleep(1000); //Relieve the CPU situation before I find a solution.
 				}
 			});
 		}

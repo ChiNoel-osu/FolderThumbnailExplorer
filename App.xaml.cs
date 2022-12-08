@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace FolderThumbnailExplorer
 {
