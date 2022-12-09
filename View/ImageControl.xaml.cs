@@ -59,7 +59,7 @@ namespace FolderThumbnailExplorer.View
 			}
 		}
 		private void AOTBtn_Changed(object sender, RoutedEventArgs e)
-		{        
+		{
 			parentWnd.Topmost = e.RoutedEvent.Name switch
 			{
 				"Checked" => true,

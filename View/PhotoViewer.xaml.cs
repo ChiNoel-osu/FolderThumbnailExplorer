@@ -36,11 +36,12 @@ namespace FolderThumbnailExplorer.View
 				if (e.Delta > 0 && PVVM.ListSelectedIndex > 0)
 				{
 					if (PVVM.DoubleTurn) PVVM.ListSelectedIndex--;
-					PVVM.ListSelectedIndex--;
+					try { checked { PVVM.ListSelectedIndex--; } }
+					catch (System.OverflowException) { }
 				}
 				else if (e.Delta < 0 && PVVM.ListSelectedIndex < PVVM.ImageCount)
 				{
-					if(PVVM.DoubleTurn) PVVM.ListSelectedIndex++;
+					if (PVVM.DoubleTurn) PVVM.ListSelectedIndex++;
 					PVVM.ListSelectedIndex++;
 				}
 				else

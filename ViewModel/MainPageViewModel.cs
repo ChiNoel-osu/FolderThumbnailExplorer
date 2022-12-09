@@ -124,7 +124,7 @@ namespace FolderThumbnailExplorer.ViewModel
 										catch (System.Runtime.InteropServices.COMException)
 										{
 											GC.Collect();
-											continue;	//Stupid cloud storages, skip.
+											continue;   //Stupid cloud storages, skip.
 										}
 										finally //This is VITAL for it to be passed between threads.
 										{ bitmap.Freeze(); }
