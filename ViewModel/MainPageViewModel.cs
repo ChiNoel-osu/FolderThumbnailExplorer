@@ -121,6 +121,11 @@ namespace FolderThumbnailExplorer.ViewModel
 											bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
 											bitmap.EndInit();
 										}
+										catch (System.Runtime.InteropServices.COMException)
+										{
+											GC.Collect();
+											continue;	//Stupid cloud storages, skip.
+										}
 										finally //This is VITAL for it to be passed between threads.
 										{ bitmap.Freeze(); }
 									}

@@ -1,25 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Windows;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace FolderThumbnailExplorer.Converter
 {
-	public class Bool2CollapseVisivilityConverter : IValueConverter
+	public class DoubleDivideBy : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (bool)value ? Visibility.Visible : Visibility.Collapsed;
+			return (double)value / double.Parse((string)parameter);
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (Visibility)value switch
-			{
-				Visibility.Visible => true,
-				Visibility.Collapsed => (object)false,
-				_ => throw new NotImplementedException(),
-			};
+			throw new NotImplementedException();
 		}
 	}
 }

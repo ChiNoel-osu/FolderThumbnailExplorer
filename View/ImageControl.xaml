@@ -5,7 +5,6 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
-			 xmlns:converter="clr-namespace:FolderThumbnailExplorer.Converter"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 			 d:DataContext="{d:DesignInstance Type=viewmodel:PhotoViewerViewModel}"
 			 mc:Ignorable="d"
@@ -89,68 +88,112 @@
 						   FontWeight="Medium"
 						   Padding="4,2,2,3" />
 					<Separator Margin="-1,0,0,0" />
-					<StackPanel Orientation="Horizontal">
-						<Label Content="{x:Static loc:Loc.PVPopUpSettingsSlideshowInterval}"
-							   Foreground="White" />
-						<TextBox Name="SlideInterval"
-								 Text="{Binding SlideInterval, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
-								 VerticalContentAlignment="Center"
-								 HorizontalContentAlignment="Center"
-								 MouseWheel="SlideInterval_MouseWheel"
-								 ToolTip="{x:Static loc:Loc.PVPopUpSettingsSlideshowValue}"
-								 Height="20"
-								 MinWidth="20">
-							<TextBox.Style>
-								<Style TargetType="{x:Type TextBox}">
-									<Setter Property="Background"
-											Value="Transparent" />
-									<Setter Property="Foreground"
-											Value="WhiteSmoke" />
-									<Setter Property="CaretBrush"
-											Value="Azure" />
-									<Style.Triggers>
-										<Trigger Property="Validation.HasError"
-												 Value="True">
-											<Setter Property="BorderBrush"
-													Value="Red" />
-											<Setter	Property="ToolTip"
-													Value="{x:Static loc:Loc.PVPopUpSettingsSlideshowValueError}" />
-										</Trigger>
-									</Style.Triggers>
-								</Style>
-							</TextBox.Style>
-						</TextBox>
-						<Label Content="ms."
-							   Foreground="White" />
-						<Button Template="{DynamicResource ButtonTemplate1}"
-								BorderBrush="Transparent"
-								Background="Transparent"
-								Focusable="False"
-								IsEnabled="{Binding ElementName=SlideInterval, Converter={StaticResource FBC}, Path=(Validation.HasError)}"
-								Content="⏯"
-								FontSize="14"
-								Padding="0"
-								Width="25"
-								Height="25"
-								Command="{Binding ToggleSlideShowCommand}">
-							<Button.Style>
-								<Style TargetType="{x:Type Button}">
-									<Style.Triggers>
-										<DataTrigger Binding="{Binding Path=DataContext.SlideShow, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+					<!--#region Slideshow-->
+					<DockPanel>
+						<StackPanel Orientation="Horizontal">
+							<Label Content="{x:Static loc:Loc.PVPopUpSettingsSlideshowInterval}"
+								   Foreground="White" />
+							<TextBox Name="SlideInterval"
+									 Text="{Binding SlideInterval, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+									 VerticalContentAlignment="Center"
+									 HorizontalContentAlignment="Center"
+									 MouseWheel="SlideInterval_MouseWheel"
+									 Height="20"
+									 MinWidth="20">
+								<TextBox.Style>
+									<Style TargetType="{x:Type TextBox}">
+										<Setter Property="Background"
+												Value="Transparent" />
+										<Setter Property="Foreground"
+												Value="WhiteSmoke" />
+										<Setter Property="CaretBrush"
+												Value="Azure" />
+										<Style.Triggers>
+											<Trigger Property="Validation.HasError"
 													 Value="True">
-											<Setter Property="Button.Foreground"
-													Value="Lime" />
-										</DataTrigger>
-										<DataTrigger Binding="{Binding Path=DataContext.SlideShow, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}"
+												<Setter Property="BorderBrush"
+														Value="Red" />
+												<Setter	Property="ToolTip"
+														Value="{x:Static loc:Loc.PVPopUpSettingsSlideshowValueError}" />
+											</Trigger>
+											<Trigger Property="Validation.HasError"
 													 Value="False">
-											<Setter Property="Button.Foreground"
-													Value="DarkSlateGray" />
-										</DataTrigger>
-									</Style.Triggers>
-								</Style>
-							</Button.Style>
-						</Button>
-					</StackPanel>
+												<Setter Property="ToolTip"
+														Value="{x:Static loc:Loc.PVPopUpSettingsSlideshowValue}" />
+											</Trigger>
+										</Style.Triggers>
+									</Style>
+								</TextBox.Style>
+							</TextBox>
+							<Label Content="ms."
+								   Foreground="White" />
+						</StackPanel>
+						<ToggleButton DockPanel.Dock="Right"
+									  HorizontalAlignment="Right"
+									  Height="16"
+									  Width="32"
+									  Margin="5"
+									  Focusable="False"
+									  IsChecked="{Binding SlideShow}"
+									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
+					</DockPanel>
+					<!--#endregion-->
+					<!--#region Always on top-->
+					<DockPanel>
+						<Label Content="{x:Static loc:Loc.PVPopUpSettingsAOT}"
+							   Foreground="White" />
+						<ToggleButton DockPanel.Dock="Right"
+									  HorizontalAlignment="Right"
+									  Height="16"
+									  Width="32"
+									  Margin="5"
+									  Focusable="False"
+									  Checked="AOTBtn_Changed"
+									  Unchecked="AOTBtn_Changed"
+									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
+					</DockPanel>
+					<!--#endregion-->
+					<!--#region Twin Page-->
+					<DockPanel>
+						<Label Content="{x:Static loc:Loc.PVPopUpSettingsTwin}"
+							   Foreground="White" />
+						<ToggleButton DockPanel.Dock="Right"
+									  HorizontalAlignment="Right"
+									  Height="16"
+									  Width="32"
+									  Margin="5"
+									  Focusable="False"
+									  IsChecked="{Binding UseTwinPage}"
+									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
+					</DockPanel>
+					<DockPanel Margin="8,-8,0,0">
+						<Label Content="{x:Static loc:Loc.PVPopUpSettingsTwinRightToLeft}"
+							   ToolTip="{x:Static loc:Loc.PVPopUpSettingsTwinRightToLeftTT}"
+							   Foreground="White" />
+						<ToggleButton DockPanel.Dock="Right"
+									  HorizontalAlignment="Right"
+									  Height="16"
+									  Width="32"
+									  Margin="5"
+									  Focusable="False"
+									  Command="{Binding ChangeFlowDirectionCommand}"
+									  CommandParameter="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=IsChecked}"
+									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
+					</DockPanel>
+					<DockPanel Margin="8,-8,0,0">
+						<Label Content="{x:Static loc:Loc.PVPopUpSettingsTwinDoubleTurn}"
+							   ToolTip="{x:Static loc:Loc.PVPopUpSettingsTwinDoubleTurnTT}"
+							   Foreground="White" />
+						<ToggleButton DockPanel.Dock="Right"
+									  HorizontalAlignment="Right"
+									  Height="16"
+									  Width="32"
+									  Margin="5"
+									  Focusable="False"
+									  IsChecked="{Binding DoubleTurn}"
+									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
+					</DockPanel>
+					<!--#endregion-->
 				</StackPanel>
 			</Border>
 		</Popup>

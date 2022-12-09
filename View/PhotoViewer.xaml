@@ -15,6 +15,13 @@
 		WindowStyle="None"
 		WindowState="Normal"
 		KeyDown="Window_KeyDown">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="21*" />
@@ -77,16 +84,16 @@
 				<ColumnDefinition Width="25" />
 				<ColumnDefinition Width="6*" />
 			</Grid.ColumnDefinitions>
-			<ListBox x:Name="ImageBox"
-					 Grid.Column="0"
+			<ListBox Grid.Column="0"
 					 Background="{x:Null}"
 					 Foreground="White"
 					 BorderThickness="0"
 					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+					 SelectionChanged="ImageBox_SelectionChanged"
 					 ItemsSource="{Binding Images}"
 					 SelectedItem="{Binding SelectedImg, Mode=OneWayToSource}"
-					 SelectedIndex="{Binding ListSelectedIndex, Mode=TwoWay}"
+					 SelectedIndex="{Binding ListSelectedIndex}"
 					 d:ItemsSource="{d:SampleData ItemCount=5}">
 				<ListBox.ItemTemplate>
 					<DataTemplate>
@@ -145,15 +152,28 @@
 						  HorizontalAlignment="Center"
 						  ResizeDirection="Columns"
 						  ToolTip="{x:Static loc:Loc.PVGridSplitterTT}" />
-			<Image x:Name="BigImage"
-				   Grid.Column="2"
-				   Source="{Binding BigImage}"
-				   MouseWheel="BigImage_MouseWheel"
-				   MouseMove="BigImage_MouseMove">
-				<Image.RenderTransform>
-					<ScaleTransform x:Name="BigImageScaleFactor" />
-				</Image.RenderTransform>
-			</Image>
+			<Grid Grid.Column="2"
+				  FlowDirection="{Binding FlowDirection}">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<!--rn only the first image can be zoomed and panned.-->
+				<Image Grid.Column="0"
+					   Source="{Binding BigImage}"
+					   MouseWheel="BigImage_MouseWheel"
+					   MouseMove="BigImage_MouseMove"
+					   Panel.ZIndex="1">
+					<Image.RenderTransform>
+						<ScaleTransform x:Name="BigImageScaleFactor" />
+					</Image.RenderTransform>
+				</Image>
+				<Image Grid.Column="1"
+					   MouseWheel="BigImage_MouseWheel"
+					   Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Converter={StaticResource DivideBy}, ConverterParameter=2}"
+					   Visibility="{Binding UseTwinPage, Mode=OneWay, Converter={StaticResource B2CVConverter}}"
+					   Source="{Binding BigImage2}" />
+			</Grid>
 		</Grid>
 	</Grid>
 </Window>

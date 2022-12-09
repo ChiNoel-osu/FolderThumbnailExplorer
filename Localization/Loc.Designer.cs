@@ -191,6 +191,15 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   查找类似 Always On Top 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsAOT {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsAOT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Slide show interval 的本地化字符串。
         /// </summary>
         public static string PVPopUpSettingsSlideshowInterval {
@@ -226,6 +235,52 @@ namespace FolderThumbnailExplorer.Localization {
         public static string PVPopUpSettingsTitle {
             get {
                 return ResourceManager.GetString("PVPopUpSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Twin-Page viewing 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsTwin {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsTwin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Turn two pages at a time 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsTwinDoubleTurn {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsTwinDoubleTurn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Normally you would use it under Twin-Page viewing mode. 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsTwinDoubleTurnTT {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsTwinDoubleTurnTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Right to Left 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsTwinRightToLeft {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsTwinRightToLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 By default, the current image is displayed on the left and the next image is displayed on the right.
+        ///This flips that. 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsTwinRightToLeftTT {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsTwinRightToLeftTT", resourceCulture);
             }
         }
         

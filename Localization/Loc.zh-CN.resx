@@ -197,4 +197,23 @@ Esc - 关闭图片浏览器.</value>
 可以用鼠标滚轮调整.
 负值则为倒序播放.</value>
   </data>
+  <data name="PVPopUpSettingsAOT" xml:space="preserve">
+    <value>保持窗口最前</value>
+  </data>
+  <data name="PVPopUpSettingsTwin" xml:space="preserve">
+    <value>双页浏览</value>
+  </data>
+  <data name="PVPopUpSettingsTwinRightToLeft" xml:space="preserve">
+    <value>从右往左</value>
+  </data>
+  <data name="PVPopUpSettingsTwinRightToLeftTT" xml:space="preserve">
+    <value>默认情况下, 当前图像会靠左显示而下一张图像靠右显示.
+此选项则相反.</value>
+  </data>
+  <data name="PVPopUpSettingsTwinDoubleTurn" xml:space="preserve">
+    <value>一次翻两页</value>
+  </data>
+  <data name="PVPopUpSettingsTwinDoubleTurnTT" xml:space="preserve">
+    <value>一般来说只会在双页浏览模式下用到.</value>
+  </data>
 </root>

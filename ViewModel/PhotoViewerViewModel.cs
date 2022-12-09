@@ -39,12 +39,19 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		ushort _ListSelectedIndex;   //Shared between PhotoViewer & ImageControl, and they need to be in the same DataContext.
 		[ObservableProperty]
-		BitmapImage _BigImage = new BitmapImage();
+		BitmapImage _BigImage;
 		[ObservableProperty]
-		/*volatile */
+		BitmapImage _BigImage2; //For twin page viewing mode
+		[ObservableProperty]
+		bool _UseTwinPage = false;
+		[ObservableProperty]    //This should be volatile as it might be used across different threads. But whatever.
 		bool _SlideShow = false;
 		[ObservableProperty]
 		string _SlideInterval = "1000";
+		[ObservableProperty]
+		FlowDirection _FlowDirection = FlowDirection.LeftToRight;
+
+		public bool DoubleTurn { get; set; } = false;
 
 		short realSlideInterval = 1000;
 
@@ -55,7 +62,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				if (_ImageCount == 1)   //1 pictures
 					return 1;
-				else if (_ImageCount == 0)  //Sorting errors
+				else if (_ImageCount == 0)  //Just in case it's broke.
 					return 0;
 				else
 					return (ushort)(_ImageCount - 1);   //Index issues so subtract by 1
@@ -64,17 +71,39 @@ namespace FolderThumbnailExplorer.ViewModel
 			{ _ImageCount = value; }
 		}   //Bind target for slider maximum.
 
-		public CustomListItem SelectedImg
+		bool doubleTurnFlag;
+		public CustomListItem SelectedImg   //Load the image
 		{
 			set
 			{
 				if (value is not null)
-				{   //The image viewer still uses actual image as source rather than using stream reader.
-					_BigImage = new BitmapImage();
-					_BigImage.BeginInit();
-					_BigImage.UriSource = new Uri(value.Path);
-					_BigImage.EndInit();
+				{
+					//BigImage2 will always be not null after first image is loaded.
+					//The latter expression checks if user is requesting next image or not. If so, load the BigImage2 into BigImage, else reload.
+					if (_BigImage2 is not null && value.Path == ((FileStream)_BigImage2.StreamSource).Name)
+						_BigImage = _BigImage2;
+					else
+						using (FileStream stream = File.OpenRead(value.Path))
+						{
+							_BigImage = new BitmapImage();
+							_BigImage.BeginInit();
+							_BigImage.CacheOption = BitmapCacheOption.OnLoad;
+							_BigImage.StreamSource = stream;
+							_BigImage.EndInit();
+						}
+					if (_Images.Count > 1 && _Images.Count > _ListSelectedIndex + 1)
+						using (FileStream stream = File.OpenRead(_Images[_ListSelectedIndex + 1].Path))
+						{
+							_BigImage2 = new BitmapImage();
+							_BigImage2.BeginInit();
+							_BigImage2.CacheOption = BitmapCacheOption.OnLoad;
+							_BigImage2.StreamSource = stream;
+							_BigImage2.EndInit();
+						}
+					else
+						_BigImage2 = null;
 					OnPropertyChanged(nameof(BigImage));
+					OnPropertyChanged(nameof(BigImage2));
 				}
 			}
 		}
@@ -85,12 +114,12 @@ namespace FolderThumbnailExplorer.ViewModel
 			Process.Start("explorer.exe", path);
 		}
 		[RelayCommand]
-		public void ToggleSlideShow()
-		{
-			SlideShow = !_SlideShow;
-		}
+		public void ToggleSlideShow() => SlideShow = !_SlideShow;
+		[RelayCommand]
+		public void ChangeFlowDirection(bool isChecked) =>
+			FlowDirection = isChecked ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
 
-		#region IDataErrorInfo
+		#region IDataErrorInfo members
 		public string Error => throw new NotImplementedException();
 
 		public string this[string data2Validate]
@@ -173,7 +202,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{   //TODO: Not the best solution, idk how to pause a task properly.
 				while (true)
 				{   //This shit is CPU heavy
-					if (closing) break;	//Window is closed, release thread (Complete the Task).
+					if (closing) break; //Window is closed, release thread (Complete the Task).
 					if (SlideShow)
 					{
 						Thread.Sleep(Math.Abs(realSlideInterval));
@@ -185,7 +214,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					else
 						Thread.Sleep(1000); //Relieve the CPU situation before I find a solution.
 				}
-			});
+			}); //Slideshow Task.
 		}
 
 		private void PhotoViewerClosed(object? sender, EventArgs e)

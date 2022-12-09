@@ -197,4 +197,23 @@ Also, don't give me zeros.</value>
 You can also use mouse wheel on this.
 Negative value = Reverse order.</value>
   </data>
+  <data name="PVPopUpSettingsAOT" xml:space="preserve">
+    <value>Always On Top</value>
+  </data>
+  <data name="PVPopUpSettingsTwin" xml:space="preserve">
+    <value>Twin-Page viewing</value>
+  </data>
+  <data name="PVPopUpSettingsTwinRightToLeft" xml:space="preserve">
+    <value>Right to Left</value>
+  </data>
+  <data name="PVPopUpSettingsTwinRightToLeftTT" xml:space="preserve">
+    <value>By default, the current image is displayed on the left and the next image is displayed on the right.
+This flips that.</value>
+  </data>
+  <data name="PVPopUpSettingsTwinDoubleTurn" xml:space="preserve">
+    <value>Turn two pages at a time</value>
+  </data>
+  <data name="PVPopUpSettingsTwinDoubleTurnTT" xml:space="preserve">
+    <value>Normally you would use it under Twin-Page viewing mode.</value>
+  </data>
 </root>

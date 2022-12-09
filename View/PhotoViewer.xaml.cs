@@ -1,5 +1,6 @@
 ﻿using FolderThumbnailExplorer.ViewModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace FolderThumbnailExplorer.View
@@ -33,22 +34,29 @@ namespace FolderThumbnailExplorer.View
 			else
 			{
 				if (e.Delta > 0 && PVVM.ListSelectedIndex > 0)
+				{
+					if (PVVM.DoubleTurn) PVVM.ListSelectedIndex--;
 					PVVM.ListSelectedIndex--;
+				}
 				else if (e.Delta < 0 && PVVM.ListSelectedIndex < PVVM.ImageCount)
+				{
+					if(PVVM.DoubleTurn) PVVM.ListSelectedIndex++;
 					PVVM.ListSelectedIndex++;
+				}
 				else
 					return;
 			}
 		}
 		private void BigImage_MouseMove(object sender, MouseEventArgs e)
 		{
-			double w = BigImage.ActualWidth;
-			double h = BigImage.ActualHeight;
+			Image img = sender as Image;
+			double w = img.ActualWidth;
+			double h = img.ActualHeight;
 			if (e.RightButton == MouseButtonState.Pressed)
 			{
-				Point mousePosOnImg = e.GetPosition(BigImage);
+				Point mousePosOnImg = e.GetPosition(img);
 				Point reletivePos = new Point(mousePosOnImg.X / w, mousePosOnImg.Y / h);
-				BigImage.RenderTransformOrigin = reletivePos;
+				img.RenderTransformOrigin = reletivePos;
 			}
 			else
 			{
@@ -56,14 +64,14 @@ namespace FolderThumbnailExplorer.View
 				h = this.ActualHeight;
 				Point mousePosOnWnd = e.GetPosition(this);
 				Point reletivePos = new Point(mousePosOnWnd.X / w, mousePosOnWnd.Y / h);
-				reletivePos.X = BigImage.RenderTransformOrigin.X;   //Don't change X coord.
+				reletivePos.X = img.RenderTransformOrigin.X;   //Don't change X coord.
 				double startYfrom = 0.4; double startYto = 0.6; //Set startpos reletive to window.
 				if (reletivePos.Y > startYfrom && reletivePos.Y < startYto)
 					reletivePos.Y = (reletivePos.Y - startYfrom) / (startYto - startYfrom);
 				//X[Rescaled]=(X-X[min]/X[max]-X[min])	this rescales X to a range of [0,1]
 				else
-					reletivePos.Y = BigImage.RenderTransformOrigin.Y;   //Don't change Y coord.
-				BigImage.RenderTransformOrigin = reletivePos;
+					reletivePos.Y = img.RenderTransformOrigin.Y;   //Don't change Y coord.
+				img.RenderTransformOrigin = reletivePos;
 			}
 		}
 		#endregion
@@ -112,5 +120,8 @@ namespace FolderThumbnailExplorer.View
 				WindowState = WindowState.Normal;
 		}
 		#endregion
+
+		private void ImageBox_SelectionChanged(object sender, SelectionChangedEventArgs e) =>
+			((ListBox)sender).ScrollIntoView(((ListBox)sender).SelectedItem);
 	}
 }

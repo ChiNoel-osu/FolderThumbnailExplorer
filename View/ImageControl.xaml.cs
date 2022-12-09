@@ -25,10 +25,8 @@ namespace FolderThumbnailExplorer.View
 			if (ImgPosition.Value > 0)
 				ImgPosition.Value--;
 		}
-		private void NextClick(object sender, RoutedEventArgs e)
-		{
-			ImgPosition.Value++;
-		}
+		private void NextClick(object sender, RoutedEventArgs e) => ImgPosition.Value++;
+
 		#region Settings Popup events
 		private void Label_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
 		{
@@ -46,6 +44,7 @@ namespace FolderThumbnailExplorer.View
 		}
 		#endregion
 
+		#region Settings related UI Code
 		private void SlideInterval_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 		{
 			if (short.TryParse((string?)((TextBox)sender).Text, out short parsed))
@@ -59,5 +58,15 @@ namespace FolderThumbnailExplorer.View
 				catch (OverflowException) { }
 			}
 		}
+		private void AOTBtn_Changed(object sender, RoutedEventArgs e)
+		{        
+			parentWnd.Topmost = e.RoutedEvent.Name switch
+			{
+				"Checked" => true,
+				"Unchecked" => false,
+				_ => throw new NotImplementedException()
+			};
+		}
+		#endregion
 	}
 }
