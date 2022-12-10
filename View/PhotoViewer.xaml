@@ -161,6 +161,7 @@
 				<!--rn only the first image can be zoomed and panned.-->
 				<Image Grid.Column="0"
 					   Source="{Binding BigImage}"
+					   RenderOptions.BitmapScalingMode="Fant"
 					   MouseWheel="BigImage_MouseWheel"
 					   MouseMove="BigImage_MouseMove"
 					   Panel.ZIndex="1">
@@ -170,6 +171,7 @@
 				</Image>
 				<Image Grid.Column="1"
 					   MouseWheel="BigImage_MouseWheel"
+					   RenderOptions.BitmapScalingMode="Fant"
 					   Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Converter={StaticResource DivideBy}, ConverterParameter=2}"
 					   Visibility="{Binding UseTwinPage, Mode=OneWay, Converter={StaticResource B2CVConverter}}"
 					   Source="{Binding BigImage2}" />
