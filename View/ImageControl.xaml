@@ -65,7 +65,8 @@
 					Content="▼"
 					Click="NextClick"
 					Margin="0,5" />
-			<Label Content="..."
+			<Label Name="SettingsLabel"
+				   Content="..."
 				   Padding="0"
 				   Foreground="WhiteSmoke"
 				   FontSize="22"
@@ -79,6 +80,7 @@
 		<Popup Name="SettingsPopup"
 			   AllowsTransparency="True"
 			   PopupAnimation="Fade"
+			   PlacementTarget="{Binding ElementName=SettingsLabel}"
 			   Placement="Right"
 			   MouseLeave="SettingsPopup_MouseLeave">
 			<Border BorderBrush="Gray"
