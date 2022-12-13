@@ -1482,6 +1482,154 @@
 		</Setter>
 	</Style>
 	<!--#endregion-->
+	<!--#region ListBoxNavTemplate-->
+	<SolidColorBrush x:Key="ListBox.Disabled.Background"
+					 Color="#FFFFFFFF" />
+	<SolidColorBrush x:Key="ListBox.Disabled.Border"
+					 Color="#FFD9D9D9" />
+	<ControlTemplate x:Key="ListBoxNavTemplate"
+					 TargetType="{x:Type ListBox}">
+		<Border x:Name="Bd"
+				Background="{TemplateBinding Background}"
+				BorderBrush="{TemplateBinding BorderBrush}"
+				BorderThickness="{TemplateBinding BorderThickness}"
+				Padding="0"
+				Margin="-1"
+				SnapsToDevicePixels="True">
+			<ScrollViewer Focusable="false"
+						  Padding="{TemplateBinding Padding}">
+				<ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+			</ScrollViewer>
+		</Border>
+		<ControlTemplate.Triggers>
+			<Trigger Property="IsEnabled"
+					 Value="false">
+				<Setter Property="Background"
+						TargetName="Bd"
+						Value="{StaticResource ListBox.Disabled.Background}" />
+				<Setter Property="BorderBrush"
+						TargetName="Bd"
+						Value="{StaticResource ListBox.Disabled.Border}" />
+			</Trigger>
+			<MultiTrigger>
+				<MultiTrigger.Conditions>
+					<Condition Property="IsGrouping"
+							   Value="true" />
+					<Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping"
+							   Value="false" />
+				</MultiTrigger.Conditions>
+				<Setter Property="ScrollViewer.CanContentScroll"
+						Value="false" />
+			</MultiTrigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+	<!--#endregion-->
+	<!--#region ListBoxNavItemStyle-->
+	<SolidColorBrush x:Key="Item.MouseOver.Background"
+                     Color="#AB9370DB" />
+	<SolidColorBrush x:Key="Item.MouseOver.Border"
+					 Color="Transparent" />
+	<SolidColorBrush x:Key="Item.SelectedActive.Background"
+					 Color="MediumPurple" />
+	<SolidColorBrush x:Key="Item.SelectedActive.Border"
+					 Color="Transparent" />
+	<SolidColorBrush x:Key="Item.SelectedInactive.Background"
+					 Color="MediumPurple" />
+	<SolidColorBrush x:Key="Item.SelectedInactive.Border"
+					 Color="Transparent" />
+	<Style x:Key="ListBoxNavItemStyle"
+		   TargetType="{x:Type ListBoxItem}">
+		<Setter Property="SnapsToDevicePixels"
+				Value="True" />
+		<Setter Property="Padding"
+				Value="4,1" />
+		<Setter Property="Margin"
+				Value="-1" />
+		<Setter Property="HorizontalContentAlignment"
+				Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+		<Setter Property="VerticalContentAlignment"
+				Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+		<Setter Property="Background"
+				Value="Transparent" />
+		<Setter Property="Foreground"
+				Value="WhiteSmoke" />
+		<Setter Property="FocusVisualStyle"
+				Value="{x:Null}" />
+		<Setter Property="IsTabStop"
+				Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ListBoxItem}">
+					<Border x:Name="Bd"
+							Background="{TemplateBinding Background}"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Padding="{TemplateBinding Padding}"
+							SnapsToDevicePixels="true">
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsMouseOver"
+										   Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter Property="Background"
+									TargetName="Bd"
+									Value="{StaticResource Item.MouseOver.Background}" />
+							<Setter Property="BorderBrush"
+									TargetName="Bd"
+									Value="{StaticResource Item.MouseOver.Border}" />
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="Selector.IsSelectionActive"
+										   Value="False" />
+								<Condition Property="IsSelected"
+										   Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter Property="Background"
+									TargetName="Bd"
+									Value="{StaticResource Item.SelectedInactive.Background}" />
+							<Setter Property="BorderBrush"
+									TargetName="Bd"
+									Value="{StaticResource Item.SelectedInactive.Border}" />
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="Selector.IsSelectionActive"
+										   Value="True" />
+								<Condition Property="IsSelected"
+										   Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter Property="Background"
+									TargetName="Bd"
+									Value="{StaticResource Item.SelectedActive.Background}" />
+							<Setter Property="BorderBrush"
+									TargetName="Bd"
+									Value="{StaticResource Item.SelectedActive.Border}" />
+						</MultiTrigger>
+						<Trigger Property="IsEnabled"
+								 Value="False">
+							<Setter Property="TextElement.Foreground"
+									TargetName="Bd"
+									Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver"
+					 Value="True">
+				<Setter Property="Foreground"
+						Value="Black" /><!--Placeholder for animation-->
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+	<!--#endregion-->
 	<converter:LabelSizeConverter x:Key="LSConverter" />
 	<converter:SliderLengthConverter x:Key="SLConverter" />
 	<converter:Bool2VisivilityConverter x:Key="B2VConverter" />

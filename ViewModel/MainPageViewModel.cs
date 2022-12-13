@@ -163,9 +163,9 @@ namespace FolderThumbnailExplorer.ViewModel
 			Mouse.AddMouseUpHandler(img, ThumbnailMouseUpHandler);
 		}
 		[RelayCommand]
-		public void LabelDoubleClicked(Label label)
+		public void TextDoubleClicked(TextBlock tb)
 		{   //Double click advance folder
-			string imageFolder = label.Content.ToString();
+			string imageFolder = tb.Text;
 			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}\\{1}", PATHtoShow, imageFolder);
 		}
 		[RelayCommand]

@@ -99,14 +99,13 @@
 					<DataTemplate>
 						<StackPanel>
 							<Image Source="{Binding Image}" />
-							<Label Content="{Binding Name}"
-								   ToolTip="{Binding Path}"
-								   HorizontalAlignment="Center"
-								   VerticalAlignment="Center"
-								   Foreground="White"
-								   Margin="-5"
-								   FontSize="10"
-								   FontWeight="Light" />
+							<TextBlock Text="{Binding Name}"
+									   ToolTip="{Binding Path}"
+									   HorizontalAlignment="Center"
+									   VerticalAlignment="Center"
+									   Foreground="White"
+									   FontSize="10"
+									   FontWeight="Light" />
 						</StackPanel>
 					</DataTemplate>
 				</ListBox.ItemTemplate>
