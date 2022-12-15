@@ -71,7 +71,6 @@ namespace FolderThumbnailExplorer.ViewModel
 			{ _ImageCount = value; }
 		}   //Bind target for slider maximum.
 
-		bool doubleTurnFlag;
 		public CustomListItem SelectedImg   //Load the image
 		{
 			set
@@ -121,7 +120,6 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		#region IDataErrorInfo members
 		public string Error => throw new NotImplementedException();
-
 		public string this[string data2Validate]
 		{
 			get

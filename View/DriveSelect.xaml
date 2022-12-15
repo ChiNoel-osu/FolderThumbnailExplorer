@@ -27,7 +27,7 @@
 				 Background="Transparent"
 				 Foreground="WhiteSmoke"
 				 FontSize="20"
-				 ItemsSource="{Binding DriveSelectViewModel.Drives, Mode=OneWay}"
+				 ItemsSource="{Binding MainPageViewModel.Drives, Mode=OneWay}"
 				 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
 				 ScrollViewer.VerticalScrollBarVisibility="Hidden"
 				 SelectedItem="{Binding MainPageViewModel.PATHtoShow, Mode=OneWayToSource}"
@@ -40,6 +40,6 @@
 				Template="{DynamicResource ButtonTemplate1}"
 				Background="Transparent"
 				Foreground="WhiteSmoke"
-				Command="{Binding DriveSelectViewModel.RefreshDrivesCommand}" />
+				Command="{Binding MainPageViewModel.RefreshDrivesCommand}" />
 	</Grid>
 </UserControl>

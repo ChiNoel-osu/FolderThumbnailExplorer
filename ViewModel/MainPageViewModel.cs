@@ -3,8 +3,10 @@ using CommunityToolkit.Mvvm.Input;
 using FolderThumbnailExplorer.Model;
 using FolderThumbnailExplorer.View;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,24 +21,71 @@ using System.Windows.Media.Imaging;
 
 namespace FolderThumbnailExplorer.ViewModel
 {
-	public partial class MainPageViewModel : ObservableObject
+	public partial class MainPageViewModel : ObservableObject, IDataErrorInfo
 	{
 		public CancellationTokenSource cts = new CancellationTokenSource();
 		public Task addItemTask;
 		public static Stack<Window> wnds = new Stack<Window>();
 
+		#region IDataErrorInfo members
+		public string Error => throw new NotImplementedException();
+		public string this[string data2Validate]
+		{
+			get
+			{
+				switch (data2Validate)
+				{
+					case nameof(PATHtoShow):
+						if (isLastPathValid || string.IsNullOrEmpty(_PATHtoShow))
+							return null;    //null for no error.
+						else
+							return "PATHtoShow is not valid[DBG]";
+					default:
+						throw new NotImplementedException();
+				}
+			}
+		}
+		#endregion
+
+		List<string> history = new List<string>();  //For GoBack and GoForward.
+		short historyIndex = -1;
+		bool requestingBackForward = false;
+
+		bool isLastPathValid = false;   //For validation use.
+		string lastValidPath;
 		string _PATHtoShow; //DirBox.Text
 		public string PATHtoShow
 		{
 			get => _PATHtoShow;
 			set
 			{
-				_PATHtoShow = value;
-				OnPropertyChanged(nameof(PATHtoShow));
-				ReGetContent();
+				if (string.IsNullOrEmpty(value))
+					_PATHtoShow = lastValidPath;   //Don't notify property change. Keep the path unchanged when this happens.
+				else
+				{
+					_PATHtoShow = value;
+					if (isLastPathValid = DirHelper.IsPathValid(_PATHtoShow))
+					{   //Compare the incoming path to the last valid path and if they're the same, do nothing.
+						//TODO: Bugs exists. Like if user use '/' instead of '\' for directory seperator.
+						if (lastValidPath == _PATHtoShow)
+							return; //Early return.
+						lastValidPath = _PATHtoShow;
+						if (!requestingBackForward)
+						{
+							history.RemoveRange(++historyIndex, history.Count - historyIndex);
+							history.Add(lastValidPath);
+						}
+						OnPropertyChanged(nameof(PATHtoShow));
+						ReGetContent();
+					}
+					else
+						isLastPathValid = false;
+				}
 			}
 		}
 
+		[ObservableProperty]
+		List<string> _Drives = new List<string>();
 		[ObservableProperty]
 		ObservableCollection<CustomContentItem> _Content = new ObservableCollection<CustomContentItem>();
 		[ObservableProperty]
@@ -44,6 +93,33 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		bool _IsNotAddingItem = true;   //For RefreshButton IsEnabled.
 
+		[RelayCommand]
+		public void RefreshDrives()
+		{
+			Drives.Clear();
+			foreach (string drive in Directory.GetLogicalDrives())
+				Drives.Add(drive);
+		}
+		[RelayCommand]
+		public void GoBack()
+		{
+			if (historyIndex > 0)
+			{
+				requestingBackForward = true;
+				PATHtoShow = history[--historyIndex];
+				requestingBackForward = false;
+			}
+		}
+		[RelayCommand]
+		public void GoForward()
+		{
+			if (historyIndex < history.Count - 1)
+			{
+				requestingBackForward = true;
+				PATHtoShow = history[++historyIndex];
+				requestingBackForward = false;
+			}
+		}
 		[RelayCommand]
 		public void ReGetContent()
 		{
@@ -58,10 +134,9 @@ namespace FolderThumbnailExplorer.ViewModel
 			//This took me forever.
 			addItemTask = new Task(async () =>
 			{
-				DirShit dirShit = new DirShit();
-				if (dirShit.ContentExistsInPath(_PATHtoShow))
+				if (DirHelper.IsPathValid(_PATHtoShow))
 				{
-					string[] dirs = dirShit.DirInPath(_PATHtoShow);
+					string[] dirs = DirHelper.DirInPath(_PATHtoShow);
 					if (dirs is not null)
 					{
 						CustomContentItem lastAdded = null;  //Mark the last added item.
@@ -82,7 +157,7 @@ namespace FolderThumbnailExplorer.ViewModel
 							if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
 							{
 								string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
-								Task<string[]> task = dirShit.DirInPathTask(dir);
+								Task<string[]> task = DirHelper.DirInPathTask(dir);
 								string[] subfolders;
 								string firstFilePath;
 								try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
@@ -130,7 +205,7 @@ namespace FolderThumbnailExplorer.ViewModel
 										{ bitmap.Freeze(); }
 									}
 								}
-								CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = dirShit.GetFileFolderName(dir) };
+								CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir) };
 								subfolders = task.Result;
 								if (subfolders.Length > 0 && bitmap.UriSource is null)
 									newItem.HasSubfolder = true;
@@ -230,8 +305,11 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 			set
 			{
-				_cbBoxSelected = value;
-				PATHtoShow = _cbBoxSelected?.ToolTip.ToString() ?? string.Empty;
+				if (value is not null)
+				{
+					_cbBoxSelected = value;
+					PATHtoShow = _cbBoxSelected.ToolTip.ToString();
+				}
 			}
 		}
 		private ObservableCollection<ComboBoxItem> _ComboBoxItems = new ObservableCollection<ComboBoxItem>();
@@ -291,6 +369,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			//Do this so the ObservableCollection can be shared between threads
 			BindingOperations.EnableCollectionSynchronization(Content, new object());
 			BindingOperations.EnableCollectionSynchronization(_ComboBoxItems, new object());
+			RefreshDrives();
 		}
 	}
 }

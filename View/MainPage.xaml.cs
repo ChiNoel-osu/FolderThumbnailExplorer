@@ -12,6 +12,7 @@ namespace FolderThumbnailExplorer.View
 		public MainPage()
 		{
 			InitializeComponent();
+			DataContext = MainWindow.MainVM;
 		}
 		#region GOUP function
 		private void UserControl_KeyDown(object sender, KeyEventArgs e)

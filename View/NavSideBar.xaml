@@ -19,8 +19,11 @@
 	</d:UserControl.Resources>
 	<UserControl.Resources>
 		<!--Navigations-->
-		<DataTemplate DataType="{x:Type viewmodel:DriveSelectViewModel}">
+		<DataTemplate DataType="{x:Type viewmodel:MainPageViewModel}">
 			<local:DriveSelect />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodel:FavFoldersViewModel}">
+			<local:FavoriteFolders /><!--placeholder-->
 		</DataTemplate>
 	</UserControl.Resources>
 	<Grid>

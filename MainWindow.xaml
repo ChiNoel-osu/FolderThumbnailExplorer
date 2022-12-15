@@ -5,6 +5,8 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:FolderThumbnailExplorer"
 		xmlns:view="clr-namespace:FolderThumbnailExplorer.View"
+		xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
+		d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 		mc:Ignorable="d"
 		Title="File Explorer"
 		Height="600"
@@ -15,6 +17,12 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
 			</ResourceDictionary.MergedDictionaries>
+			<DataTemplate DataType="{x:Type viewmodel:MainPageViewModel}">
+				<view:MainPage />
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type viewmodel:FavFoldersViewModel}">
+				<view:FavoriteFolders />
+			</DataTemplate>
 		</ResourceDictionary>
 	</Window.Resources>
 	<Grid>
@@ -24,12 +32,13 @@
 			<ColumnDefinition Width="8*" />
 		</Grid.ColumnDefinitions>
 		<view:NavSideBar Grid.Column="0"
-						  Margin="0,0,5,0" />
+						 Margin="0,0,5,0" />
 		<GridSplitter Grid.Column="0"
 					  HorizontalAlignment="Right"
 					  Focusable="False"
 					  Background="AliceBlue"
 					  Width="4" />
-		<view:MainPage Grid.Column="1" />
+		<ContentControl Grid.Column="1"
+						Content="{Binding RightView, Mode=OneWay}" />
 	</Grid>
 </Window>

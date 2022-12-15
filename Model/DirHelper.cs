@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace FolderThumbnailExplorer.Model
 {   //God damnit what have I done.
-	public class DirShit
+	public class DirHelper
 	{
-		public string[] GetLDrives() => Directory.GetLogicalDrives();
-		public string[] DirInPath(string path)
+		public static string[] GetLDrives() => Directory.GetLogicalDrives();
+		public static string[] DirInPath(string path)
 		{
 			try
 			{
@@ -18,7 +18,7 @@ namespace FolderThumbnailExplorer.Model
 				return null;
 			}
 		}
-		public string[] FileInPath(string path)
+		public static string[] FileInPath(string path)
 		{
 			try
 			{
@@ -29,26 +29,26 @@ namespace FolderThumbnailExplorer.Model
 				return null;
 			}
 		}
-		public Task<string[]> DirInPathTask(string path)
+		public static Task<string[]> DirInPathTask(string path)
 		{
 			Task<string[]> task = new Task<string[]>(() => DirInPath(path));
 			task.Start();
 			return task;
 		}
-		public Task<string[]> FileInPathTask(string path)
+		public static Task<string[]> FileInPathTask(string path)
 		{
 			Task<string[]> task = new Task<string[]>(() => FileInPath(path));
 			task.Start();
 			return task;
 		}
-		public string GetFileFolderName(string path)
+		public static string GetFileFolderName(string path)
 		{
 			if (path != null)
 				return path[(path.LastIndexOf('\\') + 1)..];
 			else
 				return string.Empty;
 		}
-		public bool ContentExistsInPath(string path)
+		public static bool IsPathValid(string path)
 		{
 			return Directory.Exists(path) || File.Exists(path);
 		}

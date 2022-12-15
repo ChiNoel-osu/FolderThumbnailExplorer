@@ -1,15 +1,20 @@
-﻿namespace FolderThumbnailExplorer.ViewModel
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace FolderThumbnailExplorer.ViewModel
 {
-	public class MainViewModel
+	public partial class MainViewModel : ObservableObject
 	{
 		public NavSideBarViewModel NavSideBarViewModel { get; set; }
-		public DriveSelectViewModel DriveSelectViewModel { get; set; }
+		public FavFoldersViewModel FavFoldersViewModel { get; set; }
 		public MainPageViewModel MainPageViewModel { get; set; }
+
+		[ObservableProperty]
+		object _RightView;
 
 		public MainViewModel()
 		{
 			NavSideBarViewModel = new NavSideBarViewModel();
-			DriveSelectViewModel = new DriveSelectViewModel();
+			FavFoldersViewModel = new FavFoldersViewModel();
 			MainPageViewModel = new MainPageViewModel();
 		}
 	}
