@@ -216,4 +216,10 @@ This flips that.</value>
   <data name="PVPopUpSettingsTwinDoubleTurnTT" xml:space="preserve">
     <value>Normally you would use it under Twin-Page viewing mode.</value>
   </data>
+  <data name="PVPopUpSettingsScrView" xml:space="preserve">
+    <value>Scroll view the image</value>
+  </data>
+  <data name="PVPopUpSettingsScrViewTT" xml:space="preserve">
+    <value>By enabling this, Slideshow and Twin-Page viewing option will be ignored.</value>
+  </data>
 </root>

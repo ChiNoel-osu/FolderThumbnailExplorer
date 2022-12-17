@@ -200,6 +200,24 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   查找类似 Scroll view the image 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsScrView {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsScrView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 By enabling this, Slideshow and Twin-Page viewing option will be ignored. 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsScrViewTT {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsScrViewTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Slide show interval 的本地化字符串。
         /// </summary>
         public static string PVPopUpSettingsSlideshowInterval {

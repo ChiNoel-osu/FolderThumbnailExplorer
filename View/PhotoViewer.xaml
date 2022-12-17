@@ -40,8 +40,7 @@
 					FlowDirection="RightToLeft"
 					Grid.ColumnSpan="2">
 			<StackPanel.Resources>
-				<Style x:Key="BtnStyle"
-					   TargetType="{x:Type Button}">
+				<Style TargetType="{x:Type Button}">
 					<Setter Property="Background"
 							Value="Transparent" />
 					<Setter Property="BorderThickness"
@@ -56,7 +55,6 @@
 			</StackPanel.Resources>
 			<Button Height="20"
 					Width="20"
-					Style="{StaticResource BtnStyle}"
 					Background="#FF605C"
 					Click="CloseClick"
 					ToolTip="{x:Static loc:Loc.PVCloseTT}"
@@ -64,14 +62,12 @@
 			<Button Height="15"
 					Width="18"
 					Margin="1,0,1,0"
-					Style="{StaticResource BtnStyle}"
 					Background="#FFBD44"
 					Click="MaxResClick"
 					ToolTip="{x:Static loc:Loc.PVMaxTT}" />
 			<Button Height="10"
 					Width="18"
 					Margin="1,0,1,0"
-					Style="{StaticResource BtnStyle}"
 					Background="#00CA4E"
 					Click="MinClick"
 					ToolTip="{x:Static loc:Loc.PVMinTT}" />
@@ -152,7 +148,8 @@
 						  ResizeDirection="Columns"
 						  ToolTip="{x:Static loc:Loc.PVGridSplitterTT}" />
 			<Grid Grid.Column="2"
-				  FlowDirection="{Binding FlowDirection}">
+				  FlowDirection="{Binding FlowDirection}"
+				  Visibility="{Binding MainView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition />
 					<ColumnDefinition Width="Auto" />
@@ -175,6 +172,13 @@
 					   Visibility="{Binding UseTwinPage, Mode=OneWay, Converter={StaticResource B2CVConverter}}"
 					   Source="{Binding BigImage2}" />
 			</Grid>
+			<ScrollViewer Grid.Column="2"
+						  Margin="0,20,0,0"
+						  Visibility="{Binding ScrollView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
+				<ItemsControl ItemsSource="{Binding ScrollImg}"
+							  MouseWheel="ScrollImg_MouseWheel"
+							  Width="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Mode=OneTime, Converter={StaticResource DivideBy}, ConverterParameter=2}" />
+			</ScrollViewer>
 		</Grid>
 	</Grid>
 </Window>

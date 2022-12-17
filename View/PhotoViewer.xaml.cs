@@ -50,7 +50,7 @@ namespace FolderThumbnailExplorer.View
 		}
 		private void BigImage_MouseMove(object sender, MouseEventArgs e)
 		{
-			Image img = sender as Image;
+			Image img = (Image)sender;
 			double w = img.ActualWidth;
 			double h = img.ActualHeight;
 			if (e.RightButton == MouseButtonState.Pressed)
@@ -73,6 +73,21 @@ namespace FolderThumbnailExplorer.View
 				else
 					reletivePos.Y = img.RenderTransformOrigin.Y;   //Don't change Y coord.
 				img.RenderTransformOrigin = reletivePos;
+			}
+		}
+
+		private void ScrollImg_MouseWheel(object sender, MouseWheelEventArgs e)
+		{
+			if (e.RightButton == MouseButtonState.Pressed)
+			{
+				e.Handled = true;
+				byte scrDelta = 50;
+				if (e.Delta > 0 && ((ItemsControl)sender).Width < 8888)
+					((ItemsControl)sender).Width += scrDelta;
+				else if (e.Delta < 0 && ((ItemsControl)sender).Width > scrDelta)
+					((ItemsControl)sender).Width -= scrDelta;
+				else
+					return;
 			}
 		}
 		#endregion

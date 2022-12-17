@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using FolderThumbnailExplorer.Model;
 using FolderThumbnailExplorer.View;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -25,7 +24,7 @@ namespace FolderThumbnailExplorer.ViewModel
 	{
 		public CancellationTokenSource cts = new CancellationTokenSource();
 		public Task addItemTask;
-		public static Stack<Window> wnds = new Stack<Window>();
+		public static List<Window> wnds = new List<Window>();
 
 		#region IDataErrorInfo members
 		public string Error => throw new NotImplementedException();
@@ -132,7 +131,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			CancellationToken ct = cts.Token;
 			//Long ass task, offload to another thread.
 			//This took me forever.
-			addItemTask = new Task(async () =>
+			addItemTask = new Task(() =>
 			{
 				if (DirHelper.IsPathValid(_PATHtoShow))
 				{
@@ -143,7 +142,6 @@ namespace FolderThumbnailExplorer.ViewModel
 						List<string> unauthorizedFolders = new List<string>();
 						foreach (string dir in dirs)
 						{
-							bool showSubfolderIcon = false;
 							try
 							{
 								ct.ThrowIfCancellationRequested();  //When task is canceled
@@ -262,7 +260,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					imagePath = imagePath.Remove(imagePath.LastIndexOf('\\'));
 					PhotoViewer photoViewer = new PhotoViewer(imagePath);
 					photoViewer.Left = 0; photoViewer.Top = 0;  //Spawns window at top left corner.
-					wnds.Push(photoViewer); //Add this to opened windows list to close it when mainwindows closes
+					wnds.Add(photoViewer); //Add this to opened windows list to close it when mainwindow closes
 					photoViewer.Show();
 				}
 			}
@@ -277,7 +275,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			addBtn = button;
 			AddNewFav addNewFav = new AddNewFav(_PATHtoShow);
-			wnds.Push(addNewFav);   //Add this to opened windows list to close it when mainwindow closes
+			wnds.Add(addNewFav);   //Add this to opened windows list to close it when mainwindow closes
 			addNewFav.Show();
 			addNewFav.Closed += AddNewFav_Closed;
 			addBtn.IsEnabled = false;

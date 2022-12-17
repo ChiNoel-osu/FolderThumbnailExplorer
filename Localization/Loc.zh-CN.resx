@@ -216,4 +216,10 @@ Esc - 关闭图片浏览器.</value>
   <data name="PVPopUpSettingsTwinDoubleTurnTT" xml:space="preserve">
     <value>一般来说只会在双页浏览模式下用到.</value>
   </data>
+  <data name="PVPopUpSettingsScrView" xml:space="preserve">
+    <value>垂直滚动浏览</value>
+  </data>
+  <data name="PVPopUpSettingsScrViewTT" xml:space="preserve">
+    <value>开启此项后, 幻灯片和双页浏览设置会被忽略.</value>
+  </data>
 </root>

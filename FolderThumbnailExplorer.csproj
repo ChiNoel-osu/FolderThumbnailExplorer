@@ -8,7 +8,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <IsPublishable>False</IsPublishable>
     <SignAssembly>False</SignAssembly>
-    <Version>1.2.1</Version>
+    <Version>1.2.2</Version>
     <Authors>Victor</Authors>
     <Copyright>GNU AFFERO GENERAL PUBLIC LICENSE</Copyright>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>

@@ -8,7 +8,7 @@ namespace FolderThumbnailExplorer.View
 	public partial class DriveSelect : UserControl
 	{
 		public DriveSelect()
-		{ 
+		{
 			InitializeComponent();
 			DataContext = MainWindow.MainVM;
 		}

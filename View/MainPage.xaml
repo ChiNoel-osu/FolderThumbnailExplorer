@@ -251,7 +251,7 @@
 				 Background="{x:Null}"
 				 Foreground="White"
 				 ItemsSource="{Binding MainPageViewModel.Content}"
-				 d:ItemsSource="{d:SampleData ItemCount=14}">
+				 d:ItemsSource="{d:SampleData ItemCount=18}">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<WrapPanel IsItemsHost="True" />
@@ -262,8 +262,9 @@
 					<StackPanel>
 						<Grid>
 							<Image MaxWidth="{Binding ElementName=ScaleSlider, Path=Value}"
-								   d:MaxWidth="128"
+								   d:MaxWidth="132"
 								   SnapsToDevicePixels="True"
+								   d:Source="pack://application:,,,/folder.png"
 								   Source="{Binding ThumbNail}"
 								   ToolTip="{Binding Header}"
 								   Cursor="Hand">
@@ -277,6 +278,7 @@
 								</Image.InputBindings>
 							</Image>
 							<Image Source="pack://application:,,,/folder.png"
+								   d:Source="{x:Null}"
 								   VerticalAlignment="Bottom"
 								   HorizontalAlignment="Right"
 								   Width="20"

@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -43,6 +44,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		BitmapImage _BigImage2; //For twin page viewing mode
 		[ObservableProperty]
+		bool _MainView = true;
+		[ObservableProperty]
 		bool _UseTwinPage = false;
 		[ObservableProperty]    //This should be volatile as it might be used across different threads. But whatever.
 		bool _SlideShow = false;
@@ -50,12 +53,16 @@ namespace FolderThumbnailExplorer.ViewModel
 		string _SlideInterval = "1000";
 		[ObservableProperty]
 		FlowDirection _FlowDirection = FlowDirection.LeftToRight;
+		[ObservableProperty]
+		bool _ScrollView = false;
+		[ObservableProperty]
+		ObservableCollection<Image> _ScrollImg = new ObservableCollection<Image>();
 
 		public bool DoubleTurn { get; set; } = false;
 
 		short realSlideInterval = 1000;
 
-		private ushort _ImageCount;
+		private ushort _ImageCount; //Real image count
 		public ushort ImageCount
 		{
 			get
@@ -69,7 +76,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 			private set
 			{ _ImageCount = value; }
-		}   //Bind target for slider maximum.
+		}   //Binding target for slider maximum.
 
 		public CustomListItem SelectedImg   //Load the image
 		{
@@ -117,6 +124,33 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void ChangeFlowDirection(bool isChecked) =>
 			FlowDirection = isChecked ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+		bool isLoading = false;
+		[RelayCommand]
+		public void LoadScrollView()
+		{
+			MainView = _ScrollView ? false : true;
+			if (!isLoading)
+			{
+				isLoading = true;
+				Task.Run(() =>
+				{
+					for (ushort i = 0; i < _ImageCount; i++)
+					{
+						if (closing) break;
+						BitmapImage scrollImg = new BitmapImage();
+						using (FileStream fs = File.OpenRead(((FileStream)_Images[i].Image.StreamSource).Name))
+						{
+							scrollImg.BeginInit();
+							scrollImg.CacheOption = BitmapCacheOption.OnLoad;
+							scrollImg.StreamSource = fs;
+							scrollImg.EndInit();
+						}
+						scrollImg.Freeze();
+						Application.Current.Dispatcher.Invoke(() => ScrollImg.Add(new Image { Source = scrollImg }));
+					}
+				});
+			}
+		}
 
 		#region IDataErrorInfo members
 		public string Error => throw new NotImplementedException();
@@ -149,7 +183,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 			private set { _Images = value; }
 		}
-
+		bool doneAddingImages = false;
 		private void AddImgs(string path)
 		{
 			Task.Run(() =>
@@ -187,6 +221,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					_ImageCount++;
 					OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
 				}
+				doneAddingImages = true;
 			});
 		}
 
@@ -214,11 +249,10 @@ namespace FolderThumbnailExplorer.ViewModel
 				}
 			}); //Slideshow Task.
 		}
-
 		private void PhotoViewerClosed(object? sender, EventArgs e)
 		{
 			closing = true;
-			GC.Collect();
+			MainPageViewModel.wnds.Remove((Window)sender);
 		}
 	}
 }
