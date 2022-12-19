@@ -31,5 +31,53 @@ namespace FolderThumbnailExplorer.Properties {
                 return ((string)(this["Locale"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("480")]
+        public double PV_Width {
+            get {
+                return ((double)(this["PV_Width"]));
+            }
+            set {
+                this["PV_Width"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("600")]
+        public double PV_Height {
+            get {
+                return ((double)(this["PV_Height"]));
+            }
+            set {
+                this["PV_Height"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double PV_Left {
+            get {
+                return ((double)(this["PV_Left"]));
+            }
+            set {
+                this["PV_Left"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double PV_Top {
+            get {
+                return ((double)(this["PV_Top"]));
+            }
+            set {
+                this["PV_Top"] = value;
+            }
+        }
     }
 }

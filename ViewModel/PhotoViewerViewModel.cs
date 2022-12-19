@@ -34,8 +34,8 @@ namespace FolderThumbnailExplorer.ViewModel
 	}
 	public partial class PhotoViewerViewModel : ObservableObject, IDataErrorInfo
 	{
-		private readonly string path;
-		private bool closing = false;
+		readonly string path;
+		bool closing = false;
 
 		[ObservableProperty]
 		ushort _ListSelectedIndex;   //Shared between PhotoViewer & ImageControl, and they need to be in the same DataContext.
@@ -57,6 +57,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		bool _ScrollView = false;
 		[ObservableProperty]
 		ObservableCollection<Image> _ScrollImg = new ObservableCollection<Image>();
+		[ObservableProperty]
+		sbyte _PosFlag = 0;
 
 		public bool DoubleTurn { get; set; } = false;
 
@@ -150,6 +152,28 @@ namespace FolderThumbnailExplorer.ViewModel
 					}
 				});
 			}
+		}
+		[RelayCommand]
+		public void SavePos(Window wnd)
+		{
+			PosFlag = 0;
+			Properties.Settings.Default.PV_Width = wnd.Width;
+			Properties.Settings.Default.PV_Height = wnd.Height;
+			Properties.Settings.Default.PV_Left = wnd.Left;
+			Properties.Settings.Default.PV_Top = wnd.Top;
+			Properties.Settings.Default.Save();
+			PosFlag = 1;
+		}
+		[RelayCommand]
+		public void DefaultPos()
+		{
+			PosFlag = 0;
+			Properties.Settings.Default.PV_Width = 480;
+			Properties.Settings.Default.PV_Height = 600;
+			Properties.Settings.Default.PV_Left = 0;
+			Properties.Settings.Default.PV_Top = 0;
+			Properties.Settings.Default.Save();
+			PosFlag = -1;
 		}
 
 		#region IDataErrorInfo members

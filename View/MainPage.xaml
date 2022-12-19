@@ -141,7 +141,7 @@
 					Command="{Binding MainPageViewModel.AddNewFavCommand}"
 					CommandParameter="{Binding RelativeSource={x:Static RelativeSource.Self}}">
 				<Button.Style>
-					<Style TargetType="Button">
+					<Style TargetType="{x:Type Button}">
 						<Style.Triggers>
 							<Trigger Property="IsMouseOver"
 									 Value="True">
@@ -216,7 +216,7 @@
 					Foreground="White"
 					Command="{Binding MainPageViewModel.ReGetContentCommand}">
 				<Button.Style>
-					<Style TargetType="Button">
+					<Style TargetType="{x:Type Button}">
 						<Style.Triggers>
 							<Trigger Property="IsMouseOver"
 									 Value="True">

@@ -222,4 +222,12 @@ Esc - 关闭图片浏览器.</value>
   <data name="PVPopUpSettingsScrViewTT" xml:space="preserve">
     <value>开启此项后, 幻灯片和双页浏览设置会被忽略.</value>
   </data>
+  <data name="PVPopUpSettingsSavePos" xml:space="preserve">
+    <value>保存窗口位置和大小</value>
+  </data>
+  <data name="PVPopUpSettingsSavePosTT" xml:space="preserve">
+    <value>保存图片浏览器的位置和大小以让其在设定的方位打开.
+你可以在[%USERPROFILE%\AppData\Local\%USERNAME%]中找到这些设置.
+右键按钮可重置为480*600@(0,0).</value>
+  </data>
 </root>

@@ -247,7 +247,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, folderName) : string.Format("{0}\\{1}", PATHtoShow, folderName);
 		}
 
-		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e)
+		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e)	//Open Photo Viewer or advance path.
 		{
 			string imageFolder = ((Image)sender).ToolTip.ToString();
 			if (e.ChangedButton == MouseButton.Left)
@@ -258,8 +258,13 @@ namespace FolderThumbnailExplorer.ViewModel
 				{   //Image found, start Photo Viewer.
 					string imagePath = ((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name;
 					imagePath = imagePath.Remove(imagePath.LastIndexOf('\\'));
-					PhotoViewer photoViewer = new PhotoViewer(imagePath);
-					photoViewer.Left = 0; photoViewer.Top = 0;  //Spawns window at top left corner.
+					PhotoViewer photoViewer = new PhotoViewer(imagePath)
+					{
+						Width = Properties.Settings.Default.PV_Width,
+						Height = Properties.Settings.Default.PV_Height,
+						Left = Properties.Settings.Default.PV_Left,
+						Top = Properties.Settings.Default.PV_Top
+					};
 					wnds.Add(photoViewer); //Add this to opened windows list to close it when mainwindow closes
 					photoViewer.Show();
 				}

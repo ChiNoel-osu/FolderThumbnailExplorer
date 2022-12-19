@@ -200,6 +200,26 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   查找类似 Save window position &amp; size 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsSavePos {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsSavePos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Save Photo Viewer&apos;s position &amp; size so it will be spawned at your desired location.
+        ///The setting file is in [%USERPROFILE%\AppData\Local\%USERNAME%].
+        ///Right click the button to reset 480*600@(0,0). 的本地化字符串。
+        /// </summary>
+        public static string PVPopUpSettingsSavePosTT {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsSavePosTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scroll view the image 的本地化字符串。
         /// </summary>
         public static string PVPopUpSettingsScrView {
