@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -11,6 +12,12 @@ namespace FolderThumbnailExplorer
 	{
 		public App()
 		{
+#if DEBUG
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+			Dispatcher.UnhandledException += Dispatcher_UnhandledException;
+			Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+			TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+#endif
 			#region Load settings.
 			try
 			{
@@ -23,5 +30,27 @@ namespace FolderThumbnailExplorer
 			}
 			#endregion
 		}
+
+#if DEBUG
+		private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+#endif
 	}
 }

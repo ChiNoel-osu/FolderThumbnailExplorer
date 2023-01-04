@@ -181,6 +181,8 @@ namespace FolderThumbnailExplorer.ViewModel
 									using (FileStream stream = File.OpenRead(firstFilePath))
 									{   //Use stream sourec instead of regular uri source to improve responsiveness.
 										bitmap.BeginInit();
+										//This will fix badly encoded images.
+										bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
 										//Use BitmapCacheOption.OnLoad to even make it display.
 										bitmap.CacheOption = BitmapCacheOption.OnLoad;
 										bitmap.StreamSource = stream;
@@ -194,10 +196,20 @@ namespace FolderThumbnailExplorer.ViewModel
 											bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
 											bitmap.EndInit();
 										}
+										//catch(ArgumentException)
+										//{	//Bad encoded image? Fixed with bitmap.CreateOptions.
+										//	GC.Collect();
+										//	continue;
+										//}
 										catch (System.Runtime.InteropServices.COMException)
 										{
 											GC.Collect();
 											continue;   //Stupid cloud storages, skip.
+										}
+										catch (Exception e)
+										{
+											MessageBox.Show(e.ToString(), "im ded", MessageBoxButton.OK, MessageBoxImage.Warning);
+											continue;
 										}
 										finally //This is VITAL for it to be passed between threads.
 										{ bitmap.Freeze(); }
@@ -247,7 +259,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, folderName) : string.Format("{0}\\{1}", PATHtoShow, folderName);
 		}
 
-		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e)	//Open Photo Viewer or advance path.
+		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e) //Open Photo Viewer or advance path.
 		{
 			string imageFolder = ((Image)sender).ToolTip.ToString();
 			if (e.ChangedButton == MouseButton.Left)

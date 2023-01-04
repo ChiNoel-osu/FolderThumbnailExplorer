@@ -68,5 +68,5 @@ namespace FolderThumbnailExplorer.View
 			};
 		}
 		#endregion
-    }
+	}
 }

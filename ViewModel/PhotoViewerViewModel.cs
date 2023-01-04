@@ -95,6 +95,7 @@ namespace FolderThumbnailExplorer.ViewModel
 						{
 							_BigImage = new BitmapImage();
 							_BigImage.BeginInit();
+							_BigImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
 							_BigImage.CacheOption = BitmapCacheOption.OnLoad;
 							_BigImage.StreamSource = stream;
 							_BigImage.EndInit();
@@ -104,6 +105,7 @@ namespace FolderThumbnailExplorer.ViewModel
 						{
 							_BigImage2 = new BitmapImage();
 							_BigImage2.BeginInit();
+							_BigImage2.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
 							_BigImage2.CacheOption = BitmapCacheOption.OnLoad;
 							_BigImage2.StreamSource = stream;
 							_BigImage2.EndInit();
@@ -232,6 +234,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					using (FileStream stream = File.OpenRead(img.Value))
 					{
 						bitmapImage.BeginInit();
+						bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
 						bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
 						bitmapImage.StreamSource = stream;
 						bitmapImage.DecodePixelWidth = 128; //TODO: make it configurable.
