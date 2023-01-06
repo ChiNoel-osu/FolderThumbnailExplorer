@@ -100,7 +100,7 @@ namespace FolderThumbnailExplorer.ViewModel
 							_BigImage.StreamSource = stream;
 							_BigImage.EndInit();
 						}
-					if (_Images.Count > 1 && _Images.Count > _ListSelectedIndex + 1)
+					if (_Images.Count > 1 && _Images.Count > _ListSelectedIndex + 1)    //More than one image exists
 						using (FileStream stream = File.OpenRead(_Images[_ListSelectedIndex + 1].Path))
 						{
 							_BigImage2 = new BitmapImage();
@@ -122,12 +122,20 @@ namespace FolderThumbnailExplorer.ViewModel
 		public static void OpenInExplorer(string path)
 		{
 			Process.Start("explorer.exe", path);
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		[RelayCommand]
-		public void ToggleSlideShow() => SlideShow = !_SlideShow;
+		public void ToggleSlideShow()
+		{
+			SlideShow = !_SlideShow;
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
+		}
 		[RelayCommand]
-		public void ChangeFlowDirection(bool isChecked) =>
+		public void ChangeFlowDirection(bool isChecked)
+		{
 			FlowDirection = isChecked ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
+		}
 		bool isLoading = false;
 		[RelayCommand]
 		public void LoadScrollView()
@@ -154,6 +162,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					}
 				});
 			}
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		[RelayCommand]
 		public void SavePos(Window wnd)
@@ -165,6 +174,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			Properties.Settings.Default.PV_Top = wnd.Top;
 			Properties.Settings.Default.Save();
 			PosFlag = 1;
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		[RelayCommand]
 		public void DefaultPos()
@@ -176,6 +186,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			Properties.Settings.Default.PV_Top = 0;
 			Properties.Settings.Default.Save();
 			PosFlag = -1;
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 
 		#region IDataErrorInfo members
@@ -214,6 +225,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			Task.Run(() =>
 			{
+				App.Logger.Info("The PhotoViewer has started to load images.");
 				IEnumerable<string> imgs;
 				string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
 				try
@@ -249,6 +261,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
 				}
 				doneAddingImages = true;
+				App.Logger.Info("The PhotoViewer has loaded all images.");
 			});
 		}
 
@@ -280,6 +293,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			closing = true;
 			MainPageViewModel.wnds.Remove((Window)sender);
+			App.Logger.Info("PhotoViewer has closed.");
 		}
 	}
 }

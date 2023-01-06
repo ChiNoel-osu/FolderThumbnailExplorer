@@ -98,6 +98,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			Drives.Clear();
 			foreach (string drive in Directory.GetLogicalDrives())
 				Drives.Add(drive);
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		[RelayCommand]
 		public void GoBack()
@@ -122,9 +123,13 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void ReGetContent()
 		{
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name}.");
 			IsNotAddingItem = false;
 			if (addItemTask != null && !addItemTask.IsCompleted)
+			{
 				cts.Cancel();   //Cancel the task to avoid old folder being added to the list
+				App.Logger.Info("Last loading has not completed and are canceled.");
+			}
 			Content.Clear();
 			//Setup cancellation token for cancelling use.
 			cts = new CancellationTokenSource();
@@ -149,13 +154,14 @@ namespace FolderThumbnailExplorer.ViewModel
 							catch (OperationCanceledException)
 							{
 								_Content.Remove(lastAdded); //Sometimes last added item can still appear on the list, this fixes it.
+								App.Logger.Info("Canceling loading.");
 								break;
 							}
 							FileAttributes dirAtt = new DirectoryInfo(dir).Attributes;
 							if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
 							{
 								string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
-								Task<string[]> task = DirHelper.DirInPathTask(dir);
+								Task<string[]> task = DirHelper.DirInPathTask(dir); //Async operation about finding if there's any subfolders.
 								string[] subfolders;
 								string firstFilePath;
 								try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
@@ -190,6 +196,7 @@ namespace FolderThumbnailExplorer.ViewModel
 										try { bitmap.EndInit(); }
 										catch (NotSupportedException)   //Bad image file, use default.
 										{
+											App.Logger.Warn($"Bad image file detected in folder {dir}: {firstFilePath[(firstFilePath.LastIndexOf('\\') + 1)..]}. Falling back to default thumbnail.");
 											bitmap = new BitmapImage();
 											bitmap.BeginInit();
 											bitmap.DecodePixelWidth = SliderValue + 128;
@@ -203,12 +210,14 @@ namespace FolderThumbnailExplorer.ViewModel
 										//}
 										catch (System.Runtime.InteropServices.COMException)
 										{
+											App.Logger.Info($"Skipping cloud storages and stuff (COMException): {dir}");
 											GC.Collect();
 											continue;   //Stupid cloud storages, skip.
 										}
 										catch (Exception e)
 										{
-											MessageBox.Show(e.ToString(), "im ded", MessageBoxButton.OK, MessageBoxImage.Warning);
+											App.Logger.Warn($"Exception occured creating thumbnail {firstFilePath}\n{e.Message}");
+											MessageBox.Show(e.Message, "im ded", MessageBoxButton.OK, MessageBoxImage.Warning);
 											continue;
 										}
 										finally //This is VITAL for it to be passed between threads.
@@ -231,9 +240,14 @@ namespace FolderThumbnailExplorer.ViewModel
 							StringBuilder stringBuilder = new StringBuilder();
 							foreach (string dir in unauthorizedFolders)
 								stringBuilder.AppendLine(dir);
+							App.Logger.Info("Unauthorized folders found, showing MessageBox.");
 							MessageBox.Show("One or more folder(s) has been skipped due to lack of permission:\n" + stringBuilder + "\nIf you want to access these folder(s), try running the app as Administrator.", "Unauthorized access to folder is denied.", MessageBoxButton.OK, MessageBoxImage.Asterisk);
 						}
 						IsNotAddingItem = true;
+						if (ct.IsCancellationRequested)
+							App.Logger.Info("Loading has canceled.");
+						else
+							App.Logger.Info("Loading has finished.");
 					}
 				}
 				else
@@ -270,6 +284,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				{   //Image found, start Photo Viewer.
 					string imagePath = ((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name;
 					imagePath = imagePath.Remove(imagePath.LastIndexOf('\\'));
+					App.Logger.Info("Starting PhotoViewer with path " + imagePath);
 					PhotoViewer photoViewer = new PhotoViewer(imagePath)
 					{
 						Width = Properties.Settings.Default.PV_Width,
@@ -279,10 +294,14 @@ namespace FolderThumbnailExplorer.ViewModel
 					};
 					wnds.Add(photoViewer); //Add this to opened windows list to close it when mainwindow closes
 					photoViewer.Show();
+					App.Logger.Info("PhotoViewer started with path " + imagePath);
 				}
 			}
 			else if (e.ChangedButton == MouseButton.Right)  //Right click to Start explorer.exe
-				Process.Start("explorer.exe", PATHtoShow.EndsWith('\\') ? (PATHtoShow + imageFolder) : (PATHtoShow + '\\' + imageFolder));
+			{
+				Process.Start("explorer.exe", _PATHtoShow.EndsWith('\\') ? (_PATHtoShow + imageFolder) : (_PATHtoShow + '\\' + imageFolder));
+				App.Logger.Info("Started explorer at: " + _PATHtoShow + ". Folder name: " + imageFolder);
+			}
 		}
 
 		#region AddNewFavorite
@@ -296,9 +315,11 @@ namespace FolderThumbnailExplorer.ViewModel
 			addNewFav.Show();
 			addNewFav.Closed += AddNewFav_Closed;
 			addBtn.IsEnabled = false;
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		private void AddNewFav_Closed(object? sender, EventArgs e)
 		{
+			App.Logger.Info("AddNewFav window has been closed.");
 			OnPropertyChanged(nameof(ComboBoxItems));
 			addBtn.IsEnabled = true;
 		}
@@ -332,6 +353,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			get
 			{
+				App.Logger.Info("Getting favorite folders from Favorites.txt.");
 				Task.Run(() =>
 				{
 					string favPath = Directory.GetCurrentDirectory() + "\\Favorites.txt";

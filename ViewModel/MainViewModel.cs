@@ -13,6 +13,7 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		public MainViewModel()
 		{
+			App.Logger.Trace("Initialzing ViewModels");
 			NavSideBarViewModel = new NavSideBarViewModel();
 			FavFoldersViewModel = new FavFoldersViewModel();
 			MainPageViewModel = new MainPageViewModel();
