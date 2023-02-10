@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -58,6 +60,35 @@ namespace FolderThumbnailExplorer
 			throw new NotImplementedException();
 		}
 #endif
+		#endregion
+		#region Startup, Read command line arguments.
+		Dictionary<string, string> cliArgs = new Dictionary<string, string>();
+		private void Application_Startup(object sender, StartupEventArgs e)
+		{
+			string path = string.Empty;
+			if (e.Args.Length > 0)  //Command line arguments provided.
+			{
+				try
+				{
+					for (byte index = 0; index < e.Args.Length; index += 2)
+						cliArgs.Add(e.Args[index], e.Args[index + 1]);
+				}
+				catch (ArgumentException ex)
+				{   //Duplicated option
+					Logger.Error("Duplicated console option detected, the app will use first valid option.\n" + ex);
+				}
+				catch (IndexOutOfRangeException ex)
+				{   //Incomplete argument
+					Logger.Error("Incomplete console arguments ignored.\n" + ex);
+				}
+				if (cliArgs.Keys.Contains("--path"))
+				{
+					path = cliArgs["--path"];
+					Logger.Info("The app will start with path: " + path);
+				}
+			}
+			new MainWindow(path).Show();
+		}
 		#endregion
 	}
 }

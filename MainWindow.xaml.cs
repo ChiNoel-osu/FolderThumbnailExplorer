@@ -10,9 +10,10 @@ namespace FolderThumbnailExplorer
 	public partial class MainWindow : Window
 	{
 		public static MainViewModel MainVM { get; set; } = new MainViewModel();
-		public MainWindow()
+		public MainWindow(string path)
 		{
 			App.Logger.Info("Loading MainWindow and its components...");
+			MainVM.MainPageViewModel.PATHtoShow = path;	//Command line argument.
 			DataContext = MainVM;
 			InitializeComponent();
 			this.Closed += MainWindow_Closed;
