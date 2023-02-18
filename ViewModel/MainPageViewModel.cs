@@ -265,7 +265,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		public void TextDoubleClicked(TextBlock tb)
 		{   //Double click advance folder
 			string imageFolder = tb.Text;
-			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}\\{1}", PATHtoShow, imageFolder);
+			PATHtoShow = PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", PATHtoShow, imageFolder) : $"{PATHtoShow}{Path.DirectorySeparatorChar}{imageFolder}";
 		}
 		[RelayCommand]
 		public void SubfolderIconClicked(string folderName)

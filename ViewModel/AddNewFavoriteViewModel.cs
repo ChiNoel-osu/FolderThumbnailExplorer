@@ -13,7 +13,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		public void SaveNewFav(Window window)
 		{
 			App.Logger.Info($"Adding a new favorite folder {Path} with name {Name}.");
-			string favPath = Directory.GetCurrentDirectory() + "\\Favorites.txt";
+			string favPath = Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + "Favorites.txt";
 			string[] strings = { "Name|" + Name, "Path|" + Path };
 			if (!File.Exists(favPath))
 			{

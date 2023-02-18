@@ -237,7 +237,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				//Natural sorting.
 				SortedDictionary<string, string> map = new SortedDictionary<string, string>(new NaturalStringComparer());
 				foreach (string filePath in imgs)   //The dictionary will sort itself when value's being added.
-					map.Add(filePath[(filePath.LastIndexOf('\\') + 1)..], filePath);    //Use filename to compare.
+					map.Add(filePath[(filePath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..], filePath);    //Use filename to compare.
 				foreach (KeyValuePair<string, string> img in map)
 				{
 					if (closing) break; //Break out if the window is closing.
@@ -254,7 +254,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					}
 					bitmapImage.Freeze();
 					imgItem.Path = img.Value;
-					imgItem.Name = img.Value[(img.Value.LastIndexOf('\\') + 1)..];
+					imgItem.Name = img.Value[(img.Value.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
 					imgItem.Image = bitmapImage;
 					Application.Current.Dispatcher.Invoke(() => _Images.Add(imgItem));
 					_ImageCount++;
