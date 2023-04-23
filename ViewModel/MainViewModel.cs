@@ -1,19 +1,14 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-
-namespace FolderThumbnailExplorer.ViewModel
+﻿namespace FolderThumbnailExplorer.ViewModel
 {
-	public partial class MainViewModel : ObservableObject
+	public partial class MainViewModel
 	{
-		public NavSideBarViewModel NavSideBarViewModel { get; set; }
-		public FavFoldersViewModel FavFoldersViewModel { get; set; }
-		public MainPageViewModel MainPageViewModel { get; set; }
-
-		[ObservableProperty]
-		object _RightView;
+		public NavSideBarViewModel NavSideBarViewModel { get; private set; }
+		public FavFoldersViewModel FavFoldersViewModel { get; private set; }
+		public MainPageViewModel MainPageViewModel { get; private set; }
 
 		public MainViewModel()
 		{
-			App.Logger.Trace("Initialzing ViewModels");
+			App.Logger.Trace("Initializing ViewModels");
 			NavSideBarViewModel = new NavSideBarViewModel();
 			FavFoldersViewModel = new FavFoldersViewModel();
 			MainPageViewModel = new MainPageViewModel();

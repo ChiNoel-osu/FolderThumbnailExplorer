@@ -17,15 +17,6 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</d:UserControl.Resources>
-	<UserControl.Resources>
-		<!--Navigations-->
-		<DataTemplate DataType="{x:Type viewmodel:MainPageViewModel}">
-			<local:DriveSelect />
-		</DataTemplate>
-		<DataTemplate DataType="{x:Type viewmodel:FavFoldersViewModel}">
-			<local:FavoriteFolders /><!--placeholder-->
-		</DataTemplate>
-	</UserControl.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
@@ -38,8 +29,7 @@
 				 Background="Transparent"
 				 BorderBrush="Transparent"
 				 BorderThickness="0"
-				 Padding="0"
-				 SelectionChanged="NavBar_SelectionChanged">
+				 Padding="0">
 			<ListBoxItem Style="{DynamicResource ListBoxNavItemStyle}"
 						 Content="Main"
 						 Padding="10" />
@@ -47,8 +37,8 @@
 						 Content="Fav"
 						 Padding="10" />
 		</ListBox>
-		<ContentControl Name="CC"
-						Grid.Row="1"/>
+		<ContentControl Grid.Row="1"
+						Content="{Binding NavSideBarViewModel.MidCtrl}" />
 		<Label Grid.Row="2"
 			   Content="ℹ"
 			   Foreground="Cyan"

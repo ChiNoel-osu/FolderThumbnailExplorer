@@ -9,7 +9,7 @@ namespace FolderThumbnailExplorer
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		public static MainViewModel MainVM { get; set; } = new MainViewModel();
+		public static MainViewModel MainVM { get; private set; } = new MainViewModel();
 		public MainWindow(string path)
 		{
 			App.Logger.Info("Loading MainWindow and its components...");

@@ -6,6 +6,7 @@
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
+			 Focusable="False"
 			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 			 mc:Ignorable="d"
 			 d:DesignHeight="200"

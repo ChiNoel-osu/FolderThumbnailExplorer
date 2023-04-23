@@ -10,7 +10,6 @@ namespace FolderThumbnailExplorer.View
 		public DriveSelect()
 		{
 			InitializeComponent();
-			DataContext = MainWindow.MainVM;
 		}
 
 		private void ListBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

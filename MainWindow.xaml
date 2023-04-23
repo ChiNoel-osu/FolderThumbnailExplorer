@@ -17,12 +17,6 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-			<DataTemplate DataType="{x:Type viewmodel:MainPageViewModel}">
-				<view:MainPage />
-			</DataTemplate>
-			<DataTemplate DataType="{x:Type viewmodel:FavFoldersViewModel}">
-				<view:FavoriteFolders />
-			</DataTemplate>
 		</ResourceDictionary>
 	</Window.Resources>
 	<Grid>
@@ -39,6 +33,6 @@
 					  Background="AliceBlue"
 					  Width="4" />
 		<ContentControl Grid.Column="1"
-						Content="{Binding RightView, Mode=OneWay}" />
+						Content="{Binding NavSideBarViewModel.RightView, Mode=OneWay}" />
 	</Grid>
 </Window>

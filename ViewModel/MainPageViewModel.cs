@@ -52,7 +52,7 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		bool isLastPathValid = false;   //For validation use.
 		string lastValidPath;
-		string _PATHtoShow; //DirBox.Text
+		string _PATHtoShow;	//DirBox.Text
 		public string PATHtoShow
 		{
 			get => _PATHtoShow;
@@ -84,7 +84,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		}
 
 		[ObservableProperty]
-		List<string> _Drives = new List<string>();
+		ObservableCollection<string> _Drives = new ObservableCollection<string>();
 		[ObservableProperty]
 		ObservableCollection<CustomContentItem> _Content = new ObservableCollection<CustomContentItem>();
 		[ObservableProperty]
@@ -99,6 +99,15 @@ namespace FolderThumbnailExplorer.ViewModel
 			foreach (string drive in Directory.GetLogicalDrives())
 				Drives.Add(drive);
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
+		}
+		[RelayCommand]
+		public void GoUp()
+		{
+			if (_PATHtoShow != string.Empty)
+				if (_PATHtoShow.Remove(_PATHtoShow.LastIndexOf(Path.DirectorySeparatorChar)).Length == 2)
+					PATHtoShow = string.Format("{0}:" + Path.DirectorySeparatorChar, _PATHtoShow[0]);
+				else
+					PATHtoShow = _PATHtoShow.Remove(_PATHtoShow.LastIndexOf(Path.DirectorySeparatorChar));
 		}
 		[RelayCommand]
 		public void GoBack()

@@ -18,19 +18,5 @@ namespace FolderThumbnailExplorer.View
 		{
 			Process.Start(new ProcessStartInfo("cmd", @"/c start https://github.com/ChiNoel-osu/FolderThumbnailExplorer") { CreateNoWindow = true });
 		}
-
-		private void NavBar_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			if (CC is not null)
-			{
-				CC.Content = ((ListBox)sender).SelectedIndex switch
-				{
-					-1 => null,
-					0 => MainWindow.MainVM.RightView = MainWindow.MainVM.MainPageViewModel,
-					1 => MainWindow.MainVM.RightView = MainWindow.MainVM.FavFoldersViewModel,
-					_ => throw new NotImplementedException()
-				};
-			}
-		}
 	}
 }

@@ -39,7 +39,6 @@ namespace FolderThumbnailExplorer
 			#endregion
 		}
 		#region Global exception handling
-#if DEBUG
 		private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
 		{
 			throw new NotImplementedException();
@@ -52,14 +51,14 @@ namespace FolderThumbnailExplorer
 
 		private void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
 		{
-			throw new NotImplementedException();
+			MessageBox.Show(e.Exception.InnerException.Message);
+			Logger.Fatal(e.Exception.InnerException.StackTrace);
 		}
 
 		public void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
 			throw new NotImplementedException();
 		}
-#endif
 		#endregion
 		#region Startup, Read command line arguments.
 		Dictionary<string, string> cliArgs = new Dictionary<string, string>();

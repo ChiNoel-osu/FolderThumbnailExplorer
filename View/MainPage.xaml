@@ -10,8 +10,7 @@
 			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 			 mc:Ignorable="d"
 			 d:DesignHeight="600"
-			 d:DesignWidth="600"
-			 KeyDown="UserControl_KeyDown">
+			 d:DesignWidth="600">
 	<d:UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -23,6 +22,10 @@
 		<converter:LabelSizeConverter x:Key="LSConverter" />
 		<converter:Bool2VisivilityConverter x:Key="B2VConverter" />
 	</UserControl.Resources>
+	<UserControl.InputBindings>
+		<KeyBinding Key="Backspace"
+					Command="{Binding MainPageViewModel.GoUpCommand}" />
+	</UserControl.InputBindings>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="26" />
@@ -82,7 +85,6 @@
 						Padding="0,-2,0,0"
 						FontSize="10"
 						BorderBrush="CornflowerBlue"
-						Click="GoUpBtnClicked"
 						Margin="3,0,0,0">
 					<Button.Style>
 						<Style>
