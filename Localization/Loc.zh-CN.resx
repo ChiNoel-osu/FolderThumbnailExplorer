@@ -121,8 +121,7 @@
     <value>🔄 刷新</value>
   </data>
   <data name="RefreshDriveBtnTT" xml:space="preserve">
-    <value>刷新逻辑驱动器列表.
-好像没用的样子.</value>
+    <value>刷新逻辑驱动器列表.</value>
   </data>
   <data name="MainToolTipTitle" xml:space="preserve">
     <value>ℹ 提示</value>
@@ -134,7 +133,7 @@
 双击任何文件夹的名字 - 进入此文件夹.</value>
   </data>
   <data name="AddNewFavTitle" xml:space="preserve">
-    <value>添加新收藏.</value>
+    <value>添加新收藏</value>
   </data>
   <data name="ANFPath" xml:space="preserve">
     <value> 路径</value>

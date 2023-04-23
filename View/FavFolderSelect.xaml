@@ -1,12 +1,11 @@
-﻿<UserControl x:Class="FolderThumbnailExplorer.View.DriveSelect"
+﻿<UserControl x:Class="FolderThumbnailExplorer.View.FavFolderSelect"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
-			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
-			 Focusable="False"
 			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 			 mc:Ignorable="d"
 			 d:DesignHeight="200"
@@ -27,20 +26,14 @@
 				 BorderBrush="Transparent"
 				 Background="Transparent"
 				 Foreground="White"
-				 FontSize="20"
-				 ItemsSource="{Binding MainPageViewModel.Drives, Mode=OneWay}"
-				 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-				 ScrollViewer.VerticalScrollBarVisibility="Hidden"
-				 SelectedItem="{Binding MainPageViewModel.PATHtoShow, Mode=OneWayToSource}"
-				 d:ItemsSource="{d:SampleData ItemCount=3}"
-				 KeyDown="ListBox_KeyDown" />
+				 ItemsSource="{Binding MainPageViewModel.FavGroup, Mode=OneWay}"
+				 d:ItemsSource="{d:SampleData ItemCount=5}" />
 		<Button Grid.Row="1"
 				Content="{x:Static loc:Loc.RefreshDriveBtn}"
-				ToolTip="{x:Static loc:Loc.RefreshDriveBtnTT}"
+				Command="{Binding MainPageViewModel.RefreshFavGroupCommand, Mode=OneWay}"
 				FontSize="14"
 				Template="{DynamicResource ButtonTemplate1}"
 				Background="Transparent"
-				Foreground="White"
-				Command="{Binding MainPageViewModel.RefreshDrivesCommand}" />
+				Foreground="White" />
 	</Grid>
 </UserControl>

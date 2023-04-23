@@ -86,6 +86,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		ObservableCollection<string> _Drives = new ObservableCollection<string>();
 		[ObservableProperty]
+		ObservableCollection<string> _FavGroup = new ObservableCollection<string>();
+		[ObservableProperty]
 		ObservableCollection<CustomContentItem> _Content = new ObservableCollection<CustomContentItem>();
 		[ObservableProperty]
 		ushort _SliderValue = 156;
@@ -99,6 +101,20 @@ namespace FolderThumbnailExplorer.ViewModel
 			foreach (string drive in Directory.GetLogicalDrives())
 				Drives.Add(drive);
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
+		}
+		[RelayCommand]
+		public void RefreshFavGroup()
+		{
+			_FavGroup.Clear();
+			foreach (FileInfo group in Directory.CreateDirectory("FavoriteGroups").EnumerateFiles())
+			{
+				if (group.Extension != ".txt") continue;
+				FavGroup.Add(Path.GetFileNameWithoutExtension(group.Name));
+				foreach (string path in File.ReadAllLines(group.FullName))
+				{
+
+				}
+			}
 		}
 		[RelayCommand]
 		public void GoUp()
@@ -416,6 +432,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			BindingOperations.EnableCollectionSynchronization(Content, new object());
 			BindingOperations.EnableCollectionSynchronization(_ComboBoxItems, new object());
 			RefreshDrives();
+			RefreshFavGroup();
 		}
 	}
 }

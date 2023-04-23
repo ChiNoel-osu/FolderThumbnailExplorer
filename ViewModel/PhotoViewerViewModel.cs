@@ -215,7 +215,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			get
 			{
-				AddImgs(path);
+				AddImgs(path);	//Starts a task that adds images to the collection.
 				return _Images;
 			}
 			private set { _Images = value; }
@@ -227,7 +227,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				App.Logger.Info("The PhotoViewer has started to load images.");
 				IEnumerable<string> imgs;
-				string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
+				string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif", ".jfif" };
 				try
 				{   //Get image files
 					imgs = Directory.EnumerateFiles(path, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith));
@@ -256,7 +256,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					imgItem.Path = img.Value;
 					imgItem.Name = img.Value[(img.Value.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
 					imgItem.Image = bitmapImage;
-					Application.Current.Dispatcher.Invoke(() => _Images.Add(imgItem));
+					_Images.Add(imgItem);
 					_ImageCount++;
 					OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
 				}

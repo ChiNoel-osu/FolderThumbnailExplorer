@@ -121,8 +121,7 @@
     <value>🔄 Refresh</value>
   </data>
   <data name="RefreshDriveBtnTT" xml:space="preserve">
-    <value>Refresh logical drives list.
-Doesn't work for some reason.</value>
+    <value>Refresh logical drives list.</value>
   </data>
   <data name="MainToolTip" xml:space="preserve">
     <value>Left Click on normal folder - Advance folder.
@@ -134,7 +133,7 @@ Double Click on any folder's name - Advance folder.</value>
     <value>ℹ Quick Tip</value>
   </data>
   <data name="AddNewFavTitle" xml:space="preserve">
-    <value>Add new favorites.</value>
+    <value>Add new favorites</value>
   </data>
   <data name="ANFPath" xml:space="preserve">
     <value> Path</value>

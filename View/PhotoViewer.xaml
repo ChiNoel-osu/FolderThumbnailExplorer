@@ -94,7 +94,8 @@
 				<ListBox.ItemTemplate>
 					<DataTemplate>
 						<StackPanel>
-							<Image Source="{Binding Image}" />
+							<Image Source="{Binding Image}"
+								   CacheMode="BitmapCache"/>
 							<TextBlock Text="{Binding Name}"
 									   ToolTip="{Binding Path}"
 									   HorizontalAlignment="Center"
