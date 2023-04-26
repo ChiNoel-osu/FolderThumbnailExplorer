@@ -229,4 +229,19 @@ This flips that.</value>
 The setting file is in [%USERPROFILE%\AppData\Local\%USERNAME%].
 Right click the button to reset 480*600@(0,0).</value>
   </data>
+  <data name="Add2FavGroup" xml:space="preserve">
+    <value>Add favorites to group</value>
+  </data>
+  <data name="Add2Group" xml:space="preserve">
+    <value>Add to group:</value>
+  </data>
+  <data name="OrNewGroup" xml:space="preserve">
+    <value>Or create a new group:</value>
+  </data>
+  <data name="ReplaceGroupCaption" xml:space="preserve">
+    <value>Group exists!</value>
+  </data>
+  <data name="ReplaceGroup" xml:space="preserve">
+    <value>Group exists and will be replaced, continue?</value>
+  </data>
 </root>

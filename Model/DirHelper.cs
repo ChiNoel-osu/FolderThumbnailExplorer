@@ -44,7 +44,7 @@ namespace FolderThumbnailExplorer.Model
 		public static string GetFileFolderName(string path)
 		{
 			if (path != null)
-				return path[(path.LastIndexOf('\\') + 1)..];
+				return path[(path.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
 			else
 				return string.Empty;
 		}

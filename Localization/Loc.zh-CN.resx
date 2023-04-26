@@ -229,4 +229,19 @@ Esc - 关闭图片浏览器.</value>
 你可以在[%USERPROFILE%\AppData\Local\%USERNAME%]中找到这些设置.
 右键按钮可重置为480*600@(0,0).</value>
   </data>
+  <data name="Add2FavGroup" xml:space="preserve">
+    <value>添加文件夹至分类</value>
+  </data>
+  <data name="Add2Group" xml:space="preserve">
+    <value>添加至组:</value>
+  </data>
+  <data name="OrNewGroup" xml:space="preserve">
+    <value>或新建组:</value>
+  </data>
+  <data name="ReplaceGroupCaption" xml:space="preserve">
+    <value>组已存在!</value>
+  </data>
+  <data name="ReplaceGroup" xml:space="preserve">
+    <value>已存在同名的组, 将会被替换, 继续?</value>
+  </data>
 </root>

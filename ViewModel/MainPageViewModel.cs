@@ -52,7 +52,7 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		bool isLastPathValid = false;   //For validation use.
 		string lastValidPath;
-		string _PATHtoShow;	//DirBox.Text
+		string _PATHtoShow; //DirBox.Text
 		public string PATHtoShow
 		{
 			get => _PATHtoShow;
@@ -60,12 +60,17 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				if (string.IsNullOrEmpty(value))
 					_PATHtoShow = lastValidPath;   //Don't notify property change. Keep the path unchanged when this happens.
+				else if (value.StartsWith("FavoriteFolder"))
+				{   //Getting favorite folders, notify property changed but don't call ReGetContent();
+					_PATHtoShow = value;
+					OnPropertyChanged(nameof(PATHtoShow));
+				}
 				else
 				{
 					_PATHtoShow = value;
 					if (isLastPathValid = DirHelper.IsPathValid(_PATHtoShow))
 					{   //Compare the incoming path to the last valid path and if they're the same, do nothing.
-						//TODO: Bugs exists. Like if user use '/' instead of '\' for directory seperator.
+						//TODO: Bugs exists. Like if user use '/' instead of '\' for directory separator.
 						if (lastValidPath == _PATHtoShow)
 							return; //Early return.
 						lastValidPath = _PATHtoShow;
@@ -86,13 +91,15 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		ObservableCollection<string> _Drives = new ObservableCollection<string>();
 		[ObservableProperty]
-		ObservableCollection<string> _FavGroup = new ObservableCollection<string>();
+		ObservableCollection<TaggedString> _FavGroup = new ObservableCollection<TaggedString>();
+		[ObservableProperty]
+		TaggedString _SelectedFav;
 		[ObservableProperty]
 		ObservableCollection<CustomContentItem> _Content = new ObservableCollection<CustomContentItem>();
 		[ObservableProperty]
 		ushort _SliderValue = 156;
 		[ObservableProperty]
-		bool _IsNotAddingItem = true;   //For RefreshButton IsEnabled.
+		bool _NotAddingItem = true;   //For RefreshButton IsEnabled.
 
 		[RelayCommand]
 		public void RefreshDrives()
@@ -106,14 +113,11 @@ namespace FolderThumbnailExplorer.ViewModel
 		public void RefreshFavGroup()
 		{
 			_FavGroup.Clear();
+			_SelectedFav = new TaggedString();
 			foreach (FileInfo group in Directory.CreateDirectory("FavoriteGroups").EnumerateFiles())
 			{
 				if (group.Extension != ".txt") continue;
-				FavGroup.Add(Path.GetFileNameWithoutExtension(group.Name));
-				foreach (string path in File.ReadAllLines(group.FullName))
-				{
-
-				}
+				FavGroup.Add(new TaggedString { value = Path.GetFileNameWithoutExtension(group.Name), tag = group.FullName });
 			}
 		}
 		[RelayCommand]
@@ -149,7 +153,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		public void ReGetContent()
 		{
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name}.");
-			IsNotAddingItem = false;
+			NotAddingItem = false;
 			if (addItemTask != null && !addItemTask.IsCompleted)
 			{
 				cts.Cancel();   //Cancel the task to avoid old folder being added to the list
@@ -168,7 +172,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					string[] dirs = DirHelper.DirInPath(_PATHtoShow);
 					if (dirs is not null)
 					{
-						CustomContentItem lastAdded = null;  //Mark the last added item.
+						CustomContentItem lastAdded = new CustomContentItem();  //Mark the last added item.
 						List<string> unauthorizedFolders = new List<string>();
 						foreach (string dir in dirs)
 						{
@@ -200,75 +204,21 @@ namespace FolderThumbnailExplorer.ViewModel
 								}
 								BitmapImage bitmap = new BitmapImage();
 								if (firstFilePath == "Bruh")
-								{   //Default thumbnail.
-									bitmap.BeginInit();
-									bitmap.DecodePixelWidth = SliderValue + 128;
-									bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
-									bitmap.EndInit();
-									bitmap.Freeze();
-								}
-								else
-								{   //Picture in folder, load thumbnail.
-									using (FileStream stream = File.OpenRead(firstFilePath))
-									{   //Use stream sourec instead of regular uri source to improve responsiveness.
-										bitmap.BeginInit();
-										//This will fix badly encoded images.
-										bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-										//Use BitmapCacheOption.OnLoad to even make it display.
-										bitmap.CacheOption = BitmapCacheOption.OnLoad;
-										bitmap.StreamSource = stream;
-										bitmap.DecodePixelWidth = SliderValue + 128;   //Make it sharper
-										try { bitmap.EndInit(); }
-										catch (NotSupportedException)   //Bad image file, use default.
-										{
-											App.Logger.Warn($"Bad image file detected in folder {dir}: {firstFilePath[(firstFilePath.LastIndexOf('\\') + 1)..]}. Falling back to default thumbnail.");
-											bitmap = new BitmapImage();
-											bitmap.BeginInit();
-											bitmap.DecodePixelWidth = SliderValue + 128;
-											bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
-											bitmap.EndInit();
-										}
-										//catch(ArgumentException)
-										//{	//Bad encoded image? Fixed with bitmap.CreateOptions.
-										//	GC.Collect();
-										//	continue;
-										//}
-										catch (System.Runtime.InteropServices.COMException)
-										{
-											App.Logger.Info($"Skipping cloud storages and stuff (COMException): {dir}");
-											GC.Collect();
-											continue;   //Stupid cloud storages, skip.
-										}
-										catch (Exception e)
-										{
-											App.Logger.Warn($"Exception occured creating thumbnail {firstFilePath}\n{e.Message}");
-											MessageBox.Show(e.Message, "im ded", MessageBoxButton.OK, MessageBoxImage.Warning);
-											continue;
-										}
-										finally //This is VITAL for it to be passed between threads.
-										{ bitmap.Freeze(); }
-									}
-								}
+									InitDefaultThumb(ref bitmap);   //Default thumbnail.
+								else if (!InitThumb(ref bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
+									continue;
 								CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir) };
 								subfolders = task.Result;
 								if (subfolders.Length > 0 && bitmap.UriSource is null)
 									newItem.HasSubfolder = true;
 								lastAdded = newItem;
-								//Items should be created in UI thread, and Dispatcher.Invoke does it.
-								Application.Current.Dispatcher.Invoke(() => Content.Add(lastAdded));
-								//The above line can cause exception as Application.Current will be null when the app is closed. But user have to close it anyway so yeah ill just leave it there.
+								Content.Add(lastAdded);
 							}
 						}
 						//Done adding stuff, notify user about unauthorized folder if any.
 						if (unauthorizedFolders.Count > 0)
-						{
-							StringBuilder stringBuilder = new StringBuilder();
-							foreach (string dir in unauthorizedFolders)
-								stringBuilder.AppendLine(dir);
-							App.Logger.Info("Unauthorized folders found, showing MessageBox.");
-							MessageBox.Show("One or more folder(s) has been skipped due to lack of permission:\n" + stringBuilder + "\nIf you want to access these folder(s), try running the app as Administrator.", "Unauthorized access to folder is denied.", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-						}
-						IsNotAddingItem = true;
+							MessageUnauthorizedFolder(unauthorizedFolders);
+						NotAddingItem = true;
 						if (ct.IsCancellationRequested)
 							App.Logger.Info("Loading has canceled.");
 						else
@@ -276,10 +226,65 @@ namespace FolderThumbnailExplorer.ViewModel
 					}
 				}
 				else
-					IsNotAddingItem = true;
+					NotAddingItem = true;
 			}, ct);
 			addItemTask.Start();
 		}
+
+		private static void MessageUnauthorizedFolder(List<string> unauthorizedFolders)
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			foreach (string dir in unauthorizedFolders)
+				stringBuilder.AppendLine(dir);
+			App.Logger.Info("Unauthorized folders found, showing MessageBox.");
+			MessageBox.Show("One or more folder(s) has been skipped due to lack of permission:\n" + stringBuilder + "\nIf you want to access these folder(s), try running the app as Administrator.", "Unauthorized access to folder is denied.", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+		}
+		private void InitDefaultThumb(ref BitmapImage bitmap)
+		{
+			bitmap.BeginInit();
+			bitmap.DecodePixelWidth = SliderValue + 128;
+			bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
+			bitmap.EndInit();
+			bitmap.Freeze();
+		}
+		private bool InitThumb(ref BitmapImage bitmap, string firstFilePath, string dir)
+		{
+			using FileStream stream = File.OpenRead(firstFilePath);
+			//Use stream source instead of regular uri source to improve responsiveness.
+			bitmap.BeginInit();
+			//This will fix badly encoded images.
+			bitmap.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+			//Use BitmapCacheOption.OnLoad to even make it display.
+			bitmap.CacheOption = BitmapCacheOption.OnLoad;
+			bitmap.StreamSource = stream;
+			bitmap.DecodePixelWidth = SliderValue + 128;   //Make it sharper
+			try { bitmap.EndInit(); }
+			catch (NotSupportedException)   //Bad image file, use default.
+			{
+				App.Logger.Warn($"Bad image file detected in folder {dir}: {firstFilePath[(firstFilePath.LastIndexOf('\\') + 1)..]}. Falling back to default thumbnail.");
+				bitmap = new BitmapImage();
+				bitmap.BeginInit();
+				bitmap.DecodePixelWidth = SliderValue + 128;
+				bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
+				bitmap.EndInit();
+			}
+			catch (System.Runtime.InteropServices.COMException)
+			{
+				App.Logger.Info($"Skipping cloud storages and stuff (COMException): {dir}");
+				GC.Collect();
+				return false;   //Stupid cloud storages, skip.
+			}
+			catch (Exception e)
+			{
+				App.Logger.Warn($"Exception occurred creating thumbnail {firstFilePath}\n{e.Message}");
+				MessageBox.Show(e.Message, "im ded", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return false;
+			}
+			finally //This is VITAL for it to be passed between threads.
+			{ bitmap.Freeze(); }
+			return true;
+		}
+
 		[RelayCommand]
 		public void ThumbnailClicked(Image img)
 		{   //The LeftClick MouseAction only considers mouse down, I need mouse up for this.
@@ -297,7 +302,6 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, folderName) : string.Format("{0}\\{1}", PATHtoShow, folderName);
 		}
-
 		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e) //Open Photo Viewer or advance path.
 		{
 			string imageFolder = ((Image)sender).ToolTip.ToString();
@@ -426,10 +430,90 @@ namespace FolderThumbnailExplorer.ViewModel
 			set { _ComboBoxItems = value; }
 		}
 		#endregion
+
+		partial void OnSelectedFavChanged(TaggedString value)
+		{
+			PATHtoShow = "FavoriteFolder: " + value.value;
+			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name}.");
+			NotAddingItem = false;
+			if (addItemTask != null && !addItemTask.IsCompleted)
+			{
+				cts.Cancel();   //Cancel the task to avoid old folder being added to the list
+				App.Logger.Info("Last loading has not completed and are canceled.");
+			}
+			Content.Clear();
+			//Setup cancellation token for cancelling use.
+			cts = new CancellationTokenSource();
+			CancellationToken ct = cts.Token;
+			//Long ass task, offload to another thread.
+			//This took me forever.
+			addItemTask = new Task(() =>
+			{
+				string[] dirs = File.ReadAllLines(value.tag);
+				if (dirs.Length > 0)
+				{
+					CustomContentItem lastAdded = new CustomContentItem();  //Mark the last added item.
+					List<string> unauthorizedFolders = new List<string>();
+					foreach (string dir in dirs)
+					{
+						try
+						{
+							ct.ThrowIfCancellationRequested();  //When task is canceled
+						}
+						catch (OperationCanceledException)
+						{
+							_Content.Remove(lastAdded); //Sometimes last added item can still appear on the list, this fixes it.
+							App.Logger.Info("Canceling loading.");
+							break;
+						}
+						FileAttributes dirAtt = new DirectoryInfo(dir).Attributes;
+						if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
+						{
+							string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
+							Task<string[]> task = DirHelper.DirInPathTask(dir); //Async operation about finding if there's any subfolders.
+							string[] subfolders;
+							string firstFilePath;
+							try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
+							{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
+							catch (InvalidOperationException)   //No such image file, set default
+							{ firstFilePath = "Bruh"; }
+							catch (UnauthorizedAccessException)
+							{   //Some top secret folder encounted
+								unauthorizedFolders.Add(dir);
+								continue;   //Skip folder and continue with the next dir.
+							}
+							BitmapImage bitmap = new BitmapImage();
+							if (firstFilePath == "Bruh")
+								InitDefaultThumb(ref bitmap);   //Default thumbnail.
+							else if (!InitThumb(ref bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
+								continue;
+							CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir) };
+							subfolders = task.Result;
+							if (subfolders.Length > 0 && bitmap.UriSource is null)
+								newItem.HasSubfolder = true;
+							lastAdded = newItem;
+							Content.Add(lastAdded);
+						}
+					}
+					//Done adding stuff, notify user about unauthorized folder if any.
+					if (unauthorizedFolders.Count > 0)
+						MessageUnauthorizedFolder(unauthorizedFolders);
+					NotAddingItem = true;
+					if (ct.IsCancellationRequested)
+						App.Logger.Info("Loading has canceled.");
+					else
+						App.Logger.Info("Loading has finished.");
+				}
+				NotAddingItem = true;
+			}, ct);
+			addItemTask.Start();
+		}
+
 		public MainPageViewModel()
 		{
 			//Do this so the ObservableCollection can be shared between threads
 			BindingOperations.EnableCollectionSynchronization(Content, new object());
+			//Referencing prop with underscore will not trigger the "get" accessor.
 			BindingOperations.EnableCollectionSynchronization(_ComboBoxItems, new object());
 			RefreshDrives();
 			RefreshFavGroup();

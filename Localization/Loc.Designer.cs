@@ -61,6 +61,24 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add favorites to group.
+        /// </summary>
+        public static string Add2FavGroup {
+            get {
+                return ResourceManager.GetString("Add2FavGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add to group:.
+        /// </summary>
+        public static string Add2Group {
+            get {
+                return ResourceManager.GetString("Add2Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add current folder to Favorites..
         /// </summary>
         public static string AddNewFavBtnTT {
@@ -142,6 +160,15 @@ namespace FolderThumbnailExplorer.Localization {
         public static string MainToolTipTitle {
             get {
                 return ResourceManager.GetString("MainToolTipTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Or create a new group:.
+        /// </summary>
+        public static string OrNewGroup {
+            get {
+                return ResourceManager.GetString("OrNewGroup", resourceCulture);
             }
         }
         
@@ -358,6 +385,24 @@ namespace FolderThumbnailExplorer.Localization {
         public static string RefreshViewTT {
             get {
                 return ResourceManager.GetString("RefreshViewTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group exists and will be replaced, continue?.
+        /// </summary>
+        public static string ReplaceGroup {
+            get {
+                return ResourceManager.GetString("ReplaceGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group exists!.
+        /// </summary>
+        public static string ReplaceGroupCaption {
+            get {
+                return ResourceManager.GetString("ReplaceGroupCaption", resourceCulture);
             }
         }
         

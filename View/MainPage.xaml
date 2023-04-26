@@ -208,7 +208,7 @@
 					ToolTip="{x:Static loc:Loc.ScaleSliderTT}" />
 			<Button Grid.Column="5"
 					Focusable="False"
-					IsEnabled="{Binding MainPageViewModel.IsNotAddingItem, Mode=OneWay}"
+					IsEnabled="{Binding MainPageViewModel.NotAddingItem, Mode=OneWay}"
 					Template="{DynamicResource ButtonTemplate1}"
 					Background="{x:Null}"
 					ToolTip="{x:Static loc:Loc.RefreshViewTT}"

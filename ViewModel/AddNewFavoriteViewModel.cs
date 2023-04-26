@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using FolderThumbnailExplorer.Model;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 
@@ -8,6 +10,9 @@ namespace FolderThumbnailExplorer.ViewModel
 	{
 		public string Path { get; set; } = string.Empty;
 		public string Name { get; set; } = string.Empty;
+
+		public List<TaggedString> GroupList { get; } = new List<TaggedString>();
+		public TaggedString SelectedGroup { get; set; }
 
 		[RelayCommand]
 		public void SaveNewFav(Window window)
@@ -24,9 +29,37 @@ namespace FolderThumbnailExplorer.ViewModel
 			window.Close();
 		}
 
+		[RelayCommand]
+		public void SaveFav2Group(Window window)
+		{
+			if (string.IsNullOrWhiteSpace(Name))
+			{
+				App.Logger.Info($"Adding a new favorite {Path} to existing group {SelectedGroup.value}.");
+				if (File.Exists(SelectedGroup.tag))
+				{
+					using StreamWriter sw = File.AppendText(SelectedGroup.tag);
+					sw.WriteLine(Path);
+				}
+			}
+			else
+			{
+				App.Logger.Info($"Adding a new favorite {Path} to new group {Name}.");
+				if (File.Exists("FavoriteGroups" + System.IO.Path.DirectorySeparatorChar + Name + ".txt") && MessageBox.Show(Localization.Loc.ReplaceGroup, Localization.Loc.ReplaceGroupCaption, MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+					return;
+				File.WriteAllText("FavoriteGroups" + System.IO.Path.DirectorySeparatorChar + Name + ".txt", Path + '\n');
+			}
+			window.Close();
+		}
+
 		public AddNewFavoriteViewModel(string path)
 		{
-			Path = path;
+			this.Path = path;
+			foreach (FileInfo group in Directory.CreateDirectory("FavoriteGroups").EnumerateFiles())
+			{
+				if (group.Extension != ".txt") continue;
+
+				GroupList.Add(new TaggedString { value = System.IO.Path.GetFileNameWithoutExtension(group.Name), tag = group.FullName });
+			}
 		}
 	}
 }

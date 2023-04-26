@@ -11,6 +11,8 @@
 		Title="Photo Viewer"
 		Height="600"
 		Width="480"
+		MinHeight="600"
+		MinWidth="200"
 		Background="Black"
 		WindowStyle="None"
 		WindowState="Normal"
@@ -149,7 +151,7 @@
 						  ResizeDirection="Columns"
 						  ToolTip="{x:Static loc:Loc.PVGridSplitterTT}" />
 			<Grid Grid.Column="2"
-				  FlowDirection="{Binding FlowDirection}"
+				  FlowDirection="{Binding FlowDir}"
 				  Visibility="{Binding MainView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition />

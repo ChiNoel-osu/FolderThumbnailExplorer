@@ -52,7 +52,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		string _SlideInterval = "1000";
 		[ObservableProperty]
-		FlowDirection _FlowDirection = FlowDirection.LeftToRight;
+		FlowDirection _FlowDir = FlowDirection.LeftToRight;
 		[ObservableProperty]
 		bool _ScrollView = false;
 		[ObservableProperty]
@@ -84,37 +84,34 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			set
 			{
-				if (value is not null)
-				{
-					//BigImage2 will always be not null after first image is loaded.
-					//The latter expression checks if user is requesting next image or not. If so, load the BigImage2 into BigImage, else reload.
-					if (_BigImage2 is not null && value.Path == ((FileStream)_BigImage2.StreamSource).Name)
-						_BigImage = _BigImage2;
-					else
-						using (FileStream stream = File.OpenRead(value.Path))
-						{
-							_BigImage = new BitmapImage();
-							_BigImage.BeginInit();
-							_BigImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-							_BigImage.CacheOption = BitmapCacheOption.OnLoad;
-							_BigImage.StreamSource = stream;
-							_BigImage.EndInit();
-						}
-					if (_Images.Count > 1 && _Images.Count > _ListSelectedIndex + 1)    //More than one image exists
-						using (FileStream stream = File.OpenRead(_Images[_ListSelectedIndex + 1].Path))
-						{
-							_BigImage2 = new BitmapImage();
-							_BigImage2.BeginInit();
-							_BigImage2.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-							_BigImage2.CacheOption = BitmapCacheOption.OnLoad;
-							_BigImage2.StreamSource = stream;
-							_BigImage2.EndInit();
-						}
-					else
-						_BigImage2 = null;
-					OnPropertyChanged(nameof(BigImage));
-					OnPropertyChanged(nameof(BigImage2));
-				}
+				//BigImage2 will always be not null after first image is loaded.
+				//The latter expression checks if user is requesting next image or not. If so, load the BigImage2 into BigImage, else reload.
+				if (_BigImage2 is not null && value.Path == ((FileStream)_BigImage2.StreamSource).Name)
+					_BigImage = _BigImage2;
+				else
+					using (FileStream stream = File.OpenRead(value.Path))
+					{
+						_BigImage = new BitmapImage();
+						_BigImage.BeginInit();
+						_BigImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+						_BigImage.CacheOption = BitmapCacheOption.OnLoad;
+						_BigImage.StreamSource = stream;
+						_BigImage.EndInit();
+					}
+				if (_Images.Count > 1 && _Images.Count > _ListSelectedIndex + 1)    //More than one image exists
+					using (FileStream stream = File.OpenRead(_Images[_ListSelectedIndex + 1].Path))
+					{
+						_BigImage2 = new BitmapImage();
+						_BigImage2.BeginInit();
+						_BigImage2.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+						_BigImage2.CacheOption = BitmapCacheOption.OnLoad;
+						_BigImage2.StreamSource = stream;
+						_BigImage2.EndInit();
+					}
+				else
+					_BigImage2 = null;
+				OnPropertyChanged(nameof(BigImage));
+				OnPropertyChanged(nameof(BigImage2));
 			}
 		}
 
@@ -133,7 +130,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void ChangeFlowDirection(bool isChecked)
 		{
-			FlowDirection = isChecked ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+			FlowDir = isChecked ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		bool isLoading = false;
@@ -188,6 +185,11 @@ namespace FolderThumbnailExplorer.ViewModel
 			PosFlag = -1;
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
+		[RelayCommand]
+		public void AddFav2Group()
+		{
+			new View.AddFav2Group(path).ShowDialog();
+		}
 
 		#region IDataErrorInfo members
 		public string Error => throw new NotImplementedException();
@@ -215,7 +217,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		{
 			get
 			{
-				AddImgs(path);	//Starts a task that adds images to the collection.
+				AddImgs(path);  //Starts a task that adds images to the collection.
 				return _Images;
 			}
 			private set { _Images = value; }
