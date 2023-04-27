@@ -25,6 +25,9 @@
 	<UserControl.InputBindings>
 		<KeyBinding Key="Backspace"
 					Command="{Binding MainPageViewModel.GoUpCommand}" />
+		<KeyBinding Key="F2"
+					Modifiers="Ctrl"
+					Command="{Binding MainPageViewModel.OpenRandomFolderCommand}"/>
 	</UserControl.InputBindings>
 	<Grid>
 		<Grid.RowDefinitions>

@@ -13,7 +13,7 @@ namespace FolderThumbnailExplorer
 		public MainWindow(string path)
 		{
 			App.Logger.Info("Loading MainWindow and its components...");
-			MainVM.MainPageViewModel.PATHtoShow = path;	//Command line argument.
+			MainVM.MainPageViewModel.PATHtoShow = path; //Command line argument.
 			DataContext = MainVM;
 			InitializeComponent();
 			this.Closed += MainWindow_Closed;

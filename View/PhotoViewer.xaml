@@ -33,7 +33,88 @@
 			<RowDefinition Height="20" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-		<Rectangle Fill="#222222"
+		<Grid Grid.Row="0"
+			  Grid.RowSpan="2"
+			  Grid.ColumnSpan="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="25" />
+				<ColumnDefinition Width="6*" />
+			</Grid.ColumnDefinitions>
+			<ListBox x:Name="ImageList"
+					 Grid.Column="0"
+					 Background="{x:Null}"
+					 Foreground="White"
+					 BorderThickness="0"
+					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
+					 SelectionChanged="ImageBox_SelectionChanged"
+					 ItemsSource="{Binding Images}"
+					 SelectedItem="{Binding SelectedImg, Mode=OneWayToSource}"
+					 SelectedIndex="{Binding ListSelectedIndex}"
+					 d:ItemsSource="{d:SampleData ItemCount=5}">
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel>
+							<Image Source="{Binding Image}"
+								   CacheMode="BitmapCache" />
+							<TextBlock Text="{Binding Name}"
+									   ToolTip="{Binding Path}"
+									   HorizontalAlignment="Center"
+									   VerticalAlignment="Center"
+									   Foreground="White"
+									   FontSize="10"
+									   FontWeight="Light" />
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			<local:ImageControl Grid.Column="1"
+								VerticalAlignment="Center" />
+			<GridSplitter Grid.Column="1"
+						  Height="20"
+						  Width="10"
+						  Background="Azure"
+						  VerticalAlignment="Bottom"
+						  HorizontalAlignment="Center"
+						  ResizeDirection="Columns"
+						  ToolTip="{x:Static loc:Loc.PVGridSplitterTT}" />
+			<Grid Grid.Column="2"
+				  FlowDirection="{Binding FlowDir}"
+				  Background="Transparent"
+				  MouseLeftButtonUp="Grid_MouseLeftButtonUp"
+				  Visibility="{Binding MainView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<!--rn only the first image can be zoomed and panned.-->
+				<Image Grid.Column="0"
+					   Source="{Binding BigImage}"
+					   RenderOptions.BitmapScalingMode="Fant"
+					   MouseWheel="BigImage_MouseWheel"
+					   MouseMove="BigImage_MouseMove"
+					   Panel.ZIndex="1">
+					<Image.RenderTransform>
+						<ScaleTransform x:Name="BigImageScaleFactor" />
+					</Image.RenderTransform>
+				</Image>
+				<Image Grid.Column="1"
+					   MouseWheel="BigImage_MouseWheel"
+					   RenderOptions.BitmapScalingMode="Fant"
+					   Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Converter={StaticResource DivideBy}, ConverterParameter=2}"
+					   Visibility="{Binding UseTwinPage, Mode=OneWay, Converter={StaticResource B2CVConverter}}"
+					   Source="{Binding BigImage2}" />
+			</Grid>
+			<ScrollViewer Grid.Column="2"
+						  Margin="0,20,0,0"
+						  Visibility="{Binding ScrollView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
+				<ItemsControl ItemsSource="{Binding ScrollImg}"
+							  MouseWheel="ScrollImg_MouseWheel"
+							  Width="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Mode=OneTime, Converter={StaticResource DivideBy}, ConverterParameter=2}" />
+			</ScrollViewer>
+		</Grid>
+		<Rectangle Fill="Transparent"
 				   MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"
 				   MouseLeave="Rectangle_MouseLeave"
 				   ToolTip="{x:Static loc:Loc.PhotoViewerTitleBarTT}"
@@ -74,114 +155,36 @@
 					Click="MinClick"
 					ToolTip="{x:Static loc:Loc.PVMinTT}" />
 		</StackPanel>
-		<Grid Grid.Row="0"
-			  Grid.RowSpan="2"
-			  Grid.ColumnSpan="2">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="25" />
-				<ColumnDefinition Width="6*" />
-			</Grid.ColumnDefinitions>
-			<ListBox Grid.Column="0"
-					 Background="{x:Null}"
-					 Foreground="White"
-					 BorderThickness="0"
-					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
-					 SelectionChanged="ImageBox_SelectionChanged"
-					 ItemsSource="{Binding Images}"
-					 SelectedItem="{Binding SelectedImg, Mode=OneWayToSource}"
-					 SelectedIndex="{Binding ListSelectedIndex}"
-					 d:ItemsSource="{d:SampleData ItemCount=5}">
-				<ListBox.ItemTemplate>
-					<DataTemplate>
-						<StackPanel>
-							<Image Source="{Binding Image}"
-								   CacheMode="BitmapCache"/>
-							<TextBlock Text="{Binding Name}"
-									   ToolTip="{Binding Path}"
-									   HorizontalAlignment="Center"
-									   VerticalAlignment="Center"
+		<Label Grid.Column="1"
+			   Content="ℹ"
+			   Foreground="Cyan"
+			   HorizontalAlignment="Left"
+			   VerticalAlignment="Top"
+			   Height="20"
+			   Width="20"
+			   Margin="4,1,0,0"
+			   Padding="0"
+			   ToolTipService.InitialShowDelay="0"
+			   ToolTipService.ShowDuration="88888888">
+			<Label.ToolTip>
+				<ToolTip>
+					<ToolTip.Content>
+						<Grid>
+							<Rectangle Fill="Black"
+									   Margin="-8" />
+							<StackPanel>
+								<Label Content="{x:Static loc:Loc.MainToolTipTitle}"
 									   Foreground="White"
-									   FontSize="10"
-									   FontWeight="Light" />
-						</StackPanel>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-			<local:ImageControl Grid.Column="1"
-								VerticalAlignment="Center" />
-			<Label Grid.Column="1"
-				   Content="ℹ"
-				   Foreground="Cyan"
-				   HorizontalAlignment="Center"
-				   VerticalAlignment="Top"
-				   Height="20"
-				   Width="20"
-				   Margin="4,1,0,0"
-				   Padding="0"
-				   ToolTipService.InitialShowDelay="0"
-				   ToolTipService.ShowDuration="88888888">
-				<Label.ToolTip>
-					<ToolTip>
-						<ToolTip.Content>
-							<Grid>
-								<Rectangle Fill="Black"
-										   Margin="-8" />
-								<StackPanel>
-									<Label Content="{x:Static loc:Loc.MainToolTipTitle}"
-										   Foreground="White"
-										   FontWeight="Medium"
-										   Padding="5,2,5,0" />
-									<Separator Margin="0,7,0,0" />
-									<Label Foreground="White"
-										   Content="{x:Static loc:Loc.PVToolTip}" />
-								</StackPanel>
-							</Grid>
-						</ToolTip.Content>
-					</ToolTip>
-				</Label.ToolTip>
-			</Label>
-			<GridSplitter Grid.Column="1"
-						  Height="20"
-						  Width="10"
-						  Background="Azure"
-						  VerticalAlignment="Bottom"
-						  HorizontalAlignment="Center"
-						  ResizeDirection="Columns"
-						  ToolTip="{x:Static loc:Loc.PVGridSplitterTT}" />
-			<Grid Grid.Column="2"
-				  FlowDirection="{Binding FlowDir}"
-				  Visibility="{Binding MainView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition />
-					<ColumnDefinition Width="Auto" />
-				</Grid.ColumnDefinitions>
-				<!--rn only the first image can be zoomed and panned.-->
-				<Image Grid.Column="0"
-					   Source="{Binding BigImage}"
-					   RenderOptions.BitmapScalingMode="Fant"
-					   MouseWheel="BigImage_MouseWheel"
-					   MouseMove="BigImage_MouseMove"
-					   Panel.ZIndex="1">
-					<Image.RenderTransform>
-						<ScaleTransform x:Name="BigImageScaleFactor" />
-					</Image.RenderTransform>
-				</Image>
-				<Image Grid.Column="1"
-					   MouseWheel="BigImage_MouseWheel"
-					   RenderOptions.BitmapScalingMode="Fant"
-					   Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Converter={StaticResource DivideBy}, ConverterParameter=2}"
-					   Visibility="{Binding UseTwinPage, Mode=OneWay, Converter={StaticResource B2CVConverter}}"
-					   Source="{Binding BigImage2}" />
-			</Grid>
-			<ScrollViewer Grid.Column="2"
-						  Margin="0,20,0,0"
-						  Visibility="{Binding ScrollView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
-				<ItemsControl ItemsSource="{Binding ScrollImg}"
-							  MouseWheel="ScrollImg_MouseWheel"
-							  Width="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Mode=OneTime, Converter={StaticResource DivideBy}, ConverterParameter=2}" />
-			</ScrollViewer>
-		</Grid>
+									   FontWeight="Medium"
+									   Padding="5,2,5,0" />
+								<Separator Margin="0,7,0,0" />
+								<Label Foreground="White"
+									   Content="{x:Static loc:Loc.PVToolTip}" />
+							</StackPanel>
+						</Grid>
+					</ToolTip.Content>
+				</ToolTip>
+			</Label.ToolTip>
+		</Label>
 	</Grid>
 </Window>

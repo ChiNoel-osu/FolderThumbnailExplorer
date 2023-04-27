@@ -1,4 +1,6 @@
-﻿using FolderThumbnailExplorer.ViewModel;
+﻿using FolderThumbnailExplorer.Model;
+using FolderThumbnailExplorer.ViewModel;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -139,5 +141,15 @@ namespace FolderThumbnailExplorer.View
 
 		private void ImageBox_SelectionChanged(object sender, SelectionChangedEventArgs e) =>
 			((ListBox)sender).ScrollIntoView(((ListBox)sender).SelectedItem);
+
+		private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			Point mousePosition = e.GetPosition((UIElement)sender);
+			double halfWidth = ((FrameworkElement)sender).ActualWidth / 2;
+			if (mousePosition.X < halfWidth && ImageList.SelectedIndex > 0) // Left half of the Grid was clicked
+				ImageList.SelectedIndex--;
+			else if (mousePosition.X > halfWidth && ImageList.SelectedIndex < ((ObservableCollection<CustomListItem>)ImageList.ItemsSource).Count)  // Right half of the Grid was clicked
+				ImageList.SelectedIndex++;
+		}
 	}
 }

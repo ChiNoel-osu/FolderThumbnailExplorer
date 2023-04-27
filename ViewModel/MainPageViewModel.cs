@@ -25,6 +25,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		public CancellationTokenSource cts = new CancellationTokenSource();
 		public Task addItemTask;
 		public static List<Window> wnds = new List<Window>();
+		readonly Random random = new Random();
 
 		#region IDataErrorInfo members
 		public string Error => throw new NotImplementedException();
@@ -87,6 +88,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				}
 			}
 		}
+		BitmapImage defFolderIcon = new BitmapImage();
 
 		[ObservableProperty]
 		ObservableCollection<string> _Drives = new ObservableCollection<string>();
@@ -171,66 +173,34 @@ namespace FolderThumbnailExplorer.ViewModel
 				{
 					string[] dirs = DirHelper.DirInPath(_PATHtoShow);
 					if (dirs is not null)
-					{
-						CustomContentItem lastAdded = new CustomContentItem();  //Mark the last added item.
-						List<string> unauthorizedFolders = new List<string>();
-						foreach (string dir in dirs)
-						{
-							try
-							{
-								ct.ThrowIfCancellationRequested();  //When task is canceled
-							}
-							catch (OperationCanceledException)
-							{
-								_Content.Remove(lastAdded); //Sometimes last added item can still appear on the list, this fixes it.
-								App.Logger.Info("Canceling loading.");
-								break;
-							}
-							FileAttributes dirAtt = new DirectoryInfo(dir).Attributes;
-							if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
-							{
-								string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
-								Task<string[]> task = DirHelper.DirInPathTask(dir); //Async operation about finding if there's any subfolders.
-								string[] subfolders;
-								string firstFilePath;
-								try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
-								{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
-								catch (InvalidOperationException)   //No such image file, set default
-								{ firstFilePath = "Bruh"; }
-								catch (UnauthorizedAccessException)
-								{   //Some top secret folder encounted
-									unauthorizedFolders.Add(dir);
-									continue;   //Skip folder and continue with the next dir.
-								}
-								BitmapImage bitmap = new BitmapImage();
-								if (firstFilePath == "Bruh")
-									InitDefaultThumb(ref bitmap);   //Default thumbnail.
-								else if (!InitThumb(ref bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
-									continue;
-								CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir) };
-								subfolders = task.Result;
-								if (subfolders.Length > 0 && bitmap.UriSource is null)
-									newItem.HasSubfolder = true;
-								lastAdded = newItem;
-								Content.Add(lastAdded);
-							}
-						}
-						//Done adding stuff, notify user about unauthorized folder if any.
-						if (unauthorizedFolders.Count > 0)
-							MessageUnauthorizedFolder(unauthorizedFolders);
-						NotAddingItem = true;
-						if (ct.IsCancellationRequested)
-							App.Logger.Info("Loading has canceled.");
-						else
-							App.Logger.Info("Loading has finished.");
-					}
+						AddContents(dirs, ct);
 				}
 				else
 					NotAddingItem = true;
 			}, ct);
 			addItemTask.Start();
 		}
+		[RelayCommand]
+		public void OpenRandomFolder()
+		{
+			string[] validImagePaths = (from folder in Content
+										where folder.ThumbNail.UriSource is null    //Thumbnail using StreamSource, meaning there's picture.
+										select ((FileStream)folder.ThumbNail.StreamSource).Name).ToArray();
+			string directory = Path.GetDirectoryName(validImagePaths[random.Next(validImagePaths.Length)]); //Choose a random one.
+			App.Logger.Info("Starting PhotoViewer at directory " + directory);
+			PhotoViewer photoViewer = new PhotoViewer(directory)
+			{
+				Width = Properties.Settings.Default.PV_Width,
+				Height = Properties.Settings.Default.PV_Height,
+				Left = Properties.Settings.Default.PV_Left,
+				Top = Properties.Settings.Default.PV_Top
+			};
+			wnds.Add(photoViewer);
+			photoViewer.Show();
+			App.Logger.Info("PhotoViewer started at directory " + directory);
+		}
 
+		#region Extracted Methods
 		private static void MessageUnauthorizedFolder(List<string> unauthorizedFolders)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
@@ -239,16 +209,9 @@ namespace FolderThumbnailExplorer.ViewModel
 			App.Logger.Info("Unauthorized folders found, showing MessageBox.");
 			MessageBox.Show("One or more folder(s) has been skipped due to lack of permission:\n" + stringBuilder + "\nIf you want to access these folder(s), try running the app as Administrator.", "Unauthorized access to folder is denied.", MessageBoxButton.OK, MessageBoxImage.Asterisk);
 		}
-		private void InitDefaultThumb(ref BitmapImage bitmap)
+		private bool InitThumb(out BitmapImage bitmap, string firstFilePath, string dir)
 		{
-			bitmap.BeginInit();
-			bitmap.DecodePixelWidth = SliderValue + 128;
-			bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
-			bitmap.EndInit();
-			bitmap.Freeze();
-		}
-		private bool InitThumb(ref BitmapImage bitmap, string firstFilePath, string dir)
-		{
+			bitmap = new BitmapImage();
 			using FileStream stream = File.OpenRead(firstFilePath);
 			//Use stream source instead of regular uri source to improve responsiveness.
 			bitmap.BeginInit();
@@ -261,7 +224,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			try { bitmap.EndInit(); }
 			catch (NotSupportedException)   //Bad image file, use default.
 			{
-				App.Logger.Warn($"Bad image file detected in folder {dir}: {firstFilePath[(firstFilePath.LastIndexOf('\\') + 1)..]}. Falling back to default thumbnail.");
+				App.Logger.Warn($"Bad image file detected in folder {dir}: {firstFilePath[(firstFilePath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..]}. Falling back to default thumbnail.");
 				bitmap = new BitmapImage();
 				bitmap.BeginInit();
 				bitmap.DecodePixelWidth = SliderValue + 128;
@@ -284,7 +247,62 @@ namespace FolderThumbnailExplorer.ViewModel
 			{ bitmap.Freeze(); }
 			return true;
 		}
-
+		private void AddContents(string[] dirs, CancellationToken ct)
+		{
+			CustomContentItem lastAdded = new CustomContentItem();  //Mark the last added item.
+			List<string> unauthorizedFolders = new List<string>();
+			foreach (string dir in dirs)
+			{
+				try
+				{
+					ct.ThrowIfCancellationRequested();  //When task is canceled
+				}
+				catch (OperationCanceledException)
+				{
+					_Content.Remove(lastAdded); //Sometimes last added item can still appear on the list, this fixes it.
+					App.Logger.Info("Canceling loading.");
+					break;
+				}
+				FileAttributes dirAtt = new DirectoryInfo(dir).Attributes;
+				if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
+				{
+					string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
+					Task<string[]> task = DirHelper.DirInPathTask(dir); //Async operation about finding if there's any subfolders.
+					string[] subfolders;
+					string firstFilePath;
+					try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
+					{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
+					catch (InvalidOperationException)   //No such image file, set default
+					{ firstFilePath = "Bruh"; }
+					catch (UnauthorizedAccessException)
+					{   //Some top secret folder encountered
+						unauthorizedFolders.Add(dir);
+						continue;   //Skip folder and continue with the next dir.
+					}
+					BitmapImage bitmap;
+					if (firstFilePath == "Bruh")    //No picture, use default icon.
+						bitmap = defFolderIcon;
+					else if (!InitThumb(out bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
+						continue;
+					CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir) };
+					subfolders = task.Result;
+					if (subfolders.Length > 0 && bitmap.UriSource is null)
+						newItem.HasSubfolder = true;
+					lastAdded = newItem;
+					Content.Add(lastAdded);
+				}
+			}
+			//Done adding stuff, notify user about unauthorized folder if any.
+			if (unauthorizedFolders.Count > 0)
+				MessageUnauthorizedFolder(unauthorizedFolders);
+			NotAddingItem = true;
+			if (ct.IsCancellationRequested)
+				App.Logger.Info("Loading has canceled.");
+			else
+				App.Logger.Info("Loading has finished.");
+		}
+		#endregion
+		#region Clicking thumbnails and stuff
 		[RelayCommand]
 		public void ThumbnailClicked(Image img)
 		{   //The LeftClick MouseAction only considers mouse down, I need mouse up for this.
@@ -300,7 +318,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void SubfolderIconClicked(string folderName)
 		{
-			PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, folderName) : string.Format("{0}\\{1}", PATHtoShow, folderName);
+			PATHtoShow = PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", PATHtoShow, folderName) : string.Format("{0}{1}{2}", PATHtoShow, Path.DirectorySeparatorChar, folderName);
 		}
 		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e) //Open Photo Viewer or advance path.
 		{
@@ -308,12 +326,11 @@ namespace FolderThumbnailExplorer.ViewModel
 			if (e.ChangedButton == MouseButton.Left)
 			{
 				if (((Image)sender).Source.ToString().EndsWith("folder.png"))   //No image found (default folder.png), advance path.
-					PATHtoShow = PATHtoShow.EndsWith('\\') ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}\\{1}", PATHtoShow, imageFolder);
+					PATHtoShow = PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}{1}{2}", PATHtoShow, Path.DirectorySeparatorChar, imageFolder);
 				else
 				{   //Image found, start Photo Viewer.
-					string imagePath = ((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name;
-					imagePath = imagePath.Remove(imagePath.LastIndexOf('\\'));
-					App.Logger.Info("Starting PhotoViewer with path " + imagePath);
+					string imagePath = Path.GetDirectoryName(((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name);
+					App.Logger.Info("Starting PhotoViewer at directory " + imagePath);
 					PhotoViewer photoViewer = new PhotoViewer(imagePath)
 					{
 						Width = Properties.Settings.Default.PV_Width,
@@ -323,15 +340,16 @@ namespace FolderThumbnailExplorer.ViewModel
 					};
 					wnds.Add(photoViewer); //Add this to opened windows list to close it when mainwindow closes
 					photoViewer.Show();
-					App.Logger.Info("PhotoViewer started with path " + imagePath);
+					App.Logger.Info("PhotoViewer started at directory " + imagePath);
 				}
 			}
 			else if (e.ChangedButton == MouseButton.Right)  //Right click to Start explorer.exe
 			{
-				Process.Start("explorer.exe", _PATHtoShow.EndsWith('\\') ? (_PATHtoShow + imageFolder) : (_PATHtoShow + '\\' + imageFolder));
+				Process.Start("explorer.exe", _PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? (_PATHtoShow + imageFolder) : (_PATHtoShow + Path.DirectorySeparatorChar + imageFolder));
 				App.Logger.Info("Started explorer at: " + _PATHtoShow + ". Folder name: " + imageFolder);
 			}
 		}
+		#endregion
 
 		#region AddNewFavorite
 		private Button addBtn;
@@ -385,7 +403,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				App.Logger.Info("Getting favorite folders from Favorites.txt.");
 				Task.Run(() =>
 				{
-					string favPath = Directory.GetCurrentDirectory() + "\\Favorites.txt";
+					string favPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Favorites.txt";
 					if (!File.Exists(favPath))
 						File.Create(favPath).Close();   //The Close() ensures that it has been created.
 					string[] favTexts = File.ReadAllLines(favPath);
@@ -451,59 +469,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				string[] dirs = File.ReadAllLines(value.tag);
 				if (dirs.Length > 0)
-				{
-					CustomContentItem lastAdded = new CustomContentItem();  //Mark the last added item.
-					List<string> unauthorizedFolders = new List<string>();
-					foreach (string dir in dirs)
-					{
-						try
-						{
-							ct.ThrowIfCancellationRequested();  //When task is canceled
-						}
-						catch (OperationCanceledException)
-						{
-							_Content.Remove(lastAdded); //Sometimes last added item can still appear on the list, this fixes it.
-							App.Logger.Info("Canceling loading.");
-							break;
-						}
-						FileAttributes dirAtt = new DirectoryInfo(dir).Attributes;
-						if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
-						{
-							string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
-							Task<string[]> task = DirHelper.DirInPathTask(dir); //Async operation about finding if there's any subfolders.
-							string[] subfolders;
-							string firstFilePath;
-							try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
-							{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
-							catch (InvalidOperationException)   //No such image file, set default
-							{ firstFilePath = "Bruh"; }
-							catch (UnauthorizedAccessException)
-							{   //Some top secret folder encounted
-								unauthorizedFolders.Add(dir);
-								continue;   //Skip folder and continue with the next dir.
-							}
-							BitmapImage bitmap = new BitmapImage();
-							if (firstFilePath == "Bruh")
-								InitDefaultThumb(ref bitmap);   //Default thumbnail.
-							else if (!InitThumb(ref bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
-								continue;
-							CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir) };
-							subfolders = task.Result;
-							if (subfolders.Length > 0 && bitmap.UriSource is null)
-								newItem.HasSubfolder = true;
-							lastAdded = newItem;
-							Content.Add(lastAdded);
-						}
-					}
-					//Done adding stuff, notify user about unauthorized folder if any.
-					if (unauthorizedFolders.Count > 0)
-						MessageUnauthorizedFolder(unauthorizedFolders);
-					NotAddingItem = true;
-					if (ct.IsCancellationRequested)
-						App.Logger.Info("Loading has canceled.");
-					else
-						App.Logger.Info("Loading has finished.");
-				}
+					AddContents(dirs, ct);
 				NotAddingItem = true;
 			}, ct);
 			addItemTask.Start();
@@ -511,6 +477,13 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		public MainPageViewModel()
 		{
+			#region Initialize default folder icon
+			defFolderIcon.BeginInit();
+			defFolderIcon.DecodePixelWidth = SliderValue + 128;
+			defFolderIcon.UriSource = new Uri("pack://application:,,,/folder.png");
+			defFolderIcon.EndInit();
+			defFolderIcon.Freeze();
+			#endregion
 			//Do this so the ObservableCollection can be shared between threads
 			BindingOperations.EnableCollectionSynchronization(Content, new object());
 			//Referencing prop with underscore will not trigger the "get" accessor.

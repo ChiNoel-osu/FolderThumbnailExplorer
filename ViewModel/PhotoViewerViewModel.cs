@@ -277,7 +277,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{   //TODO: Not the best solution, idk how to pause a task properly.
 				while (true)
 				{   //This shit is CPU heavy
-					if (closing) break; //Window is closed, release thread (Complete the Task).
+					if (closing) throw new TaskCanceledException(); //Window is closed, release thread (Complete the Task).
 					if (SlideShow)
 					{
 						Thread.Sleep(Math.Abs(realSlideInterval));
