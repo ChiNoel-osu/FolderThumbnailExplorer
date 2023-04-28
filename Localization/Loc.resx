@@ -127,7 +127,8 @@
     <value>Left Click on normal folder - Advance folder.
 Left Click on thumbnailed folder - Open Photo Viewer.
 Right Click on any folder - Open in Explorer.
-Double Click on any folder's name - Advance folder.</value>
+Double Click on any folder's name - Advance folder.
+Ctrl+F2 - Random image folder.</value>
   </data>
   <data name="MainToolTipTitle" xml:space="preserve">
     <value>ℹ Quick Tip</value>
@@ -243,5 +244,12 @@ Right click the button to reset 480*600@(0,0).</value>
   </data>
   <data name="ReplaceGroup" xml:space="preserve">
     <value>Group exists and will be replaced, continue?</value>
+  </data>
+  <data name="PVPopUpSettingsLoadThreshold" xml:space="preserve">
+    <value>Image Load Threshold</value>
+  </data>
+  <data name="PVPopUpSettingsLoadThresholdTT" xml:space="preserve">
+    <value>Controls how many images to load in a single batch.
+Select the last image in list to continue loading.</value>
   </data>
 </root>

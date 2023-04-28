@@ -29,7 +29,7 @@
 					Foreground="White"
 					Command="{Binding AddFav2GroupCommand}"
 					Content="❤"
-					Padding="0"/>
+					Padding="0" />
 			<Button x:Name="ShowInExplorer"
 					Width="20"
 					Height="20"
@@ -40,7 +40,7 @@
 					Command="{Binding OpenInExplorerCommand}"
 					CommandParameter="{Binding ElementName=ShowInExplorer, Path=ToolTip}"
 					Padding="1.6,0,1,2"
-					Margin="0,5,0,0"/>
+					Margin="0,5,0,0" />
 			<Button Width="20"
 					Height="20"
 					Template="{DynamicResource ButtonTemplate1}"
@@ -48,7 +48,7 @@
 					Foreground="White"
 					Content="▲"
 					Click="PreviousClick"
-					Margin="0,5"/>
+					Margin="0,5" />
 			<!--The "FocusVisualStyle="{x:Null}"" line makes it not showing the focus visual (the black dot border) unaffecting Focusable-->
 			<Slider x:Name="ImgPosition"
 					Style="{DynamicResource SliderStyle1}"
@@ -98,16 +98,23 @@
 					BorderThickness="2">
 				<StackPanel MinHeight="100"
 							Background="#CC000000">
-					<Label Content="{x:Static loc:Loc.PVPopUpSettingsTitle}"
-						   Foreground="AntiqueWhite"
-						   FontWeight="Medium"
-						   Padding="4,2,2,3" />
+					<StackPanel.Resources>
+						<Style TargetType="{x:Type TextBlock}">
+							<Setter Property="Padding"
+									Value="5" />
+						</Style>
+					</StackPanel.Resources>
+					<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsTitle}"
+							   FontSize="14"
+							   Foreground="AntiqueWhite"
+							   FontWeight="Medium"
+							   Padding="4,2,2,3" />
 					<Separator Margin="-1,0,0,0" />
 					<!--#region Slideshow-->
 					<DockPanel>
 						<StackPanel Orientation="Horizontal">
-							<Label Content="{x:Static loc:Loc.PVPopUpSettingsSlideshowInterval}"
-								   Foreground="White" />
+							<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsSlideshowInterval}"
+									   Foreground="White" />
 							<TextBox Name="SlideInterval"
 									 Text="{Binding SlideInterval, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
 									 VerticalContentAlignment="Center"
@@ -120,7 +127,7 @@
 										<Setter Property="Background"
 												Value="Transparent" />
 										<Setter Property="Foreground"
-												Value="WhiteSmoke" />
+												Value="White" />
 										<Setter Property="CaretBrush"
 												Value="Azure" />
 										<Style.Triggers>
@@ -140,8 +147,8 @@
 									</Style>
 								</TextBox.Style>
 							</TextBox>
-							<Label Content="ms."
-								   Foreground="White" />
+							<TextBlock Text="ms."
+									   Foreground="White" />
 						</StackPanel>
 						<ToggleButton DockPanel.Dock="Right"
 									  HorizontalAlignment="Right"
@@ -155,8 +162,8 @@
 					<!--#endregion-->
 					<!--#region Twin Page-->
 					<DockPanel>
-						<Label Content="{x:Static loc:Loc.PVPopUpSettingsTwin}"
-							   Foreground="White" />
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsTwin}"
+								   Foreground="White" />
 						<ToggleButton DockPanel.Dock="Right"
 									  HorizontalAlignment="Right"
 									  Height="16"
@@ -167,9 +174,9 @@
 									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
 					</DockPanel>
 					<DockPanel Margin="8,-8,0,0">
-						<Label Content="{x:Static loc:Loc.PVPopUpSettingsTwinRightToLeft}"
-							   ToolTip="{x:Static loc:Loc.PVPopUpSettingsTwinRightToLeftTT}"
-							   Foreground="White" />
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsTwinRightToLeft}"
+								   ToolTip="{x:Static loc:Loc.PVPopUpSettingsTwinRightToLeftTT}"
+								   Foreground="White" />
 						<ToggleButton DockPanel.Dock="Right"
 									  HorizontalAlignment="Right"
 									  Height="16"
@@ -181,9 +188,9 @@
 									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
 					</DockPanel>
 					<DockPanel Margin="8,-8,0,0">
-						<Label Content="{x:Static loc:Loc.PVPopUpSettingsTwinDoubleTurn}"
-							   ToolTip="{x:Static loc:Loc.PVPopUpSettingsTwinDoubleTurnTT}"
-							   Foreground="White" />
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsTwinDoubleTurn}"
+								   ToolTip="{x:Static loc:Loc.PVPopUpSettingsTwinDoubleTurnTT}"
+								   Foreground="White" />
 						<ToggleButton DockPanel.Dock="Right"
 									  HorizontalAlignment="Right"
 									  Height="16"
@@ -196,9 +203,9 @@
 					<!--#endregion-->
 					<!--#region Scroll View-->
 					<DockPanel>
-						<Label Content="{x:Static loc:Loc.PVPopUpSettingsScrView}"
-							   ToolTip="{x:Static loc:Loc.PVPopUpSettingsScrViewTT}"
-							   Foreground="White" />
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsScrView}"
+								   ToolTip="{x:Static loc:Loc.PVPopUpSettingsScrViewTT}"
+								   Foreground="White" />
 						<ToggleButton DockPanel.Dock="Right"
 									  HorizontalAlignment="Right"
 									  Height="16"
@@ -212,8 +219,8 @@
 					<!--#endregion-->
 					<!--#region Always on top-->
 					<DockPanel>
-						<Label Content="{x:Static loc:Loc.PVPopUpSettingsAOT}"
-							   Foreground="White" />
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsAOT}"
+								   Foreground="White" />
 						<ToggleButton DockPanel.Dock="Right"
 									  HorizontalAlignment="Right"
 									  Height="16"
@@ -225,13 +232,30 @@
 									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
 					</DockPanel>
 					<!--#endregion-->
+					<!--#region Load Threshold-->
+					<DockPanel LastChildFill="False">
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsLoadThreshold}"
+								   Foreground="White" />
+						<TextBox DockPanel.Dock="Right"
+								 VerticalContentAlignment="Center"
+								 HorizontalContentAlignment="Center"
+								 Background="Transparent"
+								 Foreground="White"
+								 CaretBrush="Azure"
+								 Margin="0,0,5,0"
+								 Height="20"
+								 MinWidth="25"
+								 Text="{Binding LoadThreshold, UpdateSourceTrigger=PropertyChanged}" />
+					</DockPanel>
+					<!--#endregion-->
 					<!--#region Save viewer pos-->
 					<DockPanel>
-						<Label Content="{x:Static loc:Loc.PVPopUpSettingsSavePos}"
-							   Foreground="White"
-							   ToolTip="{x:Static loc:Loc.PVPopUpSettingsSavePosTT}">
-							<Label.Style>
-								<Style TargetType="{x:Type Label}">
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsSavePos}"
+								   Padding="5"
+								   Foreground="White"
+								   ToolTip="{x:Static loc:Loc.PVPopUpSettingsSavePosTT}">
+							<TextBlock.Style>
+								<Style TargetType="{x:Type TextBlock}">
 									<Style.Triggers>
 										<DataTrigger Binding="{Binding PosFlag}"
 													 Value="1">
@@ -261,8 +285,8 @@
 										</DataTrigger>
 									</Style.Triggers>
 								</Style>
-							</Label.Style>
-						</Label>
+							</TextBlock.Style>
+						</TextBlock>
 						<Button DockPanel.Dock="Right"
 								Background="Transparent"
 								Foreground="White"

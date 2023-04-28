@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -56,13 +55,21 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		bool _ScrollView = false;
 		[ObservableProperty]
-		ObservableCollection<Image> _ScrollImg = new ObservableCollection<Image>();
+		ObservableCollection<BitmapImage> _ScrollImg = new ObservableCollection<BitmapImage>();
 		[ObservableProperty]
-		sbyte _PosFlag = 0;
-
-		public bool DoubleTurn { get; set; } = false;
+		sbyte _PosFlag = 0; //Save window position animation
 
 		short realSlideInterval = 1000;
+		public bool DoubleTurn { get; set; } = false;
+		public ushort LoadThreshold
+		{
+			get => Properties.Settings.Default.PV_LoadThreshold;
+			set
+			{
+				Properties.Settings.Default.PV_LoadThreshold = value;
+				Properties.Settings.Default.Save();
+			}
+		}
 
 		private ushort _ImageCount; //Real image count
 		public ushort ImageCount
@@ -115,6 +122,8 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 		}
 
+		ushort scrLoadedCount = 0; //Total loaded image in ItemsControl (ScrollView)
+
 		[RelayCommand]
 		public static void OpenInExplorer(string path)
 		{
@@ -133,18 +142,16 @@ namespace FolderThumbnailExplorer.ViewModel
 			FlowDir = isChecked ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
-		bool isLoading = false;
 		[RelayCommand]
 		public void LoadScrollView()
 		{
-			MainView = _ScrollView ? false : true;
-			if (!isLoading)
-			{
-				isLoading = true;
+			MainView = ScrollView ? false : true;
+			if (ScrollView)
 				Task.Run(() =>
 				{
 					for (ushort i = 0; i < _ImageCount; i++)
 					{
+						if (i < scrLoadedCount) continue;  //Skip loaded image.
 						if (closing) break;
 						BitmapImage scrollImg = new BitmapImage();
 						using (FileStream fs = File.OpenRead(((FileStream)_Images[i].Image.StreamSource).Name))
@@ -155,10 +162,10 @@ namespace FolderThumbnailExplorer.ViewModel
 							scrollImg.EndInit();
 						}
 						scrollImg.Freeze();
-						Application.Current.Dispatcher.Invoke(() => ScrollImg.Add(new Image { Source = scrollImg }));
+						Application.Current.Dispatcher.Invoke(() => ScrollImg.Add(scrollImg));
+						scrLoadedCount++;
 					}
 				});
-			}
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		[RelayCommand]
@@ -222,7 +229,8 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 			private set { _Images = value; }
 		}
-		bool doneAddingImages = false;
+		SortedDictionary<string, string> imageMap;
+		ushort loadedCount = 0; //Total loaded image in ListBox.
 		private void AddImgs(string path)
 		{
 			Task.Run(() =>
@@ -237,10 +245,12 @@ namespace FolderThumbnailExplorer.ViewModel
 				catch (InvalidOperationException) { return; }
 				//Left value for name (sorting target), right value for path (displaying).
 				//Natural sorting.
-				SortedDictionary<string, string> map = new SortedDictionary<string, string>(new NaturalStringComparer());
+				imageMap = new SortedDictionary<string, string>(new NaturalStringComparer());
 				foreach (string filePath in imgs)   //The dictionary will sort itself when value's being added.
-					map.Add(filePath[(filePath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..], filePath);    //Use filename to compare.
-				foreach (KeyValuePair<string, string> img in map)
+													//Use filename to compare.
+					imageMap.Add(filePath[(filePath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..], filePath);
+				//Add image to collection.
+				foreach (KeyValuePair<string, string> img in imageMap)
 				{
 					if (closing) break; //Break out if the window is closing.
 					CustomListItem imgItem = new CustomListItem();
@@ -261,10 +271,50 @@ namespace FolderThumbnailExplorer.ViewModel
 					_Images.Add(imgItem);
 					_ImageCount++;
 					OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
+					if (++loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
 				}
-				doneAddingImages = true;
-				App.Logger.Info("The PhotoViewer has loaded all images.");
+				App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images.");
 			});
+		}
+
+		List<ushort> loadedIndex = new List<ushort>();
+		partial void OnListSelectedIndexChanged(ushort value)
+		{
+			if ((value + 1) % Properties.Settings.Default.PV_LoadThreshold == 0 && !loadedIndex.Contains(value))
+			{   //When user selected last image in list, load next batch of image.
+				loadedIndex.Add(value);
+				Task.Run(() =>
+				{
+					App.Logger.Info("The PhotoViewer has continued to load images.");
+					ushort current = 0;
+					//Add image to collection.
+					foreach (KeyValuePair<string, string> img in imageMap)
+					{
+						if (current++ < loadedCount) continue;  //Skip loaded image.
+						if (closing) break; //Break out if the window is closing.
+						CustomListItem imgItem = new CustomListItem();
+						BitmapImage bitmapImage = new BitmapImage();
+						using (FileStream stream = File.OpenRead(img.Value))
+						{
+							bitmapImage.BeginInit();
+							bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+							bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+							bitmapImage.StreamSource = stream;
+							bitmapImage.DecodePixelWidth = 128; //TODO: make it configurable.
+							bitmapImage.EndInit();
+						}
+						bitmapImage.Freeze();
+						imgItem.Path = img.Value;
+						imgItem.Name = img.Value[(img.Value.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
+						imgItem.Image = bitmapImage;
+						_Images.Add(imgItem);
+						_ImageCount++;
+						OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
+						if (++loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
+					}
+					App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images.");
+				});
+			}
 		}
 
 		public PhotoViewerViewModel(string folderPath, object view)
@@ -277,7 +327,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{   //TODO: Not the best solution, idk how to pause a task properly.
 				while (true)
 				{   //This shit is CPU heavy
-					if (closing) throw new TaskCanceledException(); //Window is closed, release thread (Complete the Task).
+					if (closing) break; //Window is closed, release thread (Complete the Task).
 					if (SlideShow)
 					{
 						Thread.Sleep(Math.Abs(realSlideInterval));

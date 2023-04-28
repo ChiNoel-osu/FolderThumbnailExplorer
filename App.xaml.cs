@@ -17,12 +17,10 @@ namespace FolderThumbnailExplorer
 		{
 			Logger.Info("The Application is starting.");
 			#region Global exception handling
-#if DEBUG
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			Dispatcher.UnhandledException += Dispatcher_UnhandledException;
 			Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 			TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-#endif
 			#endregion
 			#region Load settings.
 			try
@@ -41,18 +39,21 @@ namespace FolderThumbnailExplorer
 		#region Global exception handling
 		private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
 		{
-			throw new NotImplementedException();
+			throw e.Exception;
 		}
 
 		private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
 		{
-			throw new NotImplementedException();
+			Logger.Fatal(e.Exception.StackTrace);
+			MessageBox.Show(e.Exception.Message);
+			throw e.Exception;
 		}
 
 		private void Dispatcher_UnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
 		{
-			MessageBox.Show(e.Exception.InnerException.Message);
-			Logger.Fatal(e.Exception.InnerException.StackTrace);
+			Logger.Fatal(e.Exception.StackTrace);
+			MessageBox.Show(e.Exception.Message);
+			throw e.Exception;
 		}
 
 		public void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

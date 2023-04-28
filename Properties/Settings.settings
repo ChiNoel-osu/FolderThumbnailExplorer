@@ -17,5 +17,8 @@
     <Setting Name="PV_Top" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="PV_LoadThreshold" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

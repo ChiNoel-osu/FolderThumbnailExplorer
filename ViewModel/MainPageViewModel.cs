@@ -186,6 +186,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			string[] validImagePaths = (from folder in Content
 										where folder.ThumbNail.UriSource is null    //Thumbnail using StreamSource, meaning there's picture.
 										select ((FileStream)folder.ThumbNail.StreamSource).Name).ToArray();
+			if (validImagePaths.Length < 1) return;
 			string directory = Path.GetDirectoryName(validImagePaths[random.Next(validImagePaths.Length)]); //Choose a random one.
 			App.Logger.Info("Starting PhotoViewer at directory " + directory);
 			PhotoViewer photoViewer = new PhotoViewer(directory)

@@ -146,7 +146,8 @@ namespace FolderThumbnailExplorer.Localization {
         ///   Looks up a localized string similar to Left Click on normal folder - Advance folder.
         ///Left Click on thumbnailed folder - Open Photo Viewer.
         ///Right Click on any folder - Open in Explorer.
-        ///Double Click on any folder&apos;s name - Advance folder..
+        ///Double Click on any folder&apos;s name - Advance folder.
+        ///Ctrl+F2 - Random image folder..
         /// </summary>
         public static string MainToolTip {
             get {
@@ -223,6 +224,25 @@ namespace FolderThumbnailExplorer.Localization {
         public static string PVPopUpSettingsAOT {
             get {
                 return ResourceManager.GetString("PVPopUpSettingsAOT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image Load Threshold.
+        /// </summary>
+        public static string PVPopUpSettingsLoadThreshold {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsLoadThreshold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Controls how many images to load in a single batch.
+        ///Select the last image in list to continue loading..
+        /// </summary>
+        public static string PVPopUpSettingsLoadThresholdTT {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsLoadThresholdTT", resourceCulture);
             }
         }
         

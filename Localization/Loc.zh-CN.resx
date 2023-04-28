@@ -130,7 +130,8 @@
     <value>左键单击普通文件夹 - 进入此文件夹.
 左键单击有封面的文件夹 - 打开图片浏览器.
 右键单击任何文件夹 - 在文件资源管理器中打开.
-双击任何文件夹的名字 - 进入此文件夹.</value>
+双击任何文件夹的名字 - 进入此文件夹.
+Ctrl+F2 - 随机图片文件夹.</value>
   </data>
   <data name="AddNewFavTitle" xml:space="preserve">
     <value>添加新收藏</value>
@@ -243,5 +244,12 @@ Esc - 关闭图片浏览器.</value>
   </data>
   <data name="ReplaceGroup" xml:space="preserve">
     <value>已存在同名的组, 将会被替换, 继续?</value>
+  </data>
+  <data name="PVPopUpSettingsLoadThreshold" xml:space="preserve">
+    <value>单次加载图片数</value>
+  </data>
+  <data name="PVPopUpSettingsLoadThresholdTT" xml:space="preserve">
+    <value>一次要加载多少张图片.
+选中列表中最后一张图片以继续加载.</value>
   </data>
 </root>

@@ -49,6 +49,8 @@
 					 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 					 ScrollViewer.VerticalScrollBarVisibility="Hidden"
 					 SelectionChanged="ImageBox_SelectionChanged"
+					 VirtualizingStackPanel.IsVirtualizing="True"
+					 VirtualizingStackPanel.VirtualizationMode="Recycling"
 					 ItemsSource="{Binding Images}"
 					 SelectedItem="{Binding SelectedImg, Mode=OneWayToSource}"
 					 SelectedIndex="{Binding ListSelectedIndex}"
@@ -111,7 +113,13 @@
 						  Visibility="{Binding ScrollView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
 				<ItemsControl ItemsSource="{Binding ScrollImg}"
 							  MouseWheel="ScrollImg_MouseWheel"
-							  Width="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Mode=OneTime, Converter={StaticResource DivideBy}, ConverterParameter=2}" />
+							  Width="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Mode=OneTime, Converter={StaticResource DivideBy}, ConverterParameter=2}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Image Source="{Binding}" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</ScrollViewer>
 		</Grid>
 		<Rectangle Fill="Transparent"
