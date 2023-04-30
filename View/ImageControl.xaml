@@ -245,7 +245,9 @@
 								 Margin="0,0,5,0"
 								 Height="20"
 								 MinWidth="25"
-								 Text="{Binding LoadThreshold, UpdateSourceTrigger=PropertyChanged}" />
+								 MouseWheel="LoadThreshold_MouseWheel"
+								 Text="{Binding LoadThreshold, UpdateSourceTrigger=PropertyChanged}"
+								 ToolTip="{x:Static loc:Loc.PVPopUpSettingsLoadThresholdTT}" />
 					</DockPanel>
 					<!--#endregion-->
 					<!--#region Save viewer pos-->
