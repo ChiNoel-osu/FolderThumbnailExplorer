@@ -27,7 +27,7 @@
 					Command="{Binding MainPageViewModel.GoUpCommand}" />
 		<KeyBinding Key="F2"
 					Modifiers="Ctrl"
-					Command="{Binding MainPageViewModel.OpenRandomFolderCommand}"/>
+					Command="{Binding MainPageViewModel.OpenRandomFolderCommand}" />
 	</UserControl.InputBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -83,6 +83,7 @@
 						ToolTip="{x:Static loc:Loc.GoUpBtnTT}"
 						Cursor="UpArrow"
 						Template="{DynamicResource ButtonTemplate1}"
+						Command="{Binding MainPageViewModel.GoUpCommand}"
 						Background="{x:Null}"
 						Foreground="MediumPurple"
 						Padding="0,-2,0,0"

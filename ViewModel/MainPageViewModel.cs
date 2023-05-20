@@ -123,9 +123,10 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 		}
 		[RelayCommand]
+
 		public void GoUp()
 		{
-			if (_PATHtoShow != string.Empty)
+			if (!string.IsNullOrEmpty(_PATHtoShow))
 				if (_PATHtoShow.Remove(_PATHtoShow.LastIndexOf(Path.DirectorySeparatorChar)).Length == 2)
 					PATHtoShow = string.Format("{0}:" + Path.DirectorySeparatorChar, _PATHtoShow[0]);
 				else
