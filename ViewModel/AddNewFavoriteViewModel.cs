@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using FolderThumbnailExplorer.Model;
 using System.Collections.Generic;
 using System.IO;
@@ -6,13 +7,17 @@ using System.Windows;
 
 namespace FolderThumbnailExplorer.ViewModel
 {
-	public partial class AddNewFavoriteViewModel
+	public partial class AddNewFavoriteViewModel : ObservableObject
 	{
 		public string Path { get; set; } = string.Empty;
-		public string Name { get; set; } = string.Empty;
+		[ObservableProperty]
+		[NotifyCanExecuteChangedFor(nameof(SaveFav2GroupCommand))]
+		string _Name = string.Empty;
 
 		public List<TaggedString> GroupList { get; } = new List<TaggedString>();
-		public TaggedString SelectedGroup { get; set; }
+		[ObservableProperty]
+		[NotifyCanExecuteChangedFor(nameof(SaveFav2GroupCommand))]
+		TaggedString _SelectedGroup;
 
 		[RelayCommand]
 		public void SaveNewFav(Window window)
@@ -29,7 +34,12 @@ namespace FolderThumbnailExplorer.ViewModel
 			window.Close();
 		}
 
-		[RelayCommand]
+		bool CanSaveFav2Group()
+		{
+			return !string.IsNullOrWhiteSpace(Name) || SelectedGroup.value is not null;
+		}
+
+		[RelayCommand(CanExecute = nameof(CanSaveFav2Group))]
 		public void SaveFav2Group(Window window)
 		{
 			if (string.IsNullOrWhiteSpace(Name))

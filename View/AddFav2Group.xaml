@@ -55,7 +55,7 @@
 				   Margin="0,5,0,2"
 				   Text="{x:Static loc:Loc.OrNewGroup}" />
 		<TextBox x:Name="NewGroupName"
-				 Text="{Binding Name}"
+				 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
 				 DockPanel.Dock="Top"
 				 Style="{DynamicResource UniTextBoxStyle}"
 				 FontSize="15" />
