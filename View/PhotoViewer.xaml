@@ -30,21 +30,20 @@
 					Command="{Binding Copy2ClipboardCommand}" />
 	</Window.InputBindings>
 	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="21*" />
-			<ColumnDefinition Width="139*" />
-		</Grid.ColumnDefinitions>
+		<!--OuterGrid. Containing window controls, hints and stuffs.-->
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
+		<!--InnerGrid-->
 		<Grid Grid.Row="0"
 			  Grid.RowSpan="2"
 			  Grid.ColumnSpan="2">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="{Binding PreviewAreaGridWidth}"
+								  d:Width="66" />
 				<ColumnDefinition Width="25" />
-				<ColumnDefinition Width="6*" />
+				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 			<ListBox x:Name="ImageList"
 					 Grid.Column="0"
@@ -127,11 +126,11 @@
 				</ItemsControl>
 			</ScrollViewer>
 		</Grid>
+		<!--WindowsMoveBar-->
 		<Rectangle Fill="Transparent"
 				   MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"
 				   MouseLeave="Rectangle_MouseLeave"
-				   ToolTip="{x:Static loc:Loc.PhotoViewerTitleBarTT}"
-				   Grid.ColumnSpan="2" />
+				   ToolTip="{x:Static loc:Loc.PhotoViewerTitleBarTT}" />
 		<!--Traffic Lights-->
 		<StackPanel Orientation="Horizontal"
 					FlowDirection="RightToLeft"
@@ -169,40 +168,7 @@
 					Click="MinClick"
 					ToolTip="{x:Static loc:Loc.PVMinTT}" />
 		</StackPanel>
-		<!--Hints-->
-		<Label Grid.Column="1"
-			   Content="ℹ"
-			   Foreground="Cyan"
-			   HorizontalAlignment="Left"
-			   VerticalAlignment="Top"
-			   Height="20"
-			   Width="20"
-			   Margin="4,1,0,0"
-			   Padding="0"
-			   ToolTipService.InitialShowDelay="0"
-			   ToolTipService.ShowDuration="88888888">
-			<Label.ToolTip>
-				<ToolTip>
-					<ToolTip.Content>
-						<Grid>
-							<Rectangle Fill="Black"
-									   Margin="-8" />
-							<StackPanel>
-								<Label Content="{x:Static loc:Loc.MainToolTipTitle}"
-									   Foreground="White"
-									   FontWeight="Medium"
-									   Padding="5,2,5,0" />
-								<Separator Margin="0,7,0,0" />
-								<Label Foreground="White"
-									   Content="{x:Static loc:Loc.PVToolTip}" />
-							</StackPanel>
-						</Grid>
-					</ToolTip.Content>
-				</ToolTip>
-			</Label.ToolTip>
-		</Label>
-		<TextBlock Grid.Column="1"
-				   Text="{Binding Status, Mode=OneWay}"
+		<TextBlock Text="{Binding Status, Mode=OneWay}"
 				   Margin="0,0,66,0"
 				   HorizontalAlignment="Right"
 				   VerticalAlignment="Center"
