@@ -174,6 +174,7 @@ Ctrl+F2 - 随机图片文件夹.</value>
     <value>在图像上鼠标滚轮 - 浏览图片.
 在图像上按住右键时滚轮 - 缩放&amp;平移.
 图像被放大时移动鼠标 - 上下平移.
+Ctrl+C - 将当前图片复制到剪贴板.
 Esc - 关闭图片浏览器.</value>
   </data>
   <data name="PVGridSplitterTT" xml:space="preserve">
@@ -251,5 +252,8 @@ Esc - 关闭图片浏览器.</value>
   <data name="PVPopUpSettingsLoadThresholdTT" xml:space="preserve">
     <value>一次要加载多少张图片.
 选中列表中最后一张图片以继续加载.</value>
+  </data>
+  <data name="Copied2Clipboard" xml:space="preserve">
+    <value>已复制到剪贴板.</value>
   </data>
 </root>

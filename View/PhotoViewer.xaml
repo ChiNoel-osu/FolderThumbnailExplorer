@@ -24,6 +24,11 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
+	<Window.InputBindings>
+		<KeyBinding Key="C"
+					Modifiers="Ctrl"
+					Command="{Binding Copy2ClipboardCommand}" />
+	</Window.InputBindings>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="21*" />
@@ -127,6 +132,7 @@
 				   MouseLeave="Rectangle_MouseLeave"
 				   ToolTip="{x:Static loc:Loc.PhotoViewerTitleBarTT}"
 				   Grid.ColumnSpan="2" />
+		<!--Traffic Lights-->
 		<StackPanel Orientation="Horizontal"
 					FlowDirection="RightToLeft"
 					Grid.ColumnSpan="2">
@@ -163,6 +169,7 @@
 					Click="MinClick"
 					ToolTip="{x:Static loc:Loc.PVMinTT}" />
 		</StackPanel>
+		<!--Hints-->
 		<Label Grid.Column="1"
 			   Content="ℹ"
 			   Foreground="Cyan"
@@ -194,5 +201,11 @@
 				</ToolTip>
 			</Label.ToolTip>
 		</Label>
+		<TextBlock Grid.Column="1"
+				   Text="{Binding Status, Mode=OneWay}"
+				   Margin="0,0,66,0"
+				   HorizontalAlignment="Right"
+				   VerticalAlignment="Center"
+				   Foreground="White" />
 	</Grid>
 </Window>

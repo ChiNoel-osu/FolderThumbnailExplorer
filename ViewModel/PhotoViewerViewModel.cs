@@ -13,7 +13,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 
 namespace FolderThumbnailExplorer.ViewModel
 {
@@ -58,6 +60,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		ObservableCollection<BitmapImage> _ScrollImg = new ObservableCollection<BitmapImage>();
 		[ObservableProperty]
 		sbyte _PosFlag = 0; //Save window position animation
+		[ObservableProperty]
+		string _Status = string.Empty;
 
 		short realSlideInterval = 1000;
 		public bool DoubleTurn { get; set; } = false;
@@ -196,6 +200,14 @@ namespace FolderThumbnailExplorer.ViewModel
 		public void AddFav2Group()
 		{
 			new View.AddFav2Group(path).ShowDialog();
+		}
+		[RelayCommand]
+		public async void Copy2Clipboard()
+		{
+			Clipboard.SetImage(_BigImage);
+			Status = Localization.Loc.Copied2Clipboard;
+			await Task.Run(() => Thread.Sleep(1000));
+			Status = string.Empty;
 		}
 
 		#region IDataErrorInfo members

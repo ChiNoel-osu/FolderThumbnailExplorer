@@ -124,6 +124,15 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copied to clipboard..
+        /// </summary>
+        public static string Copied2Clipboard {
+            get {
+                return ResourceManager.GetString("Copied2Clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Go Up
         ///You can also use &lt;Backspace&gt; to go up..
         /// </summary>
@@ -373,6 +382,7 @@ namespace FolderThumbnailExplorer.Localization {
         ///   Looks up a localized string similar to Mouse Wheel on image - Next/Previous.
         ///Right Click + Mouse Wheel on image - Zoom &amp; Pan.
         ///Move Mouse while zoomed in - Pan Up &amp; Down.
+        ///Ctrl+C - Copy current image to clipboard.
         ///Esc - Close Photo Viewer..
         /// </summary>
         public static string PVToolTip {
