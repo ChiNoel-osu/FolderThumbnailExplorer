@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FolderThumbnailExplorer.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
