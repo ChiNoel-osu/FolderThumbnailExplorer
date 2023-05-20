@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using FolderThumbnailExplorer.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -62,6 +64,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		sbyte _PosFlag = 0; //Save window position animation
 		[ObservableProperty]
 		string _Status = string.Empty;
+		[ObservableProperty]
+		double _PreviewAreaGridWidth = 66;
 
 		short realSlideInterval = 1000;
 		public bool DoubleTurn { get; set; } = false;
@@ -132,12 +136,6 @@ namespace FolderThumbnailExplorer.ViewModel
 		public static void OpenInExplorer(string path)
 		{
 			Process.Start("explorer.exe", path);
-			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
-		}
-		[RelayCommand]
-		public void ToggleSlideShow()
-		{
-			SlideShow = !_SlideShow;
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		[RelayCommand]

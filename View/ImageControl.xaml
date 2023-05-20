@@ -104,11 +104,43 @@
 									Value="5" />
 						</Style>
 					</StackPanel.Resources>
-					<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsTitle}"
-							   FontSize="14"
-							   Foreground="AntiqueWhite"
-							   FontWeight="Medium"
-							   Padding="4,2,2,3" />
+					<DockPanel>
+						<!--Hints-->
+						<Label DockPanel.Dock="Right"
+							   Content="ℹ"
+							   Foreground="Cyan"
+							   VerticalAlignment="Center"
+							   Height="20"
+							   Width="20"
+							   Padding="0"
+							   ToolTipService.InitialShowDelay="0"
+							   ToolTipService.ShowDuration="88888888">
+							<Label.ToolTip>
+								<ToolTip>
+									<ToolTip.Content>
+										<Grid>
+											<Rectangle Fill="Black"
+													   Margin="-8" />
+											<StackPanel>
+												<Label Content="{x:Static loc:Loc.MainToolTipTitle}"
+													   Foreground="White"
+													   FontWeight="Medium"
+													   Padding="5,2,5,0" />
+												<Separator Margin="0,7,0,0" />
+												<Label Foreground="White"
+													   Content="{x:Static loc:Loc.PVToolTip}" />
+											</StackPanel>
+										</Grid>
+									</ToolTip.Content>
+								</ToolTip>
+							</Label.ToolTip>
+						</Label>
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsTitle}"
+								   FontSize="14"
+								   Foreground="AntiqueWhite"
+								   FontWeight="Medium"
+								   Padding="4,2,2,3" />
+					</DockPanel>
 					<Separator Margin="-1,0,0,0" />
 					<!--#region Slideshow-->
 					<DockPanel>
