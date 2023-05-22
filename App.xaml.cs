@@ -16,12 +16,14 @@ namespace FolderThumbnailExplorer
 		public App()
 		{
 			Logger.Info("The Application is starting.");
+#if RELEASE
 			#region Global exception handling
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 			Dispatcher.UnhandledException += Dispatcher_UnhandledException;
 			Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 			TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
 			#endregion
+#endif
 			#region Load settings.
 			try
 			{
