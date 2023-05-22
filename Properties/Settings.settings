@@ -20,5 +20,11 @@
     <Setting Name="PV_LoadThreshold" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">20</Value>
     </Setting>
+    <Setting Name="TE_UseCache" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="TE_CacheQuality" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">65</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

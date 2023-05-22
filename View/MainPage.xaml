@@ -271,8 +271,9 @@
 								   d:MaxWidth="132"
 								   SnapsToDevicePixels="True"
 								   d:Source="pack://application:,,,/folder.png"
-								   Source="{Binding ThumbNail}"
-								   ToolTip="{Binding Header}"
+								   Source="{Binding ThumbNail, Mode=OneTime}"
+								   ToolTip="{Binding Header, Mode=OneTime}"
+								   Tag="{Binding FullPath, Mode=OneTime}"
 								   Cursor="Hand">
 								<Image.InputBindings>
 									<MouseBinding MouseAction="LeftClick"

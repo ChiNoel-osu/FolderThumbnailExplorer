@@ -25,7 +25,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		public CancellationTokenSource cts = new CancellationTokenSource();
 		public Task addItemTask;
 		public static List<Window> wnds = new List<Window>();
-		readonly Random random = new Random();
+		public static readonly Random random = new Random();    //The one and only random source.
 
 		#region IDataErrorInfo members
 		public string Error => throw new NotImplementedException();
@@ -88,7 +88,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				}
 			}
 		}
-		BitmapImage defFolderIcon = new BitmapImage();
+		readonly BitmapImage defFolderIcon = new BitmapImage();
 
 		[ObservableProperty]
 		ObservableCollection<string> _Drives = new ObservableCollection<string>();
@@ -227,11 +227,8 @@ namespace FolderThumbnailExplorer.ViewModel
 			catch (NotSupportedException)   //Bad image file, use default.
 			{
 				App.Logger.Warn($"Bad image file detected in folder {dir}: {firstFilePath[(firstFilePath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..]}. Falling back to default thumbnail.");
-				bitmap = new BitmapImage();
-				bitmap.BeginInit();
-				bitmap.DecodePixelWidth = SliderValue + 128;
-				bitmap.UriSource = new Uri("pack://application:,,,/folder.png");
-				bitmap.EndInit();
+				bitmap = defFolderIcon;
+				return true;
 			}
 			catch (System.Runtime.InteropServices.COMException)
 			{
@@ -284,9 +281,22 @@ namespace FolderThumbnailExplorer.ViewModel
 					BitmapImage bitmap;
 					if (firstFilePath == "Bruh")    //No picture, use default icon.
 						bitmap = defFolderIcon;
-					else if (!InitThumb(out bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
-						continue;
-					CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir) };
+					else
+					{
+						if (Properties.Settings.Default.TE_UseCache)
+							if (CacheSystem.IsImgCached(firstFilePath))
+								bitmap = CacheSystem.GetCachedImg(firstFilePath);
+							else
+							{   //No Cache.
+								if (!InitThumb(out bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
+									continue;   //Thumbnail initialization failed, skip.
+								if (bitmap != defFolderIcon)    //If not bad image file....
+									CacheSystem.CacheImage(firstFilePath, bitmap);  //Cache the image.
+							}
+						else if (!InitThumb(out bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
+							continue;   //Thumbnail initialization failed, skip.
+					}
+					CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir), FullPath = dir };
 					subfolders = task.Result;
 					if (subfolders.Length > 0 && bitmap.UriSource is null)
 						newItem.HasSubfolder = true;
@@ -325,15 +335,15 @@ namespace FolderThumbnailExplorer.ViewModel
 		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e) //Open Photo Viewer or advance path.
 		{
 			string imageFolder = ((Image)sender).ToolTip.ToString();
+			string folderFullPath = ((Image)sender).Tag.ToString();
 			if (e.ChangedButton == MouseButton.Left)
 			{
 				if (((Image)sender).Source.ToString().EndsWith("folder.png"))   //No image found (default folder.png), advance path.
 					PATHtoShow = PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}{1}{2}", PATHtoShow, Path.DirectorySeparatorChar, imageFolder);
 				else
 				{   //Image found, start Photo Viewer.
-					string imagePath = Path.GetDirectoryName(((FileStream)((BitmapImage)((Image)sender).Source).StreamSource).Name);
-					App.Logger.Info("Starting PhotoViewer at directory " + imagePath);
-					PhotoViewer photoViewer = new PhotoViewer(imagePath)
+					App.Logger.Info("Starting PhotoViewer at directory " + folderFullPath);
+					PhotoViewer photoViewer = new PhotoViewer(folderFullPath)
 					{
 						Width = Properties.Settings.Default.PV_Width,
 						Height = Properties.Settings.Default.PV_Height,
@@ -342,13 +352,13 @@ namespace FolderThumbnailExplorer.ViewModel
 					};
 					wnds.Add(photoViewer); //Add this to opened windows list to close it when mainwindow closes
 					photoViewer.Show();
-					App.Logger.Info("PhotoViewer started at directory " + imagePath);
+					App.Logger.Info("PhotoViewer started at directory " + folderFullPath);
 				}
 			}
 			else if (e.ChangedButton == MouseButton.Right)  //Right click to Start explorer.exe
 			{
-				Process.Start("explorer.exe", _PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? (_PATHtoShow + imageFolder) : (_PATHtoShow + Path.DirectorySeparatorChar + imageFolder));
-				App.Logger.Info("Started explorer at: " + _PATHtoShow + ". Folder name: " + imageFolder);
+				Process.Start("explorer.exe", folderFullPath);
+				App.Logger.Info("Started explorer at: " + folderFullPath);
 			}
 		}
 		#endregion
