@@ -1,6 +1,8 @@
 # Folder Thumbnail Explorer
 Revised version of the custom file explorer(https://github.com/ChiNoel-osu/NETCoreWPFTest/tree/master/LocalFileExplorer). Written in C# WPF/.NET 7.
 
+[![CodeFactor](https://www.codefactor.io/repository/github/chinoel-osu/folderthumbnailexplorer/badge)](https://www.codefactor.io/repository/github/chinoel-osu/folderthumbnailexplorer)
+
 ## What this does
 - It shows the first image in a folder as that folder's thumbnail (if there is one).
 - It also comes with a photo viewer that shows images in a folder.
