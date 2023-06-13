@@ -116,7 +116,7 @@
 						  Margin="0,20,0,0"
 						  Visibility="{Binding ScrollView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
 				<ItemsControl ItemsSource="{Binding ScrollImg}"
-							  MouseWheel="ScrollImg_MouseWheel"
+							  PreviewMouseWheel="ScrollImg_MouseWheel"
 							  Width="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Mode=OneTime, Converter={StaticResource DivideBy}, ConverterParameter=2}">
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
