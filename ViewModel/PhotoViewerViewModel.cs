@@ -259,24 +259,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				foreach (KeyValuePair<string, string> img in imageMap)
 				{
 					if (closing) break; //Break out if the window is closing.
-					CustomListItem imgItem = new CustomListItem();
-					BitmapImage bitmapImage = new BitmapImage();
-					using (FileStream stream = File.OpenRead(img.Value))
-					{
-						bitmapImage.BeginInit();
-						bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-						bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-						bitmapImage.StreamSource = stream;
-						bitmapImage.DecodePixelWidth = 128; //TODO: make it configurable.
-						bitmapImage.EndInit();
-					}
-					bitmapImage.Freeze();
-					imgItem.Path = img.Value;
-					imgItem.Name = img.Value[(img.Value.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
-					imgItem.Image = bitmapImage;
-					_Images.Add(imgItem);
-					_ImageCount++;
-					OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
+					LoadImagePreview(img);
 					if (++loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
 				}
 				App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images.");
@@ -298,29 +281,34 @@ namespace FolderThumbnailExplorer.ViewModel
 					{
 						if (current++ < loadedCount) continue;  //Skip loaded image.
 						if (closing) break; //Break out if the window is closing.
-						CustomListItem imgItem = new CustomListItem();
-						BitmapImage bitmapImage = new BitmapImage();
-						using (FileStream stream = File.OpenRead(img.Value))
-						{
-							bitmapImage.BeginInit();
-							bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
-							bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-							bitmapImage.StreamSource = stream;
-							bitmapImage.DecodePixelWidth = 128; //TODO: make it configurable.
-							bitmapImage.EndInit();
-						}
-						bitmapImage.Freeze();
-						imgItem.Path = img.Value;
-						imgItem.Name = img.Value[(img.Value.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
-						imgItem.Image = bitmapImage;
-						_Images.Add(imgItem);
-						_ImageCount++;
-						OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
+						LoadImagePreview(img);
 						if (++loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
 					}
 					App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images.");
 				});
 			}
+		}
+
+		private void LoadImagePreview(KeyValuePair<string, string> img)
+		{
+			CustomListItem imgItem = new CustomListItem();
+			BitmapImage bitmapImage = new BitmapImage();
+			using (FileStream stream = File.OpenRead(img.Value))
+			{
+				bitmapImage.BeginInit();
+				bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat | BitmapCreateOptions.IgnoreColorProfile;
+				bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+				bitmapImage.StreamSource = stream;
+				bitmapImage.DecodePixelWidth = 128; //TODO: make it configurable.
+				bitmapImage.EndInit();
+			}
+			bitmapImage.Freeze();
+			imgItem.Path = img.Value;
+			imgItem.Name = img.Value[(img.Value.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
+			imgItem.Image = bitmapImage;
+			_Images.Add(imgItem);
+			_ImageCount++;
+			OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
 		}
 
 		public PhotoViewerViewModel(string folderPath, object view)

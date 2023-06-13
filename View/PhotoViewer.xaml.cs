@@ -58,23 +58,23 @@ namespace FolderThumbnailExplorer.View
 			if (e.RightButton == MouseButtonState.Pressed)
 			{
 				Point mousePosOnImg = e.GetPosition(img);
-				Point reletivePos = new Point(mousePosOnImg.X / w, mousePosOnImg.Y / h);
-				img.RenderTransformOrigin = reletivePos;
+				Point relativePos = new Point(mousePosOnImg.X / w, mousePosOnImg.Y / h);
+				img.RenderTransformOrigin = relativePos;
 			}
 			else
 			{
 				w = this.ActualWidth;
 				h = this.ActualHeight;
 				Point mousePosOnWnd = e.GetPosition(this);
-				Point reletivePos = new Point(mousePosOnWnd.X / w, mousePosOnWnd.Y / h);
-				reletivePos.X = img.RenderTransformOrigin.X;   //Don't change X coord.
-				double startYfrom = 0.4; double startYto = 0.6; //Set startpos reletive to window.
-				if (reletivePos.Y > startYfrom && reletivePos.Y < startYto)
-					reletivePos.Y = (reletivePos.Y - startYfrom) / (startYto - startYfrom);
+				Point relativePos = new Point(mousePosOnWnd.X / w, mousePosOnWnd.Y / h);
+				relativePos.X = img.RenderTransformOrigin.X;   //Don't change X cord.
+				double startYfrom = 0.4; double startYto = 0.6; //Set startpos relative to window.
+				if (relativePos.Y > startYfrom && relativePos.Y < startYto)
+					relativePos.Y = (relativePos.Y - startYfrom) / (startYto - startYfrom);
 				//X[Rescaled]=(X-X[min]/X[max]-X[min])	this rescales X to a range of [0,1]
 				else
-					reletivePos.Y = img.RenderTransformOrigin.Y;   //Don't change Y coord.
-				img.RenderTransformOrigin = reletivePos;
+					relativePos.Y = img.RenderTransformOrigin.Y;   //Don't change Y cord.
+				img.RenderTransformOrigin = relativePos;
 			}
 		}
 

@@ -12,7 +12,7 @@ namespace FolderThumbnailExplorer.Model
 		public static string SHA1Hash(string str)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
-			foreach (byte h in SHA1.Create().ComputeHash(Encoding.ASCII.GetBytes(str)))
+			foreach (byte h in SHA1.HashData(Encoding.ASCII.GetBytes(str)))
 				stringBuilder.Append(h.ToString("X2"));
 			return stringBuilder.ToString();
 		}

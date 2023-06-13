@@ -41,6 +41,8 @@ namespace FolderThumbnailExplorer
 		#region Global exception handling
 		private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
 		{
+			Logger.Fatal(e.Exception.StackTrace);
+			MessageBox.Show(e.Exception.Message);
 			throw e.Exception;
 		}
 
@@ -60,6 +62,8 @@ namespace FolderThumbnailExplorer
 
 		public void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
+			Logger.Fatal(e.ToString());
+			MessageBox.Show(e.ToString());
 			throw new NotImplementedException();
 		}
 		#endregion
