@@ -1415,7 +1415,8 @@
 	</Style>
 	<!--#endregion-->
 	<!--#region ToggleButtonTemplateStyle-->
-	<Style TargetType="{x:Type ToggleButton}" x:Key="ToggleButtonTemplateStyle">
+	<Style TargetType="{x:Type ToggleButton}"
+		   x:Key="ToggleButtonTemplateStyle">
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -1525,7 +1526,7 @@
 	<!--#endregion-->
 	<!--#region ListBoxNavItemStyle-->
 	<SolidColorBrush x:Key="Item.MouseOver.Background"
-                     Color="#AB9370DB" />
+					 Color="#AB9370DB" />
 	<SolidColorBrush x:Key="Item.MouseOver.Border"
 					 Color="Transparent" />
 	<SolidColorBrush x:Key="Item.SelectedActive.Background"
@@ -1624,7 +1625,8 @@
 			<Trigger Property="IsMouseOver"
 					 Value="True">
 				<Setter Property="Foreground"
-						Value="Black" /><!--Placeholder for animation-->
+						Value="Black" />
+				<!--Placeholder for animation-->
 			</Trigger>
 		</Style.Triggers>
 	</Style>

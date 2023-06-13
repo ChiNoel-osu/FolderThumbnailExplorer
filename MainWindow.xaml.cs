@@ -1,5 +1,6 @@
 ﻿using FolderThumbnailExplorer.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace FolderThumbnailExplorer
@@ -24,7 +25,9 @@ namespace FolderThumbnailExplorer
 		private void MainWindow_Closed(object? sender, EventArgs e)
 		{
 			App.Logger.Info("Closing all windows.");
-			foreach (Window wnd in MainPageViewModel.wnds)  //TODO: has bugs but doesn't matter.
+			//Make a copy of windows list so it won't change during the enumeration.
+			List<Window> windows2Close = new List<Window>(MainPageViewModel.wnds);
+			foreach (Window wnd in windows2Close)
 				wnd.Close();
 			App.Logger.Info("All windows closed without errors.");
 		}

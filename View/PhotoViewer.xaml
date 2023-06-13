@@ -6,6 +6,7 @@
 		xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 		xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 		xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
+		xmlns:model="clr-namespace:FolderThumbnailExplorer.Model"
 		d:DataContext="{d:DesignInstance Type=viewmodel:PhotoViewerViewModel}"
 		mc:Ignorable="d"
 		Title="Photo Viewer"
@@ -112,9 +113,10 @@
 					   Visibility="{Binding UseTwinPage, Mode=OneWay, Converter={StaticResource B2CVConverter}}"
 					   Source="{Binding BigImage2}" />
 			</Grid>
-			<ScrollViewer Grid.Column="2"
-						  Margin="0,20,0,0"
-						  Visibility="{Binding ScrollView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
+			<model:WheelSpeedScrollViewer Grid.Column="2"
+										  Margin="0,20,0,0"
+										  SpeedFactor="1"
+										  Visibility="{Binding ScrollView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
 				<ItemsControl ItemsSource="{Binding ScrollImg}"
 							  MouseWheel="ScrollImg_MouseWheel"
 							  Width="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Mode=OneTime, Converter={StaticResource DivideBy}, ConverterParameter=2}">
@@ -124,7 +126,7 @@
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
-			</ScrollViewer>
+			</model:WheelSpeedScrollViewer>
 		</Grid>
 		<!--WindowsMoveBar-->
 		<Rectangle Fill="Transparent"
