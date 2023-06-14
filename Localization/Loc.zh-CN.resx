@@ -256,4 +256,7 @@ Esc - 关闭图片浏览器.</value>
   <data name="Copied2Clipboard" xml:space="preserve">
     <value>已复制到剪贴板.</value>
   </data>
+  <data name="PVScrollSpeed" xml:space="preserve">
+    <value>滚动速度倍率</value>
+  </data>
 </root>

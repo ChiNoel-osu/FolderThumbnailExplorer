@@ -379,6 +379,15 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scroll Speed Factor.
+        /// </summary>
+        public static string PVScrollSpeed {
+            get {
+                return ResourceManager.GetString("PVScrollSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mouse Wheel on image - Next/Previous.
         ///Right Click + Mouse Wheel on image - Zoom &amp; Pan.
         ///Move Mouse while zoomed in - Pan Up &amp; Down.

@@ -148,7 +148,7 @@
 							<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsSlideshowInterval}"
 									   Foreground="White" />
 							<TextBox Name="SlideInterval"
-									 Text="{Binding SlideInterval, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+									 Text="{Binding SlideInterval, UpdateSourceTrigger=PropertyChanged}"
 									 VerticalContentAlignment="Center"
 									 HorizontalContentAlignment="Center"
 									 MouseWheel="SlideInterval_MouseWheel"
@@ -247,6 +247,21 @@
 									  IsChecked="{Binding ScrollView}"
 									  Command="{Binding LoadScrollViewCommand}"
 									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
+					</DockPanel>
+					<DockPanel Margin="8,-8,0,0" LastChildFill="True">
+						<TextBlock Text="{x:Static loc:Loc.PVScrollSpeed}"
+								   ToolTip="{x:Static loc:Loc.PVScrollSpeed}"
+								   Foreground="White" />
+						<TextBox Text="{Binding ScrollFactor, UpdateSourceTrigger=PropertyChanged}"
+								 Background="Transparent"
+								 Foreground="White"
+								 CaretBrush="Azure"
+								 VerticalContentAlignment="Center"
+								 HorizontalContentAlignment="Center"
+								 HorizontalAlignment="Left"
+								 MouseWheel="ScrollFactor_MouseWheel"
+								 Height="20"
+								 MinWidth="20" />
 					</DockPanel>
 					<!--#endregion-->
 					<!--#region Always on top-->

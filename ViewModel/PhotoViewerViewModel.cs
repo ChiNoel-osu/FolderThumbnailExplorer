@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 
 namespace FolderThumbnailExplorer.ViewModel
 {
-	public partial class PhotoViewerViewModel : ObservableObject, IDataErrorInfo
+	public partial class PhotoViewerViewModel : ObservableObject
 	{
 		readonly string path;
 		bool closing = false;
@@ -34,7 +34,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]    //This should be volatile as it might be used across different threads. But whatever.
 		bool _SlideShow = false;
 		[ObservableProperty]
-		string _SlideInterval = "1000";
+		short _SlideInterval = 1000;
 		[ObservableProperty]
 		FlowDirection _FlowDir = FlowDirection.LeftToRight;
 		[ObservableProperty]
@@ -45,10 +45,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		sbyte _PosFlag = 0; //Save window position animation
 		[ObservableProperty]
 		string _Status = string.Empty;
-		[ObservableProperty]
-		double _PreviewAreaGridWidth = 66;
 
-		short realSlideInterval = 1000;
 		public bool DoubleTurn { get; set; } = false;
 		public ushort LoadThreshold
 		{
@@ -56,6 +53,15 @@ namespace FolderThumbnailExplorer.ViewModel
 			set
 			{
 				Properties.Settings.Default.PV_LoadThreshold = value;
+				Properties.Settings.Default.Save();
+			}
+		}
+		public double ScrollFactor
+		{
+			get => Properties.Settings.Default.PV_ScrollSpeedFactor;
+			set
+			{
+				Properties.Settings.Default.PV_ScrollSpeedFactor = value;
 				Properties.Settings.Default.Save();
 			}
 		}
@@ -189,26 +195,6 @@ namespace FolderThumbnailExplorer.ViewModel
 			Status = string.Empty;
 		}
 
-		#region IDataErrorInfo members
-		public string Error => throw new NotImplementedException();
-		public string this[string data2Validate]
-		{
-			get
-			{
-				switch (data2Validate)
-				{
-					case nameof(SlideInterval):
-						if (short.TryParse(SlideInterval, out realSlideInterval) && realSlideInterval != 0)
-							return null;    //null for no error.
-						else
-							return "ShortParseFailed[DBG]";
-					default:
-						throw new NotImplementedException();
-				}
-			}
-		}
-		#endregion
-
 		//Use this as the ListBoxItem binding target
 		private ObservableCollection<CustomListItem> _Images = new ObservableCollection<CustomListItem>();
 		public ObservableCollection<CustomListItem> Images
@@ -259,7 +245,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				loadedIndex.Add(value);
 				Task.Run(() =>
 				{
-					App.Logger.Info("The PhotoViewer has continued to load images.");
+					App.Logger.Info("The PhotoViewer is continuing to load images.");
 					ushort current = 0;
 					//Add image to collection.
 					foreach (KeyValuePair<string, string> img in imageMap)
@@ -269,11 +255,12 @@ namespace FolderThumbnailExplorer.ViewModel
 						LoadImagePreview(img);
 						if (++loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
 					}
+					//while (Images.Count != loadedCount) ;
+					if (ScrollView) LoadScrollView();
 					App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images.");
 				});
 			}
 		}
-
 		private void LoadImagePreview(KeyValuePair<string, string> img)
 		{
 			CustomListItem imgItem = new CustomListItem();
@@ -309,10 +296,10 @@ namespace FolderThumbnailExplorer.ViewModel
 					if (closing) break; //Window is closed, release thread (Complete the Task).
 					if (SlideShow)
 					{
-						Thread.Sleep(Math.Abs(realSlideInterval));
-						if (realSlideInterval < 0 && _ListSelectedIndex > 0)
+						Thread.Sleep(Math.Abs(SlideInterval));
+						if (SlideInterval < 0 && _ListSelectedIndex > 0)
 							ListSelectedIndex--;
-						else if (realSlideInterval > 0 && (_ListSelectedIndex + 1 < _ImageCount))
+						else if (SlideInterval > 0 && (_ListSelectedIndex + 1 < _ImageCount))
 							ListSelectedIndex++;
 					}
 					else

@@ -25,8 +25,8 @@ namespace FolderThumbnailExplorer.View
 		private void BigImage_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
 			if (e.RightButton == MouseButtonState.Pressed)
-			{
-				if (e.Delta > 0 && BigImageScaleFactor.ScaleX < 7)
+			{   //Zoom image
+				if (e.Delta > 0 && BigImageScaleFactor.ScaleX < 8)
 					BigImageScaleFactor.ScaleX = BigImageScaleFactor.ScaleY += 0.3;
 				else if (e.Delta < 0 && BigImageScaleFactor.ScaleX > 1)
 					BigImageScaleFactor.ScaleX = BigImageScaleFactor.ScaleY -= 0.3;
@@ -34,7 +34,7 @@ namespace FolderThumbnailExplorer.View
 					return;
 			}
 			else
-			{
+			{   //Next image
 				if (e.Delta > 0 && PVVM.ListSelectedIndex > 0)
 				{
 					if (PVVM.DoubleTurn) PVVM.ListSelectedIndex--;
@@ -77,19 +77,11 @@ namespace FolderThumbnailExplorer.View
 				img.RenderTransformOrigin = relativePos;
 			}
 		}
-
-		private void ScrollImg_MouseWheel(object sender, MouseWheelEventArgs e)
+		private void WheelSpeedScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
 		{
-			if (e.RightButton == MouseButtonState.Pressed)
-			{
-				e.Handled = true;
-				byte scrDelta = 50;
-				if (e.Delta > 0 && ((ItemsControl)sender).Width < 8888)
-					((ItemsControl)sender).Width += scrDelta;
-				else if (e.Delta < 0 && ((ItemsControl)sender).Width > scrDelta)
-					((ItemsControl)sender).Width -= scrDelta;
-				else
-					return;
+			if (((ScrollViewer)sender).VerticalOffset >= ((ScrollViewer)sender).ExtentHeight - ((ScrollViewer)sender).ViewportHeight && e.VerticalChange != 0)
+			{   // The ScrollViewer has reached the bottom													This prevents it to continue load when first checked.
+				ImageList.SelectedIndex = ImageList.Items.Count - 1;    //Make the list select the last item which will trigger the continue method.
 			}
 		}
 		#endregion

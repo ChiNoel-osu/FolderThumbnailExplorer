@@ -47,7 +47,7 @@ namespace FolderThumbnailExplorer.View
 		#region Settings related UI Code
 		private void SlideInterval_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 		{   //Use mouse wheel to control slideshow interval.
-			if (short.TryParse((string?)((TextBox)sender).Text, out short parsed))
+			if (short.TryParse(((TextBox)sender).Text, out short parsed))
 			{
 				try
 				{
@@ -60,7 +60,7 @@ namespace FolderThumbnailExplorer.View
 		}
 		private void LoadThreshold_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
 		{
-			if (short.TryParse((string?)((TextBox)sender).Text, out short parsed))
+			if (short.TryParse(((TextBox)sender).Text, out short parsed))
 			{
 				try
 				{
@@ -69,6 +69,19 @@ namespace FolderThumbnailExplorer.View
 						parsed = (short)(e.Delta > 0 ? parsed + 1 : parsed - 1);
 						if (parsed < 1) parsed = 1;
 					}
+					((TextBox)sender).Text = parsed.ToString();
+				}
+				catch (OverflowException) { }
+			}
+		}
+		private void ScrollFactor_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+		{
+			if (double.TryParse(((TextBox)sender).Text, out double parsed))
+			{
+				try
+				{
+					checked
+					{ parsed = Math.Round(e.Delta > 0d ? parsed + 0.1d : parsed - 0.1d, 1); }
 					((TextBox)sender).Text = parsed.ToString();
 				}
 				catch (OverflowException) { }

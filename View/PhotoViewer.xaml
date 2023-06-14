@@ -41,8 +41,7 @@
 			  Grid.RowSpan="2"
 			  Grid.ColumnSpan="2">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="{Binding PreviewAreaGridWidth}"
-								  d:Width="66" />
+				<ColumnDefinition Width="66" />
 				<ColumnDefinition Width="25" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
@@ -115,16 +114,21 @@
 			</Grid>
 			<model:WheelSpeedScrollViewer Grid.Column="2"
 										  Margin="0,20,0,0"
-										  SpeedFactor="1"
+										  CanControlZoom="True"
+										  ScrollChanged="WheelSpeedScrollViewer_ScrollChanged"
+										  BindScaleTransform2ME="{Binding ElementName=ScrollImageScaleFactor}"
+										  SpeedFactor="{Binding ScrollFactor, Mode=OneWay}"
 										  Visibility="{Binding ScrollView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
 				<ItemsControl ItemsSource="{Binding ScrollImg}"
-							  MouseWheel="ScrollImg_MouseWheel"
 							  Width="{Binding RelativeSource={RelativeSource AncestorLevel=1, AncestorType={x:Type Grid}, Mode=FindAncestor}, Path=ActualWidth, Mode=OneTime, Converter={StaticResource DivideBy}, ConverterParameter=2}">
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
 							<Image Source="{Binding}" />
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
+					<ItemsControl.LayoutTransform>
+						<ScaleTransform x:Name="ScrollImageScaleFactor" />
+					</ItemsControl.LayoutTransform>
 				</ItemsControl>
 			</model:WheelSpeedScrollViewer>
 		</Grid>

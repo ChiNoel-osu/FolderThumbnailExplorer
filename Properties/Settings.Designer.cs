@@ -115,5 +115,17 @@ namespace FolderThumbnailExplorer.Properties {
                 this["TE_CacheQuality"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double PV_ScrollSpeedFactor {
+            get {
+                return ((double)(this["PV_ScrollSpeedFactor"]));
+            }
+            set {
+                this["PV_ScrollSpeedFactor"] = value;
+            }
+        }
     }
 }
