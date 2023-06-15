@@ -25,3 +25,6 @@ Revised version of the custom file explorer(https://github.com/ChiNoel-osu/NETCo
 ## Very sfw screenshots
 ![A screenshot of the software's main page. ](./ReadmeResource/Mainpage.jpg?raw=true "Main Page")
 ![A screenshot of the Photo Viewer.](./ReadmeResource/PhotoViewer.jpg?raw=true "Photo Viewer")
+
+## Copyright Statement
+While the code is licensed under the AGPL-3.0 license. The compiled application is licensed under the [CC BY-NC-SA 4.0](./LICENSE-CC-BY-NC-SA) license. You can freely share the application to wherever you like, for NonCommercial purposes only. Meaning that you cannot sell the application, or use the application to monetize something. The application should remain free for everyone.
