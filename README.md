@@ -14,12 +14,13 @@ Revised version of the custom file explorer(https://github.com/ChiNoel-osu/NETCo
 	1. Favorite directories.
 	2. Favorite folders.
 	3. A photo viewer that gets the job done.
-	4. Multi-Language support. (Currently zh-CN and en-US)
+	4. Multi-Language support. (Currently zh-CN and en-US, it's fairly easy to add languages.) 
 
 ## What needs to be done
 - Image caching so it doesn't rape the harddrive.
-- A better UI.
+- A better UI and UX.
 - More shortcuts.
+- Fix bugs.
 - *And more....Please post an issue.*
 
 ## Very sfw screenshots
@@ -27,4 +28,4 @@ Revised version of the custom file explorer(https://github.com/ChiNoel-osu/NETCo
 ![A screenshot of the Photo Viewer.](./ReadmeResource/PhotoViewer.jpg?raw=true "Photo Viewer")
 
 ## Copyright Statement
-While the code is licensed under the AGPL-3.0 license. The compiled application is licensed under the [CC BY-NC-SA 4.0](./LICENSE-CC-BY-NC-SA) license. You can freely share the application to wherever you like, for NonCommercial purposes only. Meaning that you cannot sell the application, or use the application to monetize something. The application should remain free for everyone.
+While the code is licensed under the AGPL-3.0 license. The compiled application (or software) is licensed under the [CC BY-NC-SA 4.0](./LICENSE-CC-BY-NC-SA) license. You can freely share the application to wherever you like, for NonCommercial purposes only. Meaning that you cannot sell the application, or redistribute the appcation behind some kind of pay wall. The application should remain absolutely free for everyone.
