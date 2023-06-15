@@ -14,10 +14,10 @@ Revised version of the custom file explorer(https://github.com/ChiNoel-osu/NETCo
 	1. Favorite directories.
 	2. Favorite folders.
 	3. A photo viewer that gets the job done.
-	4. Multi-Language support. (Currently zh-CN and en-US, it's fairly easy to add languages.) 
+ 	4. Image caching system that doesn't rape your harddrive.
+	5. Multi-Language support. (Currently zh-CN and en-US, it's fairly easy to add languages.) 
 
 ## What needs to be done
-- Image caching so it doesn't rape the harddrive.
 - A better UI and UX.
 - More shortcuts.
 - Fix bugs.
