@@ -276,6 +276,25 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scroll Speed Factor.
+        /// </summary>
+        public static string PVPopUpSettingsScrollSpeed {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsScrollSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indicates how fast the scrolling is.
+        ///Negative value = Reverse scrolling direction..
+        /// </summary>
+        public static string PVPopUpSettingsScrollSpeedTT {
+            get {
+                return ResourceManager.GetString("PVPopUpSettingsScrollSpeedTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scroll view the image.
         /// </summary>
         public static string PVPopUpSettingsScrView {
@@ -375,15 +394,6 @@ namespace FolderThumbnailExplorer.Localization {
         public static string PVPopUpSettingsTwinRightToLeftTT {
             get {
                 return ResourceManager.GetString("PVPopUpSettingsTwinRightToLeftTT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Scroll Speed Factor.
-        /// </summary>
-        public static string PVScrollSpeed {
-            get {
-                return ResourceManager.GetString("PVScrollSpeed", resourceCulture);
             }
         }
         

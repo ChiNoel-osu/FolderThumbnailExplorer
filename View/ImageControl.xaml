@@ -148,6 +148,9 @@
 							<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsSlideshowInterval}"
 									   Foreground="White" />
 							<TextBox Name="SlideInterval"
+									 Background="Transparent"
+									 Foreground="White"
+									 CaretBrush="Azure"
 									 Text="{Binding SlideInterval, UpdateSourceTrigger=PropertyChanged}"
 									 VerticalContentAlignment="Center"
 									 HorizontalContentAlignment="Center"
@@ -156,26 +159,15 @@
 									 MinWidth="20">
 								<TextBox.Style>
 									<Style TargetType="{x:Type TextBox}">
-										<Setter Property="Background"
-												Value="Transparent" />
-										<Setter Property="Foreground"
-												Value="White" />
-										<Setter Property="CaretBrush"
-												Value="Azure" />
 										<Style.Triggers>
-											<Trigger Property="Validation.HasError"
-													 Value="True">
-												<Setter Property="BorderBrush"
-														Value="Red" />
-												<Setter	Property="ToolTip"
-														Value="{x:Static loc:Loc.PVPopUpSettingsSlideshowValueError}" />
-											</Trigger>
-											<Trigger Property="Validation.HasError"
-													 Value="False">
+											<DataTrigger Binding="{Binding Path=(Validation.HasError), RelativeSource={RelativeSource Self}}"
+														 Value="True">
 												<Setter Property="ToolTip"
-														Value="{x:Static loc:Loc.PVPopUpSettingsSlideshowValue}" />
-											</Trigger>
+														Value="{x:Static loc:Loc.PVPopUpSettingsSlideshowValueError}" />
+											</DataTrigger>
 										</Style.Triggers>
+										<Setter Property="ToolTip"
+												Value="{x:Static loc:Loc.PVPopUpSettingsSlideshowValue}" />
 									</Style>
 								</TextBox.Style>
 							</TextBox>
@@ -248,11 +240,13 @@
 									  Command="{Binding LoadScrollViewCommand}"
 									  Style="{DynamicResource ToggleButtonTemplateStyle}" />
 					</DockPanel>
-					<DockPanel Margin="8,-8,0,0" LastChildFill="True">
-						<TextBlock Text="{x:Static loc:Loc.PVScrollSpeed}"
-								   ToolTip="{x:Static loc:Loc.PVScrollSpeed}"
+					<DockPanel Margin="8,-8,0,0"
+							   LastChildFill="True">
+						<TextBlock Text="{x:Static loc:Loc.PVPopUpSettingsScrollSpeed}"
+								   ToolTip="{x:Static loc:Loc.PVPopUpSettingsScrollSpeed}"
 								   Foreground="White" />
 						<TextBox Text="{Binding ScrollFactor, UpdateSourceTrigger=PropertyChanged}"
+								 ToolTip="{x:Static loc:Loc.PVPopUpSettingsScrollSpeedTT}"
 								 Background="Transparent"
 								 Foreground="White"
 								 CaretBrush="Azure"

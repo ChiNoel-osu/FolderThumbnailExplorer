@@ -4,7 +4,6 @@ using FolderThumbnailExplorer.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -63,6 +62,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				Properties.Settings.Default.PV_ScrollSpeedFactor = value;
 				Properties.Settings.Default.Save();
+				OnPropertyChanged(nameof(ScrollFactor));
 			}
 		}
 
