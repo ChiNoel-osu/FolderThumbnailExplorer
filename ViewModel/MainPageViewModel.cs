@@ -70,7 +70,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				else
 				{
 					_PATHtoShow = value;
-					if (isLastPathValid = DirHelper.IsPathValid(_PATHtoShow))
+					if (isLastPathValid = Directory.Exists(_PATHtoShow) || File.Exists(_PATHtoShow))
 					{   //Compare the incoming path to the last valid path and if they're the same, do nothing.
 						//TODO: Bugs exists. Like if user use '/' instead of '\' for directory separator.
 						if (lastValidPath == _PATHtoShow)
@@ -174,10 +174,10 @@ namespace FolderThumbnailExplorer.ViewModel
 			//This took me forever.
 			addItemTask = new Task(() =>
 			{
-				if (DirHelper.IsPathValid(_PATHtoShow))
+				if (Directory.Exists(_PATHtoShow) || File.Exists(_PATHtoShow))
 				{
-					string[] dirs = DirHelper.DirInPath(_PATHtoShow);
-					if (dirs is not null)
+					string[] dirs = Directory.GetDirectories(_PATHtoShow);
+					if (dirs.Length > 0)
 					{
 						bool? doDescSort = null;
 						switch (SortingMethodIndex)
@@ -216,6 +216,7 @@ namespace FolderThumbnailExplorer.ViewModel
 							AddContents((bool)doDescSort ? sortedDirs.Reverse().ToArray() : sortedDirs.ToArray(), ct);
 						}
 					}
+					NotAddingItem = true;
 				}
 				else
 					NotAddingItem = true;
@@ -307,8 +308,6 @@ namespace FolderThumbnailExplorer.ViewModel
 				if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
 				{
 					string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
-					Task<string[]> task = DirHelper.DirInPathTask(dir); //Async operation about finding if there's any subfolders.
-					string[] subfolders;
 					string firstFilePath;
 					try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
 					{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
@@ -337,9 +336,8 @@ namespace FolderThumbnailExplorer.ViewModel
 						else if (!InitThumb(out bitmap, firstFilePath, dir))    //Picture in folder, load thumbnail.
 							continue;   //Thumbnail initialization failed, skip.
 					}
-					CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = DirHelper.GetFileFolderName(dir), FullPath = dir };
-					subfolders = task.Result;
-					if (subfolders.Length > 0 && bitmap.UriSource is null)
+					CustomContentItem newItem = new CustomContentItem { ThumbNail = bitmap, Header = Path.GetFileName(dir), FullPath = dir };
+					if (Directory.EnumerateDirectories(dir).Any() && bitmap.UriSource is null)
 						newItem.HasSubfolder = true;
 					lastAdded = newItem;
 					Content.Add(lastAdded);
