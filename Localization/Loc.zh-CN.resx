@@ -263,4 +263,28 @@ Esc - 关闭图片浏览器.</value>
     <value>代表滚动的速度快慢.
 负值则为反向滚动.</value>
   </data>
+  <data name="SortingMethod" xml:space="preserve">
+    <value>排序方式</value>
+  </data>
+  <data name="SortMethodNameAsc" xml:space="preserve">
+    <value>名称, 顺序, 默认</value>
+  </data>
+  <data name="SortMethodCreateDesc" xml:space="preserve">
+    <value>创建时间, 倒序</value>
+  </data>
+  <data name="SortMethodCreateAsc" xml:space="preserve">
+    <value>创建时间, 顺序</value>
+  </data>
+  <data name="SortMethodModifyDesc" xml:space="preserve">
+    <value>更改时间, 倒序</value>
+  </data>
+  <data name="SortMethodModifyAsc" xml:space="preserve">
+    <value>更改时间, 顺序</value>
+  </data>
+  <data name="SortMethodAccessDesc" xml:space="preserve">
+    <value>访问时间, 倒序</value>
+  </data>
+  <data name="SortMethodAccessAsc" xml:space="preserve">
+    <value>访问时间, 顺序</value>
+  </data>
 </root>

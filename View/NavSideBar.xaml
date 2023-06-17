@@ -21,7 +21,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
+			<RowDefinition Height="2*" />
 		</Grid.RowDefinitions>
 		<ListBox Template="{DynamicResource ListBoxNavTemplate}"
 				 SelectedIndex="{Binding NavSideBarViewModel.SelectedIndex}"
@@ -39,6 +39,32 @@
 		</ListBox>
 		<ContentControl Grid.Row="1"
 						Content="{Binding NavSideBarViewModel.MidCtrl}" />
+		<StackPanel Grid.Row="2"
+					Margin="4,4,4,35">
+			<TextBlock Text="{x:Static loc:Loc.SortingMethod}"
+					   Margin="0,0,0,2"
+					   Foreground="White" />
+			<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
+					  Foreground="White"
+					  SelectedIndex="{Binding MainPageViewModel.SortingMethodIndex, Mode=OneWayToSource}"
+					  VerticalAlignment="Top">
+				<ComboBox.Resources>
+					<Style TargetType="{x:Type ComboBoxItem}">
+						<Style.Setters>
+							<Setter Property="Foreground"
+									Value="White" />
+						</Style.Setters>
+					</Style>
+				</ComboBox.Resources>
+				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodNameAsc}" />
+				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodCreateDesc}" />
+				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodCreateAsc}" />
+				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodModifyDesc}" />
+				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodModifyAsc}" />
+				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodAccessDesc}" />
+				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodAccessAsc}" />
+			</ComboBox>
+		</StackPanel>
 		<Label Grid.Row="2"
 			   Content="ℹ"
 			   Foreground="Cyan"

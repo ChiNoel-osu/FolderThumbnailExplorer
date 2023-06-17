@@ -53,6 +53,7 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		bool isLastPathValid = false;   //For validation use.
 		string lastValidPath;
+
 		string _PATHtoShow; //DirBox.Text
 		public string PATHtoShow
 		{
@@ -88,7 +89,11 @@ namespace FolderThumbnailExplorer.ViewModel
 				}
 			}
 		}
+
 		readonly BitmapImage defFolderIcon = new BitmapImage();
+
+		int _SortingMethodIndex = 0;
+		public int SortingMethodIndex { get; set; }
 
 		[ObservableProperty]
 		ObservableCollection<string> _Drives = new ObservableCollection<string>();
@@ -123,7 +128,6 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 		}
 		[RelayCommand]
-
 		public void GoUp()
 		{
 			if (!string.IsNullOrEmpty(_PATHtoShow))
@@ -174,7 +178,44 @@ namespace FolderThumbnailExplorer.ViewModel
 				{
 					string[] dirs = DirHelper.DirInPath(_PATHtoShow);
 					if (dirs is not null)
-						AddContents(dirs, ct);
+					{
+						bool? doDescSort = null;
+						switch (SortingMethodIndex)
+						{   //Check sorting method
+							case -1:    //Name, ascending
+							case 0:
+							default:
+								break;
+							case 1: //Creation date descending
+							case 3: //Modify date descending
+							case 5: //Access date descending
+								doDescSort = true;
+								break;
+							case 2: //Creation date ascending
+							case 4: //Modify date ascending
+							case 6: //Access date ascending
+								doDescSort = false;
+								break;
+						}
+						if (doDescSort is null)
+							AddContents(dirs, ct);  //Default method: Name.
+						else
+						{
+							IEnumerable<string> sortedDirs = from dir in dirs
+															 let directoryInfo = new DirectoryInfo(dir)
+															 orderby SortingMethodIndex switch
+															 {
+																 1 => directoryInfo.CreationTime,
+																 2 => directoryInfo.CreationTime,
+																 3 => directoryInfo.LastWriteTime,
+																 4 => directoryInfo.LastWriteTime,
+																 5 => directoryInfo.LastAccessTime,
+																 6 => directoryInfo.LastAccessTime,
+															 }
+															 select directoryInfo.FullName;
+							AddContents((bool)doDescSort ? sortedDirs.Reverse().ToArray() : sortedDirs.ToArray(), ct);
+						}
+					}
 				}
 				else
 					NotAddingItem = true;
@@ -247,7 +288,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			return true;
 		}
 		private void AddContents(string[] dirs, CancellationToken ct)
-		{
+		{   //Every directory in dirs is enumerated for image files, and be added to Content after given the thumbnail.
 			CustomContentItem lastAdded = new CustomContentItem();  //Mark the last added item.
 			List<string> unauthorizedFolders = new List<string>();
 			foreach (string dir in dirs)

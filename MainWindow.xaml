@@ -22,7 +22,7 @@
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"
-							  MaxWidth="80" />
+							  MaxWidth="200" />
 			<ColumnDefinition Width="8*" />
 		</Grid.ColumnDefinitions>
 		<view:NavSideBar Grid.Column="0"

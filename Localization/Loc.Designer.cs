@@ -463,5 +463,77 @@ namespace FolderThumbnailExplorer.Localization {
                 return ResourceManager.GetString("ScaleSliderTT", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorting.
+        /// </summary>
+        public static string SortingMethod {
+            get {
+                return ResourceManager.GetString("SortingMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accessed Date, Asc.
+        /// </summary>
+        public static string SortMethodAccessAsc {
+            get {
+                return ResourceManager.GetString("SortMethodAccessAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Accessed Date, Desc.
+        /// </summary>
+        public static string SortMethodAccessDesc {
+            get {
+                return ResourceManager.GetString("SortMethodAccessDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creation Date, Asc.
+        /// </summary>
+        public static string SortMethodCreateAsc {
+            get {
+                return ResourceManager.GetString("SortMethodCreateAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creation Date, Desc.
+        /// </summary>
+        public static string SortMethodCreateDesc {
+            get {
+                return ResourceManager.GetString("SortMethodCreateDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modified Date, Asc.
+        /// </summary>
+        public static string SortMethodModifyAsc {
+            get {
+                return ResourceManager.GetString("SortMethodModifyAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modified Date, Desc.
+        /// </summary>
+        public static string SortMethodModifyDesc {
+            get {
+                return ResourceManager.GetString("SortMethodModifyDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name, Asc, Default.
+        /// </summary>
+        public static string SortMethodNameAsc {
+            get {
+                return ResourceManager.GetString("SortMethodNameAsc", resourceCulture);
+            }
+        }
     }
 }

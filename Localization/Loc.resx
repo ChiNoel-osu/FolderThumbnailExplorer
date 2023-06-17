@@ -263,4 +263,28 @@ Select the last image in list to continue loading.</value>
     <value>Indicates how fast the scrolling is.
 Negative value = Reverse scrolling direction.</value>
   </data>
+  <data name="SortingMethod" xml:space="preserve">
+    <value>Sorting</value>
+  </data>
+  <data name="SortMethodNameAsc" xml:space="preserve">
+    <value>Name, Asc, Default</value>
+  </data>
+  <data name="SortMethodCreateDesc" xml:space="preserve">
+    <value>Creation Date, Desc</value>
+  </data>
+  <data name="SortMethodCreateAsc" xml:space="preserve">
+    <value>Creation Date, Asc</value>
+  </data>
+  <data name="SortMethodModifyDesc" xml:space="preserve">
+    <value>Modified Date, Desc</value>
+  </data>
+  <data name="SortMethodModifyAsc" xml:space="preserve">
+    <value>Modified Date, Asc</value>
+  </data>
+  <data name="SortMethodAccessDesc" xml:space="preserve">
+    <value>Accessed Date, Desc</value>
+  </data>
+  <data name="SortMethodAccessAsc" xml:space="preserve">
+    <value>Accessed Date, Asc</value>
+  </data>
 </root>
