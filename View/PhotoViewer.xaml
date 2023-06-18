@@ -55,7 +55,7 @@
 					 SelectionChanged="ImageBox_SelectionChanged"
 					 VirtualizingStackPanel.IsVirtualizing="True"
 					 VirtualizingStackPanel.VirtualizationMode="Recycling"
-					 ItemsSource="{Binding Images}"
+					 ItemsSource="{Binding Images, Mode=OneTime}"
 					 SelectedItem="{Binding SelectedImg, Mode=OneWayToSource}"
 					 SelectedIndex="{Binding ListSelectedIndex}"
 					 d:ItemsSource="{d:SampleData ItemCount=5}">
