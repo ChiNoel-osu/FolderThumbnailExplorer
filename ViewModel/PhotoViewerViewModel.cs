@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -17,7 +18,7 @@ namespace FolderThumbnailExplorer.ViewModel
 {
 	public partial class PhotoViewerViewModel : ObservableObject
 	{
-		readonly string path;
+		string currentImageDir;
 		bool closing = false;
 
 		[ObservableProperty]
@@ -27,7 +28,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		BitmapImage _BigImage2; //For twin page viewing mode
 		[ObservableProperty]
-		bool _MainView = true;
+		bool _MainView = true;  //The visibility of the big photo.
 		[ObservableProperty]
 		bool _UseTwinPage = false;
 		[ObservableProperty]    //This should be volatile as it might be used across different threads. But whatever.
@@ -44,6 +45,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		sbyte _PosFlag = 0; //Save window position animation
 		[ObservableProperty]
 		string _Status = string.Empty;
+		[ObservableProperty]
+		private ObservableCollection<CustomListItem> _Images = new ObservableCollection<CustomListItem>();  //ListBoxItem binding target
 
 		public bool DoubleTurn { get; set; } = false;
 		public ushort LoadThreshold
@@ -66,20 +69,21 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 		}
 
-		private ushort _ImageCount; //Real image count
 		public ushort ImageCount
 		{
 			get
 			{
-				if (_ImageCount == 1)   //1 pictures
+				if (loadedCount == 1)   //1 pictures
 					return 1;
-				else if (_ImageCount == 0)  //Just in case it's broke.
+				else if (loadedCount == 0)  //Just in case it's broke.
 					return 0;
 				else
-					return (ushort)(_ImageCount - 1);   //Index issues so subtract by 1
+				{
+					return (ushort)(loadedCount - 1);   //Index issues so subtract by 1
+				}
 			}
 			private set
-			{ _ImageCount = value; }
+			{ loadedCount = value; }
 		}   //Binding target for slider maximum.
 
 		public CustomListItem SelectedImg   //Load the image
@@ -138,7 +142,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			if (ScrollView)
 				Task.Run(() =>
 				{
-					for (ushort i = 0; i < _ImageCount; i++)
+					for (ushort i = 0; i < loadedCount; i++)
 					{
 						if (i < scrLoadedCount) continue;  //Skip loaded image.
 						if (closing) break;
@@ -184,7 +188,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void AddFav2Group()
 		{
-			new View.AddFav2Group(path).ShowDialog();
+			new View.AddFav2Group(currentImageDir).ShowDialog();
 		}
 		[RelayCommand]
 		public async void Copy2Clipboard()
@@ -195,17 +199,6 @@ namespace FolderThumbnailExplorer.ViewModel
 			Status = string.Empty;
 		}
 
-		//Use this as the ListBoxItem binding target
-		private ObservableCollection<CustomListItem> _Images = new ObservableCollection<CustomListItem>();
-		public ObservableCollection<CustomListItem> Images
-		{
-			get
-			{
-				AddImgs(path);  //Starts a task that adds images to the collection.
-				return _Images;
-			}
-			private set { _Images = value; }
-		}
 		SortedDictionary<string, string> imageMap;
 		ushort loadedCount = 0; //Total loaded image in ListBox.
 		private void AddImgs(string path)
@@ -225,21 +218,22 @@ namespace FolderThumbnailExplorer.ViewModel
 				imageMap = new SortedDictionary<string, string>(new NaturalStringComparer());
 				foreach (string filePath in imgs)   //The dictionary will sort itself when value's being added.
 													//Use filename to compare.
-					imageMap.Add(filePath[(filePath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..], filePath);
+					imageMap.Add(Path.GetFileName(filePath), filePath);
 				//Add image to collection.
 				foreach (KeyValuePair<string, string> img in imageMap)
 				{
 					if (closing) break; //Break out if the window is closing.
 					LoadImagePreview(img);
-					if (++loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
+					loadedCount++;
+					OnPropertyChanged(nameof(ImageCount));
+					if (loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
 				}
-				App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images.");
+				App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images in total.");
 			});
 		}
-
 		List<ushort> loadedIndex = new List<ushort>();
 		partial void OnListSelectedIndexChanged(ushort value)
-		{
+		{   //Continue add.
 			if ((value + 1) % Properties.Settings.Default.PV_LoadThreshold == 0 && !loadedIndex.Contains(value))
 			{   //When user selected last image in list, load next batch of image.
 				loadedIndex.Add(value);
@@ -247,17 +241,17 @@ namespace FolderThumbnailExplorer.ViewModel
 				{
 					App.Logger.Info("The PhotoViewer is continuing to load images.");
 					ushort current = 0;
-					//Add image to collection.
 					foreach (KeyValuePair<string, string> img in imageMap)
 					{
 						if (current++ < loadedCount) continue;  //Skip loaded image.
 						if (closing) break; //Break out if the window is closing.
 						LoadImagePreview(img);
-						if (++loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
+						loadedCount++;
+						OnPropertyChanged(nameof(ImageCount));
+						if (loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
 					}
-					//while (Images.Count != loadedCount) ;
 					if (ScrollView) LoadScrollView();
-					App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images.");
+					App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images in total.");
 				});
 			}
 		}
@@ -279,16 +273,25 @@ namespace FolderThumbnailExplorer.ViewModel
 			imgItem.Name = img.Value[(img.Value.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
 			imgItem.Image = bitmapImage;
 			_Images.Add(imgItem);
-			_ImageCount++;
-			OnPropertyChanged(nameof(ImageCount));  //Update ImageCount.
+		}
+		public void ResetReload(string folderPath)
+		{
+			ListSelectedIndex = 1;	//This somehow fixes the problem of the list not being selected after reset.
+			imageMap.Clear();
+			Images.Clear();
+			ScrollImg.Clear();
+			loadedIndex.Clear();
+			ListSelectedIndex = loadedCount = scrLoadedCount = 0;
+			BigImage = BigImage2 = null;
+			AddImgs(currentImageDir = folderPath);
 		}
 
 		public PhotoViewerViewModel(string folderPath, object view)
 		{
 			BindingOperations.EnableCollectionSynchronization(_Images, new object());
-			this.path = folderPath;
 			((Window)view).Closed += PhotoViewerClosed;
 
+			AddImgs(currentImageDir = folderPath);  //Starts a task that adds images to the collection.
 			Task.Run(() =>
 			{   //TODO: Not the best solution, idk how to pause a task properly.
 				while (true)
@@ -299,7 +302,7 @@ namespace FolderThumbnailExplorer.ViewModel
 						Thread.Sleep(Math.Abs(SlideInterval));
 						if (SlideInterval < 0 && _ListSelectedIndex > 0)
 							ListSelectedIndex--;
-						else if (SlideInterval > 0 && (_ListSelectedIndex + 1 < _ImageCount))
+						else if (SlideInterval > 0 && (_ListSelectedIndex + 1 < loadedCount))
 							ListSelectedIndex++;
 					}
 					else

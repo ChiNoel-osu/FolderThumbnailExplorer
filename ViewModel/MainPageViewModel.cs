@@ -231,17 +231,9 @@ namespace FolderThumbnailExplorer.ViewModel
 										select folder.FullPath).ToArray();
 			if (validImagePaths.Length < 1) return;
 			string directory = validImagePaths[random.Next(validImagePaths.Length)]; //Choose a random one.
-			App.Logger.Info("Starting PhotoViewer at directory " + directory);
-			PhotoViewer photoViewer = new PhotoViewer(directory)
-			{
-				Width = Properties.Settings.Default.PV_Width,
-				Height = Properties.Settings.Default.PV_Height,
-				Left = Properties.Settings.Default.PV_Left,
-				Top = Properties.Settings.Default.PV_Top
-			};
-			wnds.Add(photoViewer);
-			photoViewer.Show();
-			App.Logger.Info("PhotoViewer started at directory " + directory);
+			App.Logger.Info("Starting PhotoViewer at random directory " + directory);
+			StartShowPhotoViewer(directory);
+			App.Logger.Info("PhotoViewer started at random directory " + directory);
 		}
 
 		#region Extracted Methods
@@ -352,6 +344,29 @@ namespace FolderThumbnailExplorer.ViewModel
 			else
 				App.Logger.Info("Loading has finished.");
 		}
+		private static void StartShowPhotoViewer(string directory)
+		{
+			if (wnds.Exists(wnd => wnd is PhotoViewer))
+			{
+				PhotoViewer existingPV = (PhotoViewer)(from wnd in wnds
+													   where wnd is PhotoViewer
+													   select wnd).First();
+				((PhotoViewerViewModel)(existingPV.DataContext)).ResetReload(directory);
+				existingPV.Focus();
+			}
+			else
+			{
+				PhotoViewer photoViewer = new PhotoViewer(directory)
+				{
+					Width = Properties.Settings.Default.PV_Width,
+					Height = Properties.Settings.Default.PV_Height,
+					Left = Properties.Settings.Default.PV_Left,
+					Top = Properties.Settings.Default.PV_Top
+				};
+				wnds.Add(photoViewer);
+				photoViewer.Show();
+			}
+		}
 		#endregion
 		#region Clicking thumbnails and stuff
 		[RelayCommand]
@@ -382,15 +397,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				else
 				{   //Image found, start Photo Viewer.
 					App.Logger.Info("Starting PhotoViewer at directory " + folderFullPath);
-					PhotoViewer photoViewer = new PhotoViewer(folderFullPath)
-					{
-						Width = Properties.Settings.Default.PV_Width,
-						Height = Properties.Settings.Default.PV_Height,
-						Left = Properties.Settings.Default.PV_Left,
-						Top = Properties.Settings.Default.PV_Top
-					};
-					wnds.Add(photoViewer); //Add this to opened windows list to close it when mainwindow closes
-					photoViewer.Show();
+					StartShowPhotoViewer(folderFullPath);
 					App.Logger.Info("PhotoViewer started at directory " + folderFullPath);
 				}
 			}

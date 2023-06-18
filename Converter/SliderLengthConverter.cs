@@ -16,7 +16,7 @@ namespace FolderThumbnailExplorer.Converter
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			MessageBox.Show("SliderLengthConverter ConverBack not implemented.");
+			MessageBox.Show("SliderLengthConverter ConvertBack not implemented.");
 			throw new NotImplementedException();
 		}
 	}
