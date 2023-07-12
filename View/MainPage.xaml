@@ -22,10 +22,8 @@
 		<converter:LabelSizeConverter x:Key="LSConverter" />
 		<converter:Bool2VisivilityConverter x:Key="B2VConverter" />
 	</UserControl.Resources>
-	<UserControl.InputBindings>
-		<KeyBinding Key="Backspace"
-					Command="{Binding MainPageViewModel.GoUpCommand}" />
-		<KeyBinding Key="F2"
+    <UserControl.InputBindings>
+        <KeyBinding Key="F2"
 					Modifiers="Ctrl"
 					Command="{Binding MainPageViewModel.OpenRandomFolderCommand}" />
 	</UserControl.InputBindings>

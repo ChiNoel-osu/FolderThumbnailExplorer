@@ -19,6 +19,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Key="Backspace" Command="{Binding MainPageViewModel.GoUpCommand}"/>
+    </Window.InputBindings>
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"
