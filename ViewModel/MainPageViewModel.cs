@@ -204,15 +204,16 @@ namespace FolderThumbnailExplorer.ViewModel
 							IEnumerable<string> sortedDirs = from dir in dirs
 															 let directoryInfo = new DirectoryInfo(dir)
 															 orderby SortingMethodIndex switch
-															 {
-																 1 => directoryInfo.CreationTime,
-																 2 => directoryInfo.CreationTime,
-																 3 => directoryInfo.LastWriteTime,
-																 4 => directoryInfo.LastWriteTime,
-																 5 => directoryInfo.LastAccessTime,
-																 6 => directoryInfo.LastAccessTime,
-															 }
-															 select directoryInfo.FullName;
+                                                             {
+                                                                 1 => directoryInfo.CreationTime,
+                                                                 2 => directoryInfo.CreationTime,
+                                                                 3 => directoryInfo.LastWriteTime,
+                                                                 4 => directoryInfo.LastWriteTime,
+                                                                 5 => directoryInfo.LastAccessTime,
+                                                                 6 => directoryInfo.LastAccessTime,
+                                                                 _ => throw new NotImplementedException(),
+                                                             }
+                                                             select directoryInfo.FullName;
 							AddContents((bool)doDescSort ? sortedDirs.Reverse().ToArray() : sortedDirs.ToArray(), ct);
 						}
 					}
@@ -301,6 +302,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				{
 					string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
 					string firstFilePath;
+					
 					try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
 					{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
 					catch (InvalidOperationException)   //No such image file, set default
