@@ -12,14 +12,14 @@
 		Height="600"
 		Width="800"
 		Background="#1E1E1E">
-	<Window.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</Window.Resources>
-	<Grid>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"
 							  MaxWidth="200" />
