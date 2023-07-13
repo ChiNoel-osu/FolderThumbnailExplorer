@@ -287,4 +287,10 @@ Esc - 关闭图片浏览器.</value>
   <data name="SortMethodAccessAsc" xml:space="preserve">
     <value>访问时间, 顺序</value>
   </data>
+  <data name="SettingsGeneral" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="SettingsLang" xml:space="preserve">
+    <value>语言</value>
+  </data>
 </root>

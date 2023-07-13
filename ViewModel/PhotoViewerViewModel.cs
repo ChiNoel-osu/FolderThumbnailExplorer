@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -276,7 +275,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		}
 		public void ResetReload(string folderPath)
 		{
-			ListSelectedIndex = 1;	//This somehow fixes the problem of the list not being selected after reset.
+			ListSelectedIndex = 1;  //This somehow fixes the problem of the list not being selected after reset.
 			imageMap.Clear();
 			Images.Clear();
 			ScrollImg.Clear();

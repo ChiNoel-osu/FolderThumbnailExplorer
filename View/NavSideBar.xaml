@@ -20,7 +20,7 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
-			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" d:Height="100" />
 			<RowDefinition Height="2*" />
 		</Grid.RowDefinitions>
 		<ListBox Template="{DynamicResource ListBoxNavTemplate}"
@@ -35,6 +35,9 @@
 						 Padding="10" />
 			<ListBoxItem Style="{DynamicResource ListBoxNavItemStyle}"
 						 Content="Fav"
+						 Padding="10" />
+			<ListBoxItem Style="{DynamicResource ListBoxNavItemStyle}"
+						 Content="Settings"
 						 Padding="10" />
 		</ListBox>
 		<ContentControl Grid.Row="1"

@@ -15,11 +15,17 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				switch (_SelectedIndex = value)
 				{
-					case 0:
+					case 0: //Main
+						RightView = mainPage;
 						MidCtrl = driveSelect;
 						break;
-					case 1:
+					case 1: //Fav
+						RightView = mainPage;
 						MidCtrl = favFolderSelect;
+						break;
+					case 2: //Settings
+						RightView = settingsPage;
+						MidCtrl = null;
 						break;
 					default:
 						throw new NotImplementedException();
@@ -36,6 +42,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		static readonly DriveSelect driveSelect = new DriveSelect();
 		static readonly MainPage mainPage = new MainPage();
 		static readonly FavFolderSelect favFolderSelect = new FavFolderSelect();
+		static readonly SettingsPage settingsPage = new SettingsPage();
 		#endregion
 	}
 }

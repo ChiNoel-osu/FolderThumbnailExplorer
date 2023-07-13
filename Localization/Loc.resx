@@ -287,4 +287,10 @@ Negative value = Reverse scrolling direction.</value>
   <data name="SortMethodAccessAsc" xml:space="preserve">
     <value>Accessed Date, Asc</value>
   </data>
+  <data name="SettingsGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SettingsLang" xml:space="preserve">
+    <value>Language</value>
+  </data>
 </root>
