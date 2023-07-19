@@ -23,12 +23,15 @@ namespace FolderThumbnailExplorer.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("zh-CN")]
         public string Locale {
             get {
                 return ((string)(this["Locale"]));
+            }
+            set {
+                this["Locale"] = value;
             }
         }
         
