@@ -64,7 +64,7 @@
 							   ToolTip="{Binding SettingsPageViewModel.LanguageRestartTT, Mode=OneWay}"
 							   Visibility="{Binding SettingsPageViewModel.IsLangRestartVisible, Converter={StaticResource Bool2CollapseVisibilityConverter}}">
 						<TextBlock.InputBindings>
-							<MouseBinding MouseAction="LeftClick" />
+							<MouseBinding MouseAction="LeftClick" Command="{Binding RestartApplicationCommand}" />
 						</TextBlock.InputBindings>
 					</TextBlock>
 				</StackPanel>

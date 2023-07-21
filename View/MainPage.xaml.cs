@@ -11,5 +11,10 @@ namespace FolderThumbnailExplorer.View
 		{
 			InitializeComponent();
 		}
+
+		private void MainGrid_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		{   //Focus the parent control (MainPage) every time the mouse is in the grid.
+			((UserControl)(((Grid)sender).Parent)).Focus();
+		}
 	}
 }
