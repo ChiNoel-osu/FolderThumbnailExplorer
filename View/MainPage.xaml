@@ -32,7 +32,7 @@
 		<KeyBinding Key="Backspace"
 					Command="{Binding MainPageViewModel.GoUpCommand}" />
 	</UserControl.InputBindings>
-	<Grid MouseEnter="MainGrid_MouseEnter">
+	<Grid PreviewMouseDown="MainGrid_MouseDown">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="26" />
 			<RowDefinition Height="*" />

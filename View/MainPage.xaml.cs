@@ -13,7 +13,7 @@ namespace FolderThumbnailExplorer.View
 			InitializeComponent();
 		}
 
-		private void MainGrid_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		private void MainGrid_MouseDown(object sender, System.Windows.Input.MouseEventArgs e)
 		{   //Focus the parent control (MainPage) every time the mouse is in the grid.
 			((UserControl)(((Grid)sender).Parent)).Focus();
 		}
@@ -29,7 +29,7 @@ namespace FolderThumbnailExplorer.View
 					((MainViewModel)DataContext).MainPageViewModel.GoForward();
 					break;
 				default:
-					break;
+					return;
 			}
 		}
 	}

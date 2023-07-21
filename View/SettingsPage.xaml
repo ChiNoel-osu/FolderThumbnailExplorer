@@ -57,8 +57,9 @@
 						<ComboBoxItem Content="中文" />
 					</ComboBox>
 					<TextBlock Text="!"
-							   Margin="10,-1,0,0"
+							   Margin="10,-2,0,0"
 							   Padding="10,0,10,0"
+							   ToolTipService.InitialShowDelay="0"
 							   Cursor="Hand"
 							   Foreground="Red"
 							   ToolTip="{Binding SettingsPageViewModel.LanguageRestartTT, Mode=OneWay}"
