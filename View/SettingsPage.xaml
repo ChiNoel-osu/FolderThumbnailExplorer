@@ -1,22 +1,19 @@
-﻿<UserControl x:Class="FolderThumbnailExplorer.View.SettingsPage"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
-			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+			 xmlns:Converter="clr-namespace:FolderThumbnailExplorer.Converter"
+			 x:Class="FolderThumbnailExplorer.View.SettingsPage"
+			 d:DataContext="{d:DesignInstance Type={x:Type viewmodel:MainViewModel}}"
 			 mc:Ignorable="d"
 			 d:DesignHeight="600"
 			 d:DesignWidth="600">
-	<d:UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</d:UserControl.Resources>
+	<UserControl.Resources>
+		<Converter:Bool2CollapseVisibilityConverter x:Key="Bool2CollapseVisibilityConverter" />
+	</UserControl.Resources>
 	<DockPanel>
 		<Border DockPanel.Dock="Top"
 				BorderThickness="0,0,0,2"
@@ -43,22 +40,34 @@
 						   Text="{x:Static loc:Loc.SettingsGeneral}" />
 				<TextBlock Text="{x:Static loc:Loc.SettingsLang}"
 						   Margin="0,0,0,5" />
-				<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
-						  FontSize="15"
-						  HorizontalAlignment="Left"
-						  Width="100"
-						  Foreground="White">
-					<ComboBox.Resources>
-						<Style TargetType="{x:Type ComboBoxItem}">
-							<Style.Setters>
+				<StackPanel Orientation="Horizontal">
+					<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
+							  SelectedIndex="{Binding SettingsPageViewModel.LanguageIndex}"
+							  FontSize="15"
+							  HorizontalAlignment="Left"
+							  Width="100"
+							  Foreground="White">
+						<ComboBox.Resources>
+							<Style TargetType="{x:Type ComboBoxItem}">
 								<Setter Property="Foreground"
 										Value="White" />
-							</Style.Setters>
-						</Style>
-					</ComboBox.Resources>
-					<ComboBoxItem Content="English" />
-					<ComboBoxItem Content="中文" />
-				</ComboBox>
+							</Style>
+						</ComboBox.Resources>
+						<ComboBoxItem Content="English" />
+						<ComboBoxItem Content="中文" />
+					</ComboBox>
+					<TextBlock Text="!"
+							   Margin="10,-1,0,0"
+							   Padding="10,0,10,0"
+							   Cursor="Hand"
+							   Foreground="Red"
+							   ToolTip="{Binding SettingsPageViewModel.LanguageRestartTT, Mode=OneWay}"
+							   Visibility="{Binding SettingsPageViewModel.IsLangRestartVisible, Converter={StaticResource Bool2CollapseVisibilityConverter}}">
+						<TextBlock.InputBindings>
+							<MouseBinding MouseAction="LeftClick" />
+						</TextBlock.InputBindings>
+					</TextBlock>
+				</StackPanel>
 			</StackPanel>
 		</ScrollViewer>
 	</DockPanel>

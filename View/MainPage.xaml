@@ -20,7 +20,7 @@
 	</d:UserControl.Resources>
 	<UserControl.Resources>
 		<converter:LabelSizeConverter x:Key="LSConverter" />
-		<converter:Bool2VisivilityConverter x:Key="B2VConverter" />
+		<converter:Bool2VisibilityConverter x:Key="B2VConverter" />
 	</UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding Key="F2"
