@@ -19,9 +19,6 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
-	<Window.InputBindings>
-		
-	</Window.InputBindings>
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"

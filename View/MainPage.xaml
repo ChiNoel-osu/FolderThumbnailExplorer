@@ -10,6 +10,7 @@
 			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 			 Focusable="True"
 			 FocusVisualStyle="{x:Null}"
+			 MouseUp="MainPage_MouseUp"
 			 mc:Ignorable="d"
 			 d:DesignHeight="600"
 			 d:DesignWidth="600">
