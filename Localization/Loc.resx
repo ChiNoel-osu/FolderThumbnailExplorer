@@ -163,12 +163,15 @@ You can also use &lt;Backspace&gt; to go up.</value>
   </data>
   <data name="PVCloseTT" xml:space="preserve">
     <value>.Close the window</value>
+    <comment>This shit is right to left.</comment>
   </data>
   <data name="PVMaxTT" xml:space="preserve">
     <value>.Maximize or Restore the window</value>
+    <comment>R2L</comment>
   </data>
   <data name="PVMinTT" xml:space="preserve">
     <value>.Minimize the window</value>
+    <comment>R2L</comment>
   </data>
   <data name="PVToolTip" xml:space="preserve">
     <value>Mouse Wheel on image - Next/Previous.
@@ -286,5 +289,24 @@ Negative value = Reverse scrolling direction.</value>
   </data>
   <data name="SortMethodAccessAsc" xml:space="preserve">
     <value>Accessed Date, Asc</value>
+  </data>
+  <data name="SettingsGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SettingsLang" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="NavSBMain" xml:space="preserve">
+    <value>Folders xp.</value>
+  </data>
+  <data name="NavSBFav" xml:space="preserve">
+    <value>Fav. Folders</value>
+  </data>
+  <data name="NavSBSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsLangRestartTT" xml:space="preserve">
+    <value>Your language setting is saved. But may not reflect until you restart the application.
+Click the '!' to restart application.</value>
   </data>
 </root>

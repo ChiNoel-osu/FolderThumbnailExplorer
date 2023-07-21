@@ -5,11 +5,11 @@ using System.Windows.Data;
 
 namespace FolderThumbnailExplorer.Converter
 {
-	public class Bool2CollapseVisivilityConverter : IValueConverter
+	public class Bool2VisibilityConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return (bool)value ? Visibility.Visible : Visibility.Collapsed;
+			return (bool)value ? Visibility.Visible : Visibility.Hidden;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -17,7 +17,7 @@ namespace FolderThumbnailExplorer.Converter
 			return (Visibility)value switch
 			{
 				Visibility.Visible => true,
-				Visibility.Collapsed => (object)false,
+				Visibility.Hidden => (object)false,
 				_ => throw new NotImplementedException(),
 			};
 		}

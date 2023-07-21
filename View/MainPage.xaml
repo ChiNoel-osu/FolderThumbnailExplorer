@@ -8,6 +8,9 @@
 			 xmlns:converter="clr-namespace:FolderThumbnailExplorer.Converter"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+			 Focusable="True"
+			 FocusVisualStyle="{x:Null}"
+			 MouseUp="MainPage_MouseUp"
 			 mc:Ignorable="d"
 			 d:DesignHeight="600"
 			 d:DesignWidth="600">
@@ -20,16 +23,16 @@
 	</d:UserControl.Resources>
 	<UserControl.Resources>
 		<converter:LabelSizeConverter x:Key="LSConverter" />
-		<converter:Bool2VisivilityConverter x:Key="B2VConverter" />
+		<converter:Bool2VisibilityConverter x:Key="B2VConverter" />
 	</UserControl.Resources>
 	<UserControl.InputBindings>
-		<KeyBinding Key="Backspace"
-					Command="{Binding MainPageViewModel.GoUpCommand}" />
 		<KeyBinding Key="F2"
 					Modifiers="Ctrl"
 					Command="{Binding MainPageViewModel.OpenRandomFolderCommand}" />
+		<KeyBinding Key="Backspace"
+					Command="{Binding MainPageViewModel.GoUpCommand}" />
 	</UserControl.InputBindings>
-	<Grid>
+	<Grid MouseEnter="MainGrid_MouseEnter">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="26" />
 			<RowDefinition Height="*" />

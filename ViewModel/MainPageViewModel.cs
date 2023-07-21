@@ -74,7 +74,10 @@ namespace FolderThumbnailExplorer.ViewModel
 					{   //Compare the incoming path to the last valid path and if they're the same, do nothing.
 						//TODO: Bugs exists. Like if user use '/' instead of '\' for directory separator.
 						if (lastValidPath == _PATHtoShow)
+						{
+							OnPropertyChanged(nameof(PATHtoShow));
 							return; //Early return.
+						}
 						lastValidPath = _PATHtoShow;
 						if (!requestingBackForward)
 						{
@@ -130,8 +133,10 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void GoUp()
 		{
-			if (!string.IsNullOrEmpty(_PATHtoShow))
-				if (_PATHtoShow.Remove(_PATHtoShow.LastIndexOf(Path.DirectorySeparatorChar)).Length == 2)
+			if (!Directory.Exists(_PATHtoShow)) //Invalid path.
+				PATHtoShow = lastValidPath;
+			else if (!string.IsNullOrEmpty(_PATHtoShow))
+				if (_PATHtoShow.Remove(_PATHtoShow.LastIndexOf(Path.DirectorySeparatorChar)).Length == 2)   //Root directory of a drive.
 					PATHtoShow = string.Format("{0}:" + Path.DirectorySeparatorChar, _PATHtoShow[0]);
 				else
 					PATHtoShow = _PATHtoShow.Remove(_PATHtoShow.LastIndexOf(Path.DirectorySeparatorChar));
@@ -211,6 +216,7 @@ namespace FolderThumbnailExplorer.ViewModel
 																 4 => directoryInfo.LastWriteTime,
 																 5 => directoryInfo.LastAccessTime,
 																 6 => directoryInfo.LastAccessTime,
+																 _ => throw new NotImplementedException(),
 															 }
 															 select directoryInfo.FullName;
 							AddContents((bool)doDescSort ? sortedDirs.Reverse().ToArray() : sortedDirs.ToArray(), ct);
@@ -301,6 +307,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				{
 					string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
 					string firstFilePath;
+
 					try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
 					{ firstFilePath = Directory.EnumerateFiles(dir, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith)).First(); }
 					catch (InvalidOperationException)   //No such image file, set default
@@ -347,7 +354,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		private static void StartShowPhotoViewer(string directory)
 		{
 			if (wnds.Exists(wnd => wnd is PhotoViewer))
-			{	//If PhotoViewer already exists, reset the PhotoViewer.
+			{
 				PhotoViewer existingPV = (PhotoViewer)(from wnd in wnds
 													   where wnd is PhotoViewer
 													   select wnd).First();
@@ -379,21 +386,21 @@ namespace FolderThumbnailExplorer.ViewModel
 		public void TextDoubleClicked(TextBlock tb)
 		{   //Double click advance folder
 			string imageFolder = tb.Text;
-			PATHtoShow = PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", PATHtoShow, imageFolder) : $"{PATHtoShow}{Path.DirectorySeparatorChar}{imageFolder}";
+			PATHtoShow = lastValidPath.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", lastValidPath, imageFolder) : $"{lastValidPath}{Path.DirectorySeparatorChar}{imageFolder}";
 		}
 		[RelayCommand]
 		public void SubfolderIconClicked(string folderName)
 		{
-			PATHtoShow = PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", PATHtoShow, folderName) : string.Format("{0}{1}{2}", PATHtoShow, Path.DirectorySeparatorChar, folderName);
+			PATHtoShow = lastValidPath.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", lastValidPath, folderName) : string.Format("{0}{1}{2}", lastValidPath, Path.DirectorySeparatorChar, folderName);
 		}
 		private void ThumbnailMouseUpHandler(object sender, MouseButtonEventArgs e) //Open Photo Viewer or advance path.
 		{
-			string imageFolder = ((Image)sender).ToolTip.ToString();
-			string folderFullPath = ((Image)sender).Tag.ToString();
+			string imageFolder = ((Image)sender).ToolTip.ToString();    //The name of folder for which the image is in.
+			string folderFullPath = ((Image)sender).Tag.ToString();     //The full path of the said folder.
 			if (e.ChangedButton == MouseButton.Left)
 			{
 				if (((Image)sender).Source.ToString().EndsWith("folder.png"))   //No image found (default folder.png), advance path.
-					PATHtoShow = PATHtoShow.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", PATHtoShow, imageFolder) : string.Format("{0}{1}{2}", PATHtoShow, Path.DirectorySeparatorChar, imageFolder);
+					PATHtoShow = lastValidPath.EndsWith(Path.DirectorySeparatorChar) ? string.Format("{0}{1}", lastValidPath, imageFolder) : string.Format("{0}{1}{2}", lastValidPath, Path.DirectorySeparatorChar, imageFolder);
 				else
 				{   //Image found, start Photo Viewer.
 					App.Logger.Info("Starting PhotoViewer at directory " + folderFullPath);

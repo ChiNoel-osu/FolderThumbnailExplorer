@@ -1,0 +1,74 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
+			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
+			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
+			 xmlns:Converter="clr-namespace:FolderThumbnailExplorer.Converter"
+			 x:Class="FolderThumbnailExplorer.View.SettingsPage"
+			 d:DataContext="{d:DesignInstance Type={x:Type viewmodel:MainViewModel}}"
+			 mc:Ignorable="d"
+			 d:DesignHeight="600"
+			 d:DesignWidth="600">
+	<UserControl.Resources>
+		<Converter:Bool2CollapseVisibilityConverter x:Key="Bool2CollapseVisibilityConverter" />
+	</UserControl.Resources>
+	<DockPanel>
+		<Border DockPanel.Dock="Top"
+				BorderThickness="0,0,0,2"
+				BorderBrush="Gray">
+			<TextBlock Margin="12,6,0,10"
+					   Foreground="White"
+					   FontSize="30"
+					   Text="{x:Static loc:Loc.PVPopUpSettingsTitle}" />
+		</Border>
+		<ScrollViewer DockPanel.Dock="Bottom">
+			<StackPanel Margin="20,0,0,0">
+				<StackPanel.Resources>
+					<Style TargetType="{x:Type TextBlock}">
+						<Setter Property="Foreground"
+								Value="White" />
+						<Setter Property="FontSize"
+								Value="20" />
+					</Style>
+				</StackPanel.Resources>
+				<TextBlock Margin="0,10,0,5"
+						   Foreground="Chartreuse"
+						   FontSize="25"
+						   FontWeight="Medium"
+						   Text="{x:Static loc:Loc.SettingsGeneral}" />
+				<TextBlock Text="{x:Static loc:Loc.SettingsLang}"
+						   Margin="0,0,0,5" />
+				<StackPanel Orientation="Horizontal">
+					<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
+							  SelectedIndex="{Binding SettingsPageViewModel.LanguageIndex}"
+							  FontSize="15"
+							  HorizontalAlignment="Left"
+							  Width="100"
+							  Foreground="White">
+						<ComboBox.Resources>
+							<Style TargetType="{x:Type ComboBoxItem}">
+								<Setter Property="Foreground"
+										Value="White" />
+							</Style>
+						</ComboBox.Resources>
+						<ComboBoxItem Content="English" />
+						<ComboBoxItem Content="中文" />
+					</ComboBox>
+					<TextBlock Text="!"
+							   Margin="10,-1,0,0"
+							   Padding="10,0,10,0"
+							   Cursor="Hand"
+							   Foreground="Red"
+							   ToolTip="{Binding SettingsPageViewModel.LanguageRestartTT, Mode=OneWay}"
+							   Visibility="{Binding SettingsPageViewModel.IsLangRestartVisible, Converter={StaticResource Bool2CollapseVisibilityConverter}}">
+						<TextBlock.InputBindings>
+							<MouseBinding MouseAction="LeftClick" Command="{Binding RestartApplicationCommand}" />
+						</TextBlock.InputBindings>
+					</TextBlock>
+				</StackPanel>
+			</StackPanel>
+		</ScrollViewer>
+	</DockPanel>
+</UserControl>

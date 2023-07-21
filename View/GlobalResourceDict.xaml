@@ -1633,8 +1633,8 @@
 	<!--#endregion-->
 	<converter:LabelSizeConverter x:Key="LSConverter" />
 	<converter:SliderLengthConverter x:Key="SLConverter" />
-	<converter:Bool2VisivilityConverter x:Key="B2VConverter" />
-	<converter:Bool2CollapseVisivilityConverter x:Key="B2CVConverter" />
+	<converter:Bool2VisibilityConverter x:Key="B2VConverter" />
+	<converter:Bool2CollapseVisibilityConverter x:Key="B2CVConverter" />
 	<converter:FlipBooleanConverter x:Key="FBC" />
 	<converter:DoubleDivideBy x:Key="DivideBy" />
 </ResourceDictionary>

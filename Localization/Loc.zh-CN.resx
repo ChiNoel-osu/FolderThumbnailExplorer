@@ -287,4 +287,23 @@ Esc - 关闭图片浏览器.</value>
   <data name="SortMethodAccessAsc" xml:space="preserve">
     <value>访问时间, 顺序</value>
   </data>
+  <data name="SettingsGeneral" xml:space="preserve">
+    <value>通用</value>
+  </data>
+  <data name="SettingsLang" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="NavSBMain" xml:space="preserve">
+    <value>文件夹浏览</value>
+  </data>
+  <data name="NavSBFav" xml:space="preserve">
+    <value>收藏文件夹</value>
+  </data>
+  <data name="NavSBSettings" xml:space="preserve">
+    <value>设置</value>
+  </data>
+  <data name="SettingsLangRestartTT" xml:space="preserve">
+    <value>语言设置已保存, 但在重启应用之前可能不会生效.
+点击 '!' 来重启应用.</value>
+  </data>
 </root>

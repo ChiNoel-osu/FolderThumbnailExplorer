@@ -174,6 +174,33 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fav. Folders.
+        /// </summary>
+        public static string NavSBFav {
+            get {
+                return ResourceManager.GetString("NavSBFav", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Folders xp..
+        /// </summary>
+        public static string NavSBMain {
+            get {
+                return ResourceManager.GetString("NavSBMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string NavSBSettings {
+            get {
+                return ResourceManager.GetString("NavSBSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Or create a new group:.
         /// </summary>
         public static string OrNewGroup {
@@ -461,6 +488,34 @@ namespace FolderThumbnailExplorer.Localization {
         public static string ScaleSliderTT {
             get {
                 return ResourceManager.GetString("ScaleSliderTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string SettingsGeneral {
+            get {
+                return ResourceManager.GetString("SettingsGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        public static string SettingsLang {
+            get {
+                return ResourceManager.GetString("SettingsLang", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your language setting is saved. But may not reflect until you restart the application.
+        ///Click the &apos;!&apos; to restart application..
+        /// </summary>
+        public static string SettingsLangRestartTT {
+            get {
+                return ResourceManager.GetString("SettingsLangRestartTT", resourceCulture);
             }
         }
         
