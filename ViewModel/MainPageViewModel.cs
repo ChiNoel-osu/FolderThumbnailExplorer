@@ -94,8 +94,7 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		readonly BitmapImage defFolderIcon = new BitmapImage();
 
-		int _SortingMethodIndex = 0;
-		public int SortingMethodIndex { get; set; }
+		public int SortingMethodIndex { get; set; } = 0;
 
 		[ObservableProperty]
 		ObservableCollection<string> _Drives = new ObservableCollection<string>();
@@ -352,7 +351,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		}
 		private static void StartShowPhotoViewer(string directory)
 		{
-			if (wnds.Exists(wnd => wnd is PhotoViewer))	//TODO: Add single instance setting logic here so that user can choose.
+			if (wnds.Exists(wnd => wnd is PhotoViewer)) //TODO: Add single instance setting logic here so that user can choose.
 			{
 				PhotoViewer existingPV = (PhotoViewer)(from wnd in wnds
 													   where wnd is PhotoViewer
