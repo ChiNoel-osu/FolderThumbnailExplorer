@@ -9,8 +9,7 @@
 			 d:DataContext="{d:DesignInstance Type=viewmodel:PhotoViewerViewModel}"
 			 mc:Ignorable="d"
 			 d:DesignHeight="500"
-			 d:DesignWidth="25"
-			 Loaded="UCLoaded">
+			 d:DesignWidth="25">
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -37,8 +36,8 @@
 					Background="{x:Null}"
 					Foreground="White"
 					Content="📁"
+					ToolTip="{Binding CurrentImageDir}"
 					Command="{Binding OpenInExplorerCommand}"
-					CommandParameter="{Binding ElementName=ShowInExplorer, Path=ToolTip}"
 					Padding="1.6,0,1,2"
 					Margin="0,5,0,0" />
 			<Button Width="20"

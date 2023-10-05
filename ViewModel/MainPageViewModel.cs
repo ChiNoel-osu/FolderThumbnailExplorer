@@ -72,7 +72,6 @@ namespace FolderThumbnailExplorer.ViewModel
 					_PATHtoShow = value;
 					if (isLastPathValid = Directory.Exists(_PATHtoShow) || File.Exists(_PATHtoShow))
 					{   //Compare the incoming path to the last valid path and if they're the same, do nothing.
-						//TODO: Bugs exists. Like if user use '/' instead of '\' for directory separator.
 						if (lastValidPath == _PATHtoShow)
 						{
 							OnPropertyChanged(nameof(PATHtoShow));
@@ -353,7 +352,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		}
 		private static void StartShowPhotoViewer(string directory)
 		{
-			if (wnds.Exists(wnd => wnd is PhotoViewer))
+			if (wnds.Exists(wnd => wnd is PhotoViewer))	//TODO: Add single instance setting logic here so that user can choose.
 			{
 				PhotoViewer existingPV = (PhotoViewer)(from wnd in wnds
 													   where wnd is PhotoViewer

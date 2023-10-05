@@ -130,5 +130,17 @@ namespace FolderThumbnailExplorer.Properties {
                 this["PV_ScrollSpeedFactor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PV_SingleInstance {
+            get {
+                return ((bool)(this["PV_SingleInstance"]));
+            }
+            set {
+                this["PV_SingleInstance"] = value;
+            }
+        }
     }
 }

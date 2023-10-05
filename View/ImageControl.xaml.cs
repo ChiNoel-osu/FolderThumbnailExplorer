@@ -15,11 +15,6 @@ namespace FolderThumbnailExplorer.View
 			InitializeComponent();
 		}
 
-		private void UCLoaded(object sender, RoutedEventArgs e)
-		{   //Gets the parent window.
-			parentWnd = Window.GetWindow((DependencyObject)sender);
-			ShowInExplorer.ToolTip = parentWnd.Tag; //The tag is the opened folderPath.
-		}
 		private void PreviousClick(object sender, RoutedEventArgs e)
 		{
 			if (ImgPosition.Value > 0)

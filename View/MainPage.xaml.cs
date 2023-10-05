@@ -13,11 +13,6 @@ namespace FolderThumbnailExplorer.View
 			InitializeComponent();
 		}
 
-		private void MainGrid_MouseDown(object sender, System.Windows.Input.MouseEventArgs e)
-		{   //Focus the parent control (MainPage) every time the mouse is in the grid.
-			((UserControl)(((Grid)sender).Parent)).Focus();
-		}
-
 		private void MainPage_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			switch (e.ChangedButton)
@@ -31,6 +26,13 @@ namespace FolderThumbnailExplorer.View
 				default:
 					return;
 			}
+		}
+
+		private void ListBox_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		{   //Focus the ListBox every time the mouse clicks so the go back command can trigger properly.
+			//It has to be Preview event so it travels top to bottom.
+			//If it's normal event, user clicking thumbnails will capture the event and this will not trigger.
+			((ListBox)sender).Focus();
 		}
 	}
 }
