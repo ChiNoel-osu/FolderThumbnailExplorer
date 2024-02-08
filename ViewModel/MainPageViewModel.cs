@@ -60,6 +60,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			get => _PATHtoShow;
 			set
 			{
+				value = Path.TrimEndingDirectorySeparator(value);   //Trim ending sep. so '/' and '\' are not possible.
 				if (string.IsNullOrEmpty(value))
 					_PATHtoShow = lastValidPath;   //Don't notify property change. Keep the path unchanged when this happens.
 				else if (value.StartsWith("FavoriteFolder"))
@@ -94,7 +95,16 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		readonly BitmapImage defFolderIcon = new BitmapImage();
 
-		public int SortingMethodIndex { get; set; } = 0;
+		private int sortingMethodIndex;
+		public int SortingMethodIndex
+		{
+			get => sortingMethodIndex;
+			set
+			{
+				Properties.Settings.Default.TE_SortingMethod = sortingMethodIndex = value;
+				Properties.Settings.Default.Save();
+			}
+		}
 
 		[ObservableProperty]
 		ObservableCollection<string> _Drives = new ObservableCollection<string>();
@@ -209,7 +219,7 @@ namespace FolderThumbnailExplorer.ViewModel
 						{
 							List<string> folders = (from dir in dirs select dir[(dir.LastIndexOf(Path.DirectorySeparatorChar) + 1)..]).ToList();
 							folders.Sort(new NaturalStringComparer());
-							AddContents(folders.Select(str => _PATHtoShow + str).ToArray(), ct);
+							AddContents(folders.Select(str => str = Path.Join(_PATHtoShow, str)).ToArray(), ct);
 						}
 						else
 						{
@@ -468,6 +478,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 		}
 		private ObservableCollection<ComboBoxItem> _ComboBoxItems = new ObservableCollection<ComboBoxItem>();
+
 		public ObservableCollection<ComboBoxItem> ComboBoxItems
 		{
 			get
@@ -560,6 +571,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			BindingOperations.EnableCollectionSynchronization(Content, new object());
 			//Referencing prop with underscore will not trigger the "get" accessor.
 			BindingOperations.EnableCollectionSynchronization(_ComboBoxItems, new object());
+			SortingMethodIndex = Properties.Settings.Default.TE_SortingMethod;
 			RefreshDrives();
 			RefreshFavGroup();
 		}

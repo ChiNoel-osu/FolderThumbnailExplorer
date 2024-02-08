@@ -11,9 +11,6 @@
     <Setting Name="PV_Height" Type="System.Double" Scope="User">
       <Value Profile="(Default)">600</Value>
     </Setting>
-    <Setting Name="PV_Left" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="PV_Top" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -31,6 +28,12 @@
     </Setting>
     <Setting Name="PV_SingleInstance" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="PV_Left" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="TE_SortingMethod" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>
