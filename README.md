@@ -1,5 +1,5 @@
 # Folder Thumbnail Explorer
-Revised version of the custom file explorer(https://github.com/ChiNoel-osu/NETCoreWPFTest/tree/master/LocalFileExplorer). Written in C# WPF/.NET 7.
+Revised version of the custom file explorer(https://github.com/ChiNoel-osu/NETCoreWPFTest/tree/master/LocalFileExplorer). Written in C# WPF/.NET 8.
 
 [![CodeFactor](https://www.codefactor.io/repository/github/chinoel-osu/folderthumbnailexplorer/badge)](https://www.codefactor.io/repository/github/chinoel-osu/folderthumbnailexplorer)
 

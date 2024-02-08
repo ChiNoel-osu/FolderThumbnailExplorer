@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows7.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icon.ico</ApplicationIcon>
@@ -16,38 +15,25 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/ChiNoel-osu/FolderThumbnailExplorer</RepositoryUrl>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
-
   <ItemGroup>
     <None Remove="folder.png" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
-
   <ItemGroup>
     <Resource Include="folder.png" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
-    <PackageReference Include="NLog" Version="5.1.4" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="NLog" Version="5.2.8" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Runtime.Caching">
-      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.Runtime.Caching.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Update="Localization\Loc.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -60,14 +46,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Update="Localization\Loc.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Loc.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="Favorites.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -92,5 +76,4 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-
 </Project>
