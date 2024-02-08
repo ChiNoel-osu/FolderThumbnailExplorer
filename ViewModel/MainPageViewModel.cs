@@ -182,6 +182,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					string[] dirs = Directory.GetDirectories(_PATHtoShow);
 					if (dirs.Length > 0)
 					{
+						// Going to sort folders.
 						bool? doDescSort = null;
 						switch (SortingMethodIndex)
 						{   //Check sorting method
@@ -199,9 +200,17 @@ namespace FolderThumbnailExplorer.ViewModel
 							case 6: //Access date ascending
 								doDescSort = false;
 								break;
+							case 7: //Natural sorting
+								break;
 						}
-						if (doDescSort is null)
+						if (doDescSort is null && SortingMethodIndex != 7)      //Method Unchanged
 							AddContents(dirs, ct);  //Default method: Name.
+						else if (SortingMethodIndex == 7)   //Natural sorting.
+						{
+							List<string> folders = (from dir in dirs select dir[(dir.LastIndexOf(Path.DirectorySeparatorChar) + 1)..]).ToList();
+							folders.Sort(new NaturalStringComparer());
+							AddContents(folders.Select(str => _PATHtoShow + str).ToArray(), ct);
+						}
 						else
 						{
 							IEnumerable<string> sortedDirs = from dir in dirs

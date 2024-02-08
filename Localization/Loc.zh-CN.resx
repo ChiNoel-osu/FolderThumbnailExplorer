@@ -315,4 +315,7 @@ Esc - 关闭图片浏览器.</value>
     <value>前进
 你也可以使用&lt;XButton2&gt;(鼠标侧键2)来前进.</value>
   </data>
+  <data name="SortMethodNatural" xml:space="preserve">
+    <value>自然排序</value>
+  </data>
 </root>

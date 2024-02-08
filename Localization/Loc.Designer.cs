@@ -611,5 +611,14 @@ namespace FolderThumbnailExplorer.Localization {
                 return ResourceManager.GetString("SortMethodNameAsc", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Natural.
+        /// </summary>
+        public static string SortMethodNatural {
+            get {
+                return ResourceManager.GetString("SortMethodNatural", resourceCulture);
+            }
+        }
     }
 }

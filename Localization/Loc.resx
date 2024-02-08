@@ -318,4 +318,7 @@ You can also use &lt;XButton1&gt; to do this.</value>
     <value>Go Forward
 You can also use &lt;XButton2&gt; to do this.</value>
   </data>
+  <data name="SortMethodNatural" xml:space="preserve">
+    <value>Natural</value>
+  </data>
 </root>

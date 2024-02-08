@@ -67,6 +67,7 @@
 				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodModifyAsc}" />
 				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodAccessDesc}" />
 				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodAccessAsc}" />
+				<ComboBoxItem Content="{x:Static loc:Loc.SortMethodNatural}" />
 			</ComboBox>
 		</StackPanel>
 		<Label Grid.Row="2"
