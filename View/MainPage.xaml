@@ -51,6 +51,7 @@
 						Margin="1,1,3,0"
 						Orientation="Horizontal">
 				<Button Content="➜"
+						ToolTip="{x:Static loc:Loc.BackBtnTT}"
 						Width="21"
 						Cursor="ScrollW"
 						Template="{DynamicResource ButtonTemplate1}"
@@ -72,6 +73,7 @@
 					</Button.RenderTransform>
 				</Button>
 				<Button Content="➜"
+						ToolTip="{x:Static loc:Loc.ForwardBtnTT}"
 						Width="21"
 						Cursor="ScrollE"
 						Template="{DynamicResource ButtonTemplate1}"

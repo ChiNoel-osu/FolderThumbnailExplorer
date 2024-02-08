@@ -124,11 +124,31 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go Back
+        ///You can also use &lt;XButton1&gt; to do this..
+        /// </summary>
+        public static string BackBtnTT {
+            get {
+                return ResourceManager.GetString("BackBtnTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copied to clipboard..
         /// </summary>
         public static string Copied2Clipboard {
             get {
                 return ResourceManager.GetString("Copied2Clipboard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go Forward
+        ///You can also use &lt;XButton2&gt; to do this..
+        /// </summary>
+        public static string ForwardBtnTT {
+            get {
+                return ResourceManager.GetString("ForwardBtnTT", resourceCulture);
             }
         }
         

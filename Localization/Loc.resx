@@ -310,4 +310,12 @@ Negative value = Reverse scrolling direction.</value>
     <value>Your language setting is saved. But may not reflect until you restart the application.
 Click the '!' to restart application.</value>
   </data>
+  <data name="BackBtnTT" xml:space="preserve">
+    <value>Go Back
+You can also use &lt;XButton1&gt; to do this.</value>
+  </data>
+  <data name="ForwardBtnTT" xml:space="preserve">
+    <value>Go Forward
+You can also use &lt;XButton2&gt; to do this.</value>
+  </data>
 </root>

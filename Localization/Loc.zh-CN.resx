@@ -307,4 +307,12 @@ Esc - 关闭图片浏览器.</value>
     <value>语言设置已保存, 但在重启应用之前可能不会生效.
 点击 '!' 来重启应用.</value>
   </data>
+  <data name="BackBtnTT" xml:space="preserve">
+    <value>返回
+你也可以使用&lt;XButton1&gt;(鼠标侧键1)来返回.</value>
+  </data>
+  <data name="ForwardBtnTT" xml:space="preserve">
+    <value>前进
+你也可以使用&lt;XButton2&gt;(鼠标侧键2)来前进.</value>
+  </data>
 </root>
