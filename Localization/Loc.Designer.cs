@@ -426,6 +426,7 @@ namespace FolderThumbnailExplorer.Localization {
         
         /// <summary>
         ///   Looks up a localized string similar to Mouse Wheel on image - Next/Previous.
+        ///Click Right/Left of image - Next/Previous.
         ///Right Click + Mouse Wheel on image - Zoom &amp; Pan.
         ///Move Mouse while zoomed in - Pan Up &amp; Down.
         ///Ctrl+C - Copy current image to clipboard.

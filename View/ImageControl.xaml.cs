@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,12 +24,13 @@ namespace FolderThumbnailExplorer.View
 		private void NextClick(object sender, RoutedEventArgs e) => ImgPosition.Value++;
 
 		#region Settings Popup events
-		private void Label_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		private void SettingsLabel_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
 		{
 			SettingsPopup.IsOpen = true;
 		}
-		private void Label_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+		private async void SettingsLabel_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
 		{
+			await Task.Run(() => Task.Delay(200));	//Add small delay incase of small gap between Label and Popup.
 			if (!SettingsPopup.IsMouseOver)
 				SettingsPopup.IsOpen = false;
 		}

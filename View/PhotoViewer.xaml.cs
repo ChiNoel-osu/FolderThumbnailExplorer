@@ -127,7 +127,10 @@ namespace FolderThumbnailExplorer.View
 		private void Rectangle_MouseLeave(object sender, MouseEventArgs e)
 		{
 			if (e.LeftButton == MouseButtonState.Pressed)
+			{
+				this.DragMove();
 				WindowState = WindowState.Normal;
+			}
 		}
 		#endregion
 

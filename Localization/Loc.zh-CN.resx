@@ -172,6 +172,7 @@ Ctrl+F2 - 随机图片文件夹.</value>
   </data>
   <data name="PVToolTip" xml:space="preserve">
     <value>在图像上鼠标滚轮 - 浏览图片.
+在图像左侧或右侧点击 - 浏览图片.
 在图像上按住右键时滚轮 - 缩放&amp;平移.
 图像被放大时移动鼠标 - 上下平移.
 Ctrl+C - 将当前图片复制到剪贴板.
