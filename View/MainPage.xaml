@@ -32,7 +32,7 @@
 		<KeyBinding Key="Backspace"
 					Command="{Binding MainPageViewModel.GoUpCommand}" />
 	</UserControl.InputBindings>
-	<Grid PreviewMouseDown="MainGrid_MouseDown">
+	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="26" />
 			<RowDefinition Height="*" />
@@ -256,6 +256,7 @@
 		</Grid>
 		<ListBox Grid.Row="1"
 				 Margin="5"
+				 PreviewMouseDown="Content_MouseDown"
 				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 				 Background="{x:Null}"
 				 Foreground="White"
