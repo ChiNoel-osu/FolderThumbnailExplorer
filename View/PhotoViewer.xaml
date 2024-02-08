@@ -6,6 +6,7 @@
 		xmlns:loc="clr-namespace:FolderThumbnailExplorer.Localization"
 		xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 		xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
+		xmlns:converter="clr-namespace:FolderThumbnailExplorer.Converter"
 		xmlns:model="clr-namespace:FolderThumbnailExplorer.Model"
 		d:DataContext="{d:DesignInstance Type=viewmodel:PhotoViewerViewModel}"
 		mc:Ignorable="d"
@@ -23,6 +24,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="pack://application:,,,/View/GlobalResourceDict.xaml" />
 			</ResourceDictionary.MergedDictionaries>
+			<converter:IntAdd x:Key="IntAdd" />
 		</ResourceDictionary>
 	</Window.Resources>
 	<Window.InputBindings>
@@ -77,6 +79,13 @@
 			</ListBox>
 			<local:ImageControl Grid.Column="1"
 								VerticalAlignment="Center" />
+			<TextBlock Grid.Column="1"
+					   VerticalAlignment="Top"
+					   HorizontalAlignment="Center"
+					   FontFamily="Comic Sans MS"
+					   d:Text="0"
+					   Text="{Binding SelectedIndex, ConverterParameter=1, Converter={StaticResource IntAdd}, ElementName=ImageList, Mode=OneWay}"
+					   Foreground="White" />
 			<GridSplitter Grid.Column="1"
 						  Height="20"
 						  Width="10"
