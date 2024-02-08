@@ -50,7 +50,7 @@
 					   Foreground="White" />
 			<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
 					  Foreground="White"
-					  SelectedIndex="{Binding MainPageViewModel.SortingMethodIndex, Mode=OneWayToSource}"
+					  SelectedIndex="{Binding MainPageViewModel.SortingMethodIndex, Mode=TwoWay}"
 					  VerticalAlignment="Top">
 				<ComboBox.Resources>
 					<Style TargetType="{x:Type ComboBoxItem}">

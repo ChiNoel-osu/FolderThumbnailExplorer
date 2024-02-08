@@ -55,7 +55,6 @@ namespace FolderThumbnailExplorer.ViewModel
 					LanguageIndex = 0;
 					break;
 			}
-
 		}
 	}
 }

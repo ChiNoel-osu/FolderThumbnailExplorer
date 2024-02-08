@@ -258,6 +258,7 @@
 				 Margin="5"
 				 PreviewMouseDown="Content_MouseDown"
 				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				 PreviewMouseDown="ListBox_PreviewMouseDown"
 				 Background="{x:Null}"
 				 Foreground="White"
 				 ItemsSource="{Binding MainPageViewModel.Content}"

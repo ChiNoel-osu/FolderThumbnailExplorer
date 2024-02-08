@@ -17,7 +17,6 @@ namespace FolderThumbnailExplorer.ViewModel
 {
 	public partial class PhotoViewerViewModel : ObservableObject
 	{
-		string currentImageDir;
 		bool closing = false;
 
 		[ObservableProperty]
@@ -44,6 +43,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		sbyte _PosFlag = 0; //Save window position animation
 		[ObservableProperty]
 		string _Status = string.Empty;
+		[ObservableProperty]
+		string _CurrentImageDir = string.Empty;
 		[ObservableProperty]
 		private ObservableCollection<CustomListItem> _Images = new ObservableCollection<CustomListItem>();  //ListBoxItem binding target
 
@@ -123,9 +124,9 @@ namespace FolderThumbnailExplorer.ViewModel
 		ushort scrLoadedCount = 0; //Total loaded image in ItemsControl (ScrollView)
 
 		[RelayCommand]
-		public static void OpenInExplorer(string path)
+		public void OpenInExplorer()
 		{
-			Process.Start("explorer.exe", path);
+			Process.Start("explorer.exe", CurrentImageDir);
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		[RelayCommand]
@@ -137,7 +138,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void LoadScrollView()
 		{
-			MainView = ScrollView ? false : true;
+			MainView = !ScrollView;
 			if (ScrollView)
 				Task.Run(() =>
 				{
@@ -187,7 +188,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void AddFav2Group()
 		{
-			new View.AddFav2Group(currentImageDir).ShowDialog();
+			new View.AddFav2Group(CurrentImageDir).ShowDialog();
 		}
 		[RelayCommand]
 		public async void Copy2Clipboard()
@@ -275,6 +276,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		}
 		public void ResetReload(string folderPath)
 		{
+			CurrentImageDir = folderPath;
 			ListSelectedIndex = 1;  //This somehow fixes the problem of the list not being selected after reset.
 			imageMap.Clear();
 			Images.Clear();
@@ -282,7 +284,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			loadedIndex.Clear();
 			ListSelectedIndex = loadedCount = scrLoadedCount = 0;
 			BigImage = BigImage2 = null;
-			AddImgs(currentImageDir = folderPath);
+			AddImgs(CurrentImageDir = folderPath);
 		}
 
 		public PhotoViewerViewModel(string folderPath, object view)
@@ -290,7 +292,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			BindingOperations.EnableCollectionSynchronization(_Images, new object());
 			((Window)view).Closed += PhotoViewerClosed;
 
-			AddImgs(currentImageDir = folderPath);  //Starts a task that adds images to the collection.
+			AddImgs(CurrentImageDir = folderPath);  //Starts a task that adds images to the collection.
 			Task.Run(() =>
 			{   //TODO: Not the best solution, idk how to pause a task properly.
 				while (true)
