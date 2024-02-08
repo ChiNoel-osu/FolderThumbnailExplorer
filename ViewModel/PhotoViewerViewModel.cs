@@ -201,35 +201,47 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		SortedDictionary<string, string> imageMap;
 		ushort loadedCount = 0; //Total loaded image in ListBox.
-		private void AddImgs(string path)
+		private bool AddImgs(string path)
 		{
-			Task.Run(() =>
+			App.Logger.Info("The PhotoViewer has started to load images.");
+			IEnumerable<string> imgs;
+			string[] allowedExt = [".jpg", ".png", ".jpeg", ".gif", ".jfif"];
+			try
+			{   //Get image files
+				imgs = Directory.EnumerateFiles(path, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith));
+			}
+			catch (Exception e)
 			{
-				App.Logger.Info("The PhotoViewer has started to load images.");
-				IEnumerable<string> imgs;
-				string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif", ".jfif" };
-				try
-				{   //Get image files
-					imgs = Directory.EnumerateFiles(path, "*.*").Where(s => allowedExt.Any(s.ToLower().EndsWith));
-				}
-				catch (InvalidOperationException) { return; }
-				//Left value for name (sorting target), right value for path (displaying).
-				//Natural sorting.
-				imageMap = new SortedDictionary<string, string>(new NaturalStringComparer());
-				foreach (string filePath in imgs)   //The dictionary will sort itself when value's being added.
-													//Use filename to compare.
-					imageMap.Add(Path.GetFileName(filePath), filePath);
-				//Add image to collection.
-				foreach (KeyValuePair<string, string> img in imageMap)
+				switch (e)
 				{
-					if (closing) break; //Break out if the window is closing.
-					LoadImagePreview(img);
-					loadedCount++;
-					OnPropertyChanged(nameof(ImageCount));
-					if (loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
+					case InvalidOperationException:
+						App.Logger.Error($"PhotoViewer got InvalidOperationException while attempting to add image.");
+						break;
+					case DirectoryNotFoundException:
+						App.Logger.Error($"PhotoViewer got DirectoryNotFoundException while attempting to add image. The path probably does not exist anymore.");
+						break;
+					default:
+						break;
 				}
-				App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images in total.");
-			});
+				return false;
+			}
+			//Left value for name (sorting target), right value for path (displaying).
+			//Natural sorting.
+			imageMap = new SortedDictionary<string, string>(new NaturalStringComparer());
+			foreach (string filePath in imgs)   //The dictionary will sort itself when value's being added.
+												//Use filename to compare.
+				imageMap.Add(Path.GetFileName(filePath), filePath);
+			//Add image to collection.
+			foreach (KeyValuePair<string, string> img in imageMap)
+			{
+				if (closing) break; //Break out if the window is closing.
+				LoadImagePreview(img);
+				loadedCount++;
+				OnPropertyChanged(nameof(ImageCount));
+				if (loadedCount % Properties.Settings.Default.PV_LoadThreshold == 0) break;  //Break after reaching image limit.
+			}
+			App.Logger.Info($"The PhotoViewer has loaded {loadedCount} images in total.");
+			return true;
 		}
 		List<ushort> loadedIndex = new List<ushort>();
 		partial void OnListSelectedIndexChanged(ushort value)
@@ -284,7 +296,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			loadedIndex.Clear();
 			ListSelectedIndex = loadedCount = scrLoadedCount = 0;
 			BigImage = BigImage2 = null;
-			AddImgs(CurrentImageDir = folderPath);
+			Task.Run(() => AddImgs(CurrentImageDir = folderPath));
 		}
 
 		public PhotoViewerViewModel(string folderPath, object view)
@@ -292,7 +304,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			BindingOperations.EnableCollectionSynchronization(_Images, new object());
 			((Window)view).Closed += PhotoViewerClosed;
 
-			AddImgs(CurrentImageDir = folderPath);  //Starts a task that adds images to the collection.
+			Task.Run(() => AddImgs(CurrentImageDir = folderPath));  //Starts a task that adds images to the collection.
 			Task.Run(() =>
 			{   //TODO: Not the best solution, idk how to pause a task properly.
 				while (true)

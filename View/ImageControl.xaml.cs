@@ -10,7 +10,6 @@ namespace FolderThumbnailExplorer.View
 	/// </summary>
 	public partial class ImageControl : UserControl
 	{
-		Window parentWnd;
 		public ImageControl()
 		{
 			InitializeComponent();
@@ -30,7 +29,7 @@ namespace FolderThumbnailExplorer.View
 		}
 		private async void SettingsLabel_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
 		{
-			await Task.Run(() => Task.Delay(200));	//Add small delay incase of small gap between Label and Popup.
+			await Task.Run(() => Task.Delay(200));  //Add small delay incase of small gap between Label and Popup.
 			if (!SettingsPopup.IsMouseOver)
 				SettingsPopup.IsOpen = false;
 		}
@@ -86,7 +85,7 @@ namespace FolderThumbnailExplorer.View
 		}
 		private void AOTBtn_Changed(object sender, RoutedEventArgs e)
 		{
-			parentWnd.Topmost = e.RoutedEvent.Name switch
+			Window.GetWindow((System.Windows.Controls.Primitives.ToggleButton)sender).Topmost = e.RoutedEvent.Name switch
 			{
 				"Checked" => true,
 				"Unchecked" => false,

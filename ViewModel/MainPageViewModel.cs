@@ -322,7 +322,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				FileAttributes dirAtt = new DirectoryInfo(dir).Attributes;
 				if (!(dirAtt.HasFlag(FileAttributes.System)/* || dirAtt.HasFlag(FileAttributes.Hidden)*/))  //Actually hidden folders can be read now, it's handled below.
 				{
-					string[] allowedExt = { ".jpg", ".png", ".jpeg", ".gif" };
+					string[] allowedExt = [".jpg", ".png", ".jpeg", ".gif"];
 					string firstFilePath;
 
 					try //Get first image file. Is EnumerateFiles faster than GetFiles? idk.
