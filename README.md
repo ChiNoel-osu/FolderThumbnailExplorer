@@ -28,4 +28,4 @@ Revised version of the custom file explorer(https://github.com/ChiNoel-osu/NETCo
 ![A screenshot of the Photo Viewer.](./ReadmeResource/PhotoViewer.jpg?raw=true "Photo Viewer")
 
 ## Copyright Statement
-While the code is licensed under the AGPL-3.0 license. The compiled application (or software) is licensed under the [CC BY-NC-SA 4.0](./LICENSE-CC-BY-NC-SA) license. You can freely share the application to wherever you like, for NonCommercial purposes only. Meaning that you cannot sell the application, or redistribute the appcation behind some kind of pay wall. The application should remain absolutely free for everyone.
+While the code is licensed under the AGPL-3.0 license. The compiled application (or software) should be licensed under the [CC BY-NC-SA 4.0](./LICENSE-CC-BY-NC-SA) license. You can freely share the application to wherever you like, for NonCommercial purposes only. Meaning that you cannot sell the application, or redistribute the appcation behind some kind of pay wall. The application should remain absolutely free for everyone.
