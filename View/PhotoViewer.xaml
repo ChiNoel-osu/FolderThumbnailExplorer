@@ -20,8 +20,9 @@
 		KeyDown="Window_KeyDown"
 		WindowStyle="None">
 	<WindowChrome.WindowChrome>
+		<!--Make top ResizeBorder 0 to allow easier drag-to-restore when maximized-->
 		<WindowChrome CaptionHeight="22"
-					  ResizeBorderThickness="8" />
+					  ResizeBorderThickness="8,0,8,8" />
 	</WindowChrome.WindowChrome>
 	<Window.Resources>
 		<ResourceDictionary>
@@ -67,8 +68,7 @@
 		</Grid.RowDefinitions>
 		<!--InnerGrid-->
 		<Grid Grid.Row="0"
-			  Grid.RowSpan="2"
-			  Grid.ColumnSpan="2">
+			  Grid.RowSpan="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="66" />
 				<ColumnDefinition Width="25" />
@@ -169,10 +169,8 @@
 			</model:WheelSpeedScrollViewer>
 		</Grid>
 		<!--Traffic Lights-->
-		<StackPanel Orientation="Horizontal"
-					FlowDirection="RightToLeft"
-					Grid.ColumnSpan="2">
-			<StackPanel.Resources>
+		<DockPanel>
+			<DockPanel.Resources>
 				<Style TargetType="{x:Type Button}">
 					<Setter Property="Background"
 							Value="Transparent" />
@@ -185,40 +183,46 @@
 					<Setter Property="Focusable"
 							Value="False" />
 				</Style>
-			</StackPanel.Resources>
+			</DockPanel.Resources>
 			<Button Height="21"
 					Width="20"
 					VerticalAlignment="Top"
+					DockPanel.Dock="Right"
 					Background="#FF605C"
 					Click="CloseClick"
 					ToolTip="{x:Static loc:Loc.PVCloseTT}"
-					Margin="-1,-1,1,0"
+					Margin="1,-1,-1,0"
 					WindowChrome.IsHitTestVisibleInChrome="True" />
-			<Button Height="15"
+			<Button Height="21"
+					Width="21"
+					Margin="1,-1,1,0"
+					DockPanel.Dock="Right"
+					Background="MediumPurple"
+					Click="FullscreenClick"
+					ToolTip="{x:Static loc:Loc.PVFullTT}"
+					WindowChrome.IsHitTestVisibleInChrome="True" />
+			<Button Height="16"
 					Width="18"
-					Margin="1,0,1,0"
+					Margin="1,-1,1,0"
+					VerticalAlignment="Top"
+					DockPanel.Dock="Right"
 					Background="#FFBD44"
 					Click="MaxResClick"
 					ToolTip="{x:Static loc:Loc.PVMaxTT}"
 					WindowChrome.IsHitTestVisibleInChrome="True" />
-			<Button Height="10"
+			<Button Height="12"
 					Width="18"
-					Margin="1,0,1,0"
+					Margin="0,-1,1,0"
+					VerticalAlignment="Top"
+					DockPanel.Dock="Right"
 					Background="#00CA4E"
 					Click="MinClick"
 					ToolTip="{x:Static loc:Loc.PVMinTT}"
-					WindowChrome.IsHitTestVisibleInChrome="True" />
-			<Button Height="20"
-					Width="20"
-					Margin="1,0,1,0"
-					Background="MediumPurple"
-					Click="FullscreenClick"
-					ToolTip="{x:Static loc:Loc.PVFullTT}"
 					WindowChrome.IsHitTestVisibleInChrome="True" />
 			<TextBlock Text="{Binding Status, Mode=OneWay}"
 					   Margin="10,0,0,0"
 					   VerticalAlignment="Center"
 					   Foreground="White" />
-		</StackPanel>
+		</DockPanel>
 	</Grid>
 </Window>

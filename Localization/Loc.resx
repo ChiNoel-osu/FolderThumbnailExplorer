@@ -160,15 +160,12 @@ You can also use &lt;Backspace&gt; to go up.</value>
   </data>
   <data name="PVCloseTT" xml:space="preserve">
     <value>Close the window (Esc/Ctrl+W)</value>
-    <comment>This shit is right to left.</comment>
   </data>
   <data name="PVMaxTT" xml:space="preserve">
     <value>Maximize or Restore (Esc) the window</value>
-    <comment>R2L</comment>
   </data>
   <data name="PVMinTT" xml:space="preserve">
     <value>Minimize the window</value>
-    <comment>R2L</comment>
   </data>
   <data name="PVToolTip" xml:space="preserve">
     <value>Mouse Wheel on image - Next/Previous.
