@@ -16,9 +16,14 @@
 		MinHeight="600"
 		MinWidth="200"
 		Background="Black"
-		WindowStyle="None"
+		BorderThickness="0"
 		WindowState="Normal"
-		KeyDown="Window_KeyDown">
+		KeyDown="Window_KeyDown"
+		WindowStyle="None">
+	<WindowChrome.WindowChrome>
+		<WindowChrome CaptionHeight="22"
+					  ResizeBorderThickness="8" />
+	</WindowChrome.WindowChrome>
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -27,6 +32,22 @@
 			<converter:IntAdd x:Key="IntAdd" />
 		</ResourceDictionary>
 	</Window.Resources>
+	<Window.Style>
+		<Style TargetType="Window">
+			<Style.Triggers>
+				<Trigger Property="IsActive"
+						 Value="True">
+					<Setter Property="BorderBrush"
+							Value="Transparent" />
+				</Trigger>
+				<Trigger Property="IsActive"
+						 Value="False">
+					<Setter Property="BorderBrush"
+							Value="{x:Static SystemColors.InactiveBorderBrush}" />
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+	</Window.Style>
 	<Window.InputBindings>
 		<KeyBinding Key="C"
 					Modifiers="Ctrl"
@@ -97,7 +118,7 @@
 			<Grid Grid.Column="2"
 				  FlowDirection="{Binding FlowDir}"
 				  Background="Transparent"
-				  MouseLeftButtonUp="Grid_MouseLeftButtonUp"
+				  MouseLeftButtonDown="Grid_MouseLeftButtonDown"
 				  Visibility="{Binding MainView, Converter={StaticResource B2CVConverter}, Mode=OneWay}">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition />
@@ -141,11 +162,6 @@
 				</ItemsControl>
 			</model:WheelSpeedScrollViewer>
 		</Grid>
-		<!--WindowsMoveBar-->
-		<Rectangle Fill="Transparent"
-				   MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"
-				   MouseLeave="Rectangle_MouseLeave"
-				   ToolTip="{x:Static loc:Loc.PhotoViewerTitleBarTT}" />
 		<!--Traffic Lights-->
 		<StackPanel Orientation="Horizontal"
 					FlowDirection="RightToLeft"
@@ -164,24 +180,36 @@
 							Value="False" />
 				</Style>
 			</StackPanel.Resources>
-			<Button Height="20"
+			<Button Height="21"
 					Width="20"
+					VerticalAlignment="Top"
 					Background="#FF605C"
 					Click="CloseClick"
 					ToolTip="{x:Static loc:Loc.PVCloseTT}"
-					Margin="-1,-2,1,0" />
+					Margin="-1,-1,1,0"
+					WindowChrome.IsHitTestVisibleInChrome="True" />
 			<Button Height="15"
 					Width="18"
 					Margin="1,0,1,0"
 					Background="#FFBD44"
 					Click="MaxResClick"
-					ToolTip="{x:Static loc:Loc.PVMaxTT}" />
+					ToolTip="{x:Static loc:Loc.PVMaxTT}"
+					WindowChrome.IsHitTestVisibleInChrome="True" />
 			<Button Height="10"
 					Width="18"
 					Margin="1,0,1,0"
 					Background="#00CA4E"
 					Click="MinClick"
-					ToolTip="{x:Static loc:Loc.PVMinTT}" />
+					ToolTip="{x:Static loc:Loc.PVMinTT}"
+					WindowChrome.IsHitTestVisibleInChrome="True" />
+			<Button Height="20"
+					Width="20"
+					Margin="1,0,1,0"
+					Background="MediumPurple"
+					Click="FullscreenClick"
+					ToolTip="{x:Static loc:Loc.PVFullTT}"
+					WindowChrome.IsHitTestVisibleInChrome="True"/>
+
 		</StackPanel>
 		<TextBlock Text="{Binding Status, Mode=OneWay}"
 				   Margin="0,0,66,0"

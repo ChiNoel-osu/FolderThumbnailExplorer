@@ -230,16 +230,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag to move the window..
-        /// </summary>
-        public static string PhotoViewerTitleBarTT {
-            get {
-                return ResourceManager.GetString("PhotoViewerTitleBarTT", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .Close the window.
+        ///   Looks up a localized string similar to Close the window.
         /// </summary>
         public static string PVCloseTT {
             get {
@@ -248,7 +239,16 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drag to resize..
+        ///   Looks up a localized string similar to Set Full Screen.
+        /// </summary>
+        public static string PVFullTT {
+            get {
+                return ResourceManager.GetString("PVFullTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drag to resize.
         /// </summary>
         public static string PVGridSplitterTT {
             get {
@@ -257,7 +257,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .Maximize or Restore the window.
+        ///   Looks up a localized string similar to Maximize or Restore the window.
         /// </summary>
         public static string PVMaxTT {
             get {
@@ -266,7 +266,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .Minimize the window.
+        ///   Looks up a localized string similar to Minimize the window.
         /// </summary>
         public static string PVMinTT {
             get {
@@ -468,7 +468,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh logical drives list..
+        ///   Looks up a localized string similar to Refresh logical drives list.
         /// </summary>
         public static string RefreshDriveBtnTT {
             get {
@@ -477,7 +477,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh the view..
+        ///   Looks up a localized string similar to Refresh the view.
         /// </summary>
         public static string RefreshViewTT {
             get {
@@ -504,7 +504,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resize the thumbnail..
+        ///   Looks up a localized string similar to Resize the thumbnail.
         /// </summary>
         public static string ScaleSliderTT {
             get {

@@ -1,9 +1,12 @@
 ﻿using FolderThumbnailExplorer.Model;
 using FolderThumbnailExplorer.ViewModel;
+using System;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace FolderThumbnailExplorer.View
 {
@@ -12,8 +15,106 @@ namespace FolderThumbnailExplorer.View
 	/// </summary>
 	public partial class PhotoViewer : Window
 	{
-		private PhotoViewerViewModel PVVM;  //Each viewer gets its own viewmodel.
-		private int timeStamp = 0;  //For user double clicking things.
+		#region Maximized placement https://engy.us/blog/2020/01/01/implementing-a-custom-window-title-bar-in-wpf/
+		protected override void OnSourceInitialized(EventArgs e)
+		{
+			base.OnSourceInitialized(e);
+			((HwndSource)PresentationSource.FromVisual(this)).AddHook(HookProc);
+		}
+
+		public static IntPtr HookProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+		{
+			if (msg == WM_GETMINMAXINFO)
+			{
+				// We need to tell the system what our size should be when maximized. Otherwise it will cover the whole screen,
+				// including the task bar.
+				MINMAXINFO mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
+
+				// Adjust the maximized size and position to fit the work area of the correct monitor
+				IntPtr monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+
+				if (monitor != IntPtr.Zero)
+				{
+					MONITORINFO monitorInfo = new MONITORINFO();
+					monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
+					GetMonitorInfo(monitor, ref monitorInfo);
+					RECT rcWorkArea = monitorInfo.rcWork;
+					RECT rcMonitorArea = monitorInfo.rcMonitor;
+					mmi.ptMaxPosition.X = Math.Abs(rcWorkArea.Left - rcMonitorArea.Left);
+					mmi.ptMaxPosition.Y = Math.Abs(rcWorkArea.Top - rcMonitorArea.Top);
+					mmi.ptMaxSize.X = Math.Abs(rcWorkArea.Right - rcWorkArea.Left);
+					mmi.ptMaxSize.Y = Math.Abs(rcWorkArea.Bottom - rcWorkArea.Top);
+				}
+
+				Marshal.StructureToPtr(mmi, lParam, true);
+			}
+
+			return IntPtr.Zero;
+		}
+
+		private const int WM_GETMINMAXINFO = 0x0024;
+
+		private const uint MONITOR_DEFAULTTONEAREST = 0x00000002;
+
+		[DllImport("user32.dll")]
+		private static extern IntPtr MonitorFromWindow(IntPtr handle, uint flags);
+
+		[DllImport("user32.dll")]
+		private static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+
+		[Serializable]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct RECT
+		{
+			public int Left;
+			public int Top;
+			public int Right;
+			public int Bottom;
+
+			public RECT(int left, int top, int right, int bottom)
+			{
+				this.Left = left;
+				this.Top = top;
+				this.Right = right;
+				this.Bottom = bottom;
+			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MONITORINFO
+		{
+			public int cbSize;
+			public RECT rcMonitor;
+			public RECT rcWork;
+			public uint dwFlags;
+		}
+
+		[Serializable]
+		[StructLayout(LayoutKind.Sequential)]
+		public struct POINT
+		{
+			public int X;
+			public int Y;
+
+			public POINT(int x, int y)
+			{
+				this.X = x;
+				this.Y = y;
+			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct MINMAXINFO
+		{
+			public POINT ptReserved;
+			public POINT ptMaxSize;
+			public POINT ptMaxPosition;
+			public POINT ptMinTrackSize;
+			public POINT ptMaxTrackSize;
+		}
+		#endregion
+
+		private PhotoViewerViewModel PVVM;  //Each viewer gets its own viewmodel
 		public PhotoViewer(string folderPath)
 		{
 			this.Tag = folderPath;  //Set tag so ImageControl can use it.
@@ -86,6 +187,10 @@ namespace FolderThumbnailExplorer.View
 		}
 		#endregion
 		#region Window related actions
+		double lastLeft = 0;
+		double lastTop = 0;
+		double lastWidth = 0;
+		double lastHeight = 0;
 		private void CloseClick(object sender, RoutedEventArgs e)
 		{
 			Close();
@@ -93,13 +198,49 @@ namespace FolderThumbnailExplorer.View
 		private void MaxResClick(object sender, RoutedEventArgs e)
 		{
 			if (WindowState == WindowState.Normal)
+			{
+				lastLeft = Left;
+				lastTop = Top;
+				lastWidth = Width;
+				lastHeight = Height;
 				WindowState = WindowState.Maximized;
+			}
 			else
 				WindowState = WindowState.Normal;
 		}
 		private void MinClick(object sender, RoutedEventArgs e)
 		{
 			WindowState = WindowState.Minimized;
+		}
+		private void FullscreenClick(object sender, RoutedEventArgs e)
+		{
+			// Cast Width and Height because they don't always match up.
+			if (Left == 0 && Top == 0 && (int)Width == (int)SystemParameters.PrimaryScreenWidth && (int)Height == (int)SystemParameters.PrimaryScreenHeight)
+			{   // Exit Fullscreen
+				if (WindowState == WindowState.Maximized)
+					WindowState = WindowState.Normal;
+				Left = lastLeft;
+				Top = lastTop;
+				Width = lastWidth;
+				Height = lastHeight;
+			}
+			else
+			{   // Enter Fullscreen
+				lastLeft = Left;
+				lastTop = Top;
+				lastWidth = Width;
+				lastHeight = Height;
+				if (WindowState == WindowState.Maximized)
+				{
+					lastLeft = 0;
+					lastTop = 0;
+					WindowState = WindowState.Normal;
+				}
+				Left = 0;
+				Top = 0;
+				Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+				Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+			}
 		}
 		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -112,24 +253,9 @@ namespace FolderThumbnailExplorer.View
 					else
 						this.Close();
 					break;
-			}
-		}
-		private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			DragMove();
-			if (e.Timestamp - timeStamp < 400)  //400ms for the user to double click
-				if (WindowState == WindowState.Normal)
-					WindowState = WindowState.Maximized;
-				else
-					WindowState = WindowState.Normal;
-			timeStamp = e.Timestamp;
-		}
-		private void Rectangle_MouseLeave(object sender, MouseEventArgs e)
-		{
-			if (e.LeftButton == MouseButtonState.Pressed)
-			{
-				this.DragMove();
-				WindowState = WindowState.Normal;
+				case Key.F:
+					FullscreenClick(sender, e);
+					break;
 			}
 		}
 		#endregion
@@ -137,7 +263,7 @@ namespace FolderThumbnailExplorer.View
 		private void ImageBox_SelectionChanged(object sender, SelectionChangedEventArgs e) =>
 			((ListBox)sender).ScrollIntoView(((ListBox)sender).SelectedItem);
 
-		private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			Point mousePosition = e.GetPosition((UIElement)sender);
 			double halfWidth = ((FrameworkElement)sender).ActualWidth / 2;

@@ -121,10 +121,7 @@
     <value>🔄 刷新</value>
   </data>
   <data name="RefreshDriveBtnTT" xml:space="preserve">
-    <value>刷新逻辑驱动器列表.</value>
-  </data>
-  <data name="MainToolTipTitle" xml:space="preserve">
-    <value>ℹ 提示</value>
+    <value>刷新逻辑驱动器列表</value>
   </data>
   <data name="MainToolTip" xml:space="preserve">
     <value>左键单击普通文件夹 - 进入此文件夹.
@@ -132,6 +129,9 @@
 右键单击任何文件夹 - 在文件资源管理器中打开.
 双击任何文件夹的名字 - 进入此文件夹.
 Ctrl+F2 - 随机图片文件夹.</value>
+  </data>
+  <data name="MainToolTipTitle" xml:space="preserve">
+    <value>ℹ 提示</value>
   </data>
   <data name="AddNewFavTitle" xml:space="preserve">
     <value>添加新收藏</value>
@@ -153,22 +153,19 @@ Ctrl+F2 - 随机图片文件夹.</value>
     <value>将当前目录添加到收藏夹.</value>
   </data>
   <data name="ScaleSliderTT" xml:space="preserve">
-    <value>调整缩略图大小.</value>
+    <value>调整缩略图大小</value>
   </data>
   <data name="RefreshViewTT" xml:space="preserve">
-    <value>刷新视图.</value>
-  </data>
-  <data name="PhotoViewerTitleBarTT" xml:space="preserve">
-    <value>拖拽此处可移动窗口.</value>
+    <value>刷新视图</value>
   </data>
   <data name="PVCloseTT" xml:space="preserve">
-    <value>.关闭窗口</value>
+    <value>关闭窗口</value>
   </data>
   <data name="PVMaxTT" xml:space="preserve">
-    <value>.最大化或还原窗口</value>
+    <value>最大化或还原窗口</value>
   </data>
   <data name="PVMinTT" xml:space="preserve">
-    <value>.最小化窗口</value>
+    <value>最小化窗口</value>
   </data>
   <data name="PVToolTip" xml:space="preserve">
     <value>在图像上鼠标滚轮 - 浏览图片.
@@ -179,7 +176,7 @@ Ctrl+C - 将当前图片复制到剪贴板.
 Esc - 关闭图片浏览器.</value>
   </data>
   <data name="PVGridSplitterTT" xml:space="preserve">
-    <value>拖拽此处可改变宽度.</value>
+    <value>拖拽此处可改变宽度</value>
   </data>
   <data name="HasSubfolderTT" xml:space="preserve">
     <value>此文件夹有子文件夹.</value>
@@ -317,5 +314,8 @@ Esc - 关闭图片浏览器.</value>
   </data>
   <data name="SortMethodNatural" xml:space="preserve">
     <value>自然排序</value>
+  </data>
+  <data name="PVFullTT" xml:space="preserve">
+    <value>全屏窗口</value>
   </data>
 </root>

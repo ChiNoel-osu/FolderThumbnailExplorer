@@ -6,9 +6,9 @@
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <IsPublishable>True</IsPublishable>
-    <Version>1.4.0</Version>
+    <Version>1.3.1</Version>
     <Authors>Victor</Authors>
-    <Copyright>CC BY-NC-SA 4.0 International</Copyright>
+    <Copyright>https://github.com/ChiNoel-osu/FolderThumbnailExplorer</Copyright>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/ChiNoel-osu/FolderThumbnailExplorer</PackageProjectUrl>
@@ -31,8 +31,8 @@
     <Resource Include="folder.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-    <PackageReference Include="NLog" Version="5.2.8" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="NLog" Version="5.3.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Localization\Loc.Designer.cs">
