@@ -159,11 +159,11 @@ You can also use &lt;Backspace&gt; to go up.</value>
     <value>Refresh the view</value>
   </data>
   <data name="PVCloseTT" xml:space="preserve">
-    <value>Close the window</value>
+    <value>Close the window (Esc/Ctrl+W)</value>
     <comment>This shit is right to left.</comment>
   </data>
   <data name="PVMaxTT" xml:space="preserve">
-    <value>Maximize or Restore the window</value>
+    <value>Maximize or Restore (Esc) the window</value>
     <comment>R2L</comment>
   </data>
   <data name="PVMinTT" xml:space="preserve">
@@ -175,8 +175,7 @@ You can also use &lt;Backspace&gt; to go up.</value>
 Click Right/Left of image - Next/Previous.
 Right Click + Mouse Wheel on image - Zoom &amp; Pan.
 Move Mouse while zoomed in - Pan Up &amp; Down.
-Ctrl+C - Copy current image to clipboard.
-Esc - Close Photo Viewer.</value>
+Ctrl+C - Copy current image to clipboard for paste as Bitmap or File.</value>
   </data>
   <data name="PVGridSplitterTT" xml:space="preserve">
     <value>Drag to resize</value>
@@ -255,7 +254,7 @@ Right click the button to reset 480*600@(0,0).</value>
 Select the last image in list to continue loading.</value>
   </data>
   <data name="Copied2Clipboard" xml:space="preserve">
-    <value>Copied to clipboard.</value>
+    <value>Copied to clipboard</value>
   </data>
   <data name="PVPopUpSettingsScrollSpeed" xml:space="preserve">
     <value>Scroll Speed Factor</value>
@@ -319,6 +318,6 @@ You can also use &lt;XButton2&gt; to do this.</value>
     <value>Natural</value>
   </data>
   <data name="PVFullTT" xml:space="preserve">
-    <value>Set Full Screen</value>
+    <value>Set Full Screen (F)</value>
   </data>
 </root>

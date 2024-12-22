@@ -159,10 +159,10 @@ Ctrl+F2 - 随机图片文件夹.</value>
     <value>刷新视图</value>
   </data>
   <data name="PVCloseTT" xml:space="preserve">
-    <value>关闭窗口</value>
+    <value>关闭窗口 (Esc/Ctrl+W)</value>
   </data>
   <data name="PVMaxTT" xml:space="preserve">
-    <value>最大化或还原窗口</value>
+    <value>最大化或还原(Esc)窗口</value>
   </data>
   <data name="PVMinTT" xml:space="preserve">
     <value>最小化窗口</value>
@@ -172,8 +172,7 @@ Ctrl+F2 - 随机图片文件夹.</value>
 在图像左侧或右侧点击 - 浏览图片.
 在图像上按住右键时滚轮 - 缩放&amp;平移.
 图像被放大时移动鼠标 - 上下平移.
-Ctrl+C - 将当前图片复制到剪贴板.
-Esc - 关闭图片浏览器.</value>
+Ctrl+C - 将当前图片复制到剪贴板以供粘贴为图片或文件.</value>
   </data>
   <data name="PVGridSplitterTT" xml:space="preserve">
     <value>拖拽此处可改变宽度</value>
@@ -252,7 +251,7 @@ Esc - 关闭图片浏览器.</value>
 选中列表中最后一张图片以继续加载.</value>
   </data>
   <data name="Copied2Clipboard" xml:space="preserve">
-    <value>已复制到剪贴板.</value>
+    <value>已复制到剪贴板</value>
   </data>
   <data name="PVPopUpSettingsScrollSpeed" xml:space="preserve">
     <value>滚动速度倍率</value>
@@ -316,6 +315,6 @@ Esc - 关闭图片浏览器.</value>
     <value>自然排序</value>
   </data>
   <data name="PVFullTT" xml:space="preserve">
-    <value>全屏窗口</value>
+    <value>全屏窗口 (F)</value>
   </data>
 </root>

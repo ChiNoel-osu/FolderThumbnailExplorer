@@ -16,8 +16,7 @@
 		MinHeight="600"
 		MinWidth="200"
 		Background="Black"
-		BorderThickness="0"
-		WindowState="Normal"
+		BorderThickness="1"
 		KeyDown="Window_KeyDown"
 		WindowStyle="None">
 	<WindowChrome.WindowChrome>
@@ -52,7 +51,14 @@
 		<KeyBinding Key="C"
 					Modifiers="Ctrl"
 					Command="{Binding Copy2ClipboardCommand}" />
+		<KeyBinding Key="W"
+					Modifiers="Ctrl"
+					Command="Close" />
 	</Window.InputBindings>
+	<Window.CommandBindings>
+		<CommandBinding Command="Close"
+						Executed="CloseClick" />
+	</Window.CommandBindings>
 	<Grid>
 		<!--OuterGrid. Containing window controls, hints and stuffs.-->
 		<Grid.RowDefinitions>
@@ -208,13 +214,11 @@
 					Background="MediumPurple"
 					Click="FullscreenClick"
 					ToolTip="{x:Static loc:Loc.PVFullTT}"
-					WindowChrome.IsHitTestVisibleInChrome="True"/>
-
+					WindowChrome.IsHitTestVisibleInChrome="True" />
+			<TextBlock Text="{Binding Status, Mode=OneWay}"
+					   Margin="10,0,0,0"
+					   VerticalAlignment="Center"
+					   Foreground="White" />
 		</StackPanel>
-		<TextBlock Text="{Binding Status, Mode=OneWay}"
-				   Margin="0,0,66,0"
-				   HorizontalAlignment="Right"
-				   VerticalAlignment="Center"
-				   Foreground="White" />
 	</Grid>
 </Window>

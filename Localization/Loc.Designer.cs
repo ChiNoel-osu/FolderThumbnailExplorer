@@ -134,7 +134,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copied to clipboard..
+        ///   Looks up a localized string similar to Copied to clipboard.
         /// </summary>
         public static string Copied2Clipboard {
             get {
@@ -230,7 +230,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close the window.
+        ///   Looks up a localized string similar to Close the window (Esc/Ctrl+W).
         /// </summary>
         public static string PVCloseTT {
             get {
@@ -239,7 +239,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set Full Screen.
+        ///   Looks up a localized string similar to Set Full Screen (F).
         /// </summary>
         public static string PVFullTT {
             get {
@@ -257,7 +257,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximize or Restore the window.
+        ///   Looks up a localized string similar to Maximize or Restore (Esc) the window.
         /// </summary>
         public static string PVMaxTT {
             get {
@@ -449,8 +449,7 @@ namespace FolderThumbnailExplorer.Localization {
         ///Click Right/Left of image - Next/Previous.
         ///Right Click + Mouse Wheel on image - Zoom &amp; Pan.
         ///Move Mouse while zoomed in - Pan Up &amp; Down.
-        ///Ctrl+C - Copy current image to clipboard.
-        ///Esc - Close Photo Viewer..
+        ///Ctrl+C - Copy current image to clipboard for paste as Bitmap or File..
         /// </summary>
         public static string PVToolTip {
             get {

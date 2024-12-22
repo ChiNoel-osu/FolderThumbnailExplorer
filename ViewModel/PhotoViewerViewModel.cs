@@ -193,7 +193,10 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public async void Copy2Clipboard()
 		{
-			Clipboard.SetImage(_BigImage);
+			DataObject dataObject = new DataObject();
+			dataObject.SetData(DataFormats.Bitmap, _BigImage);
+			dataObject.SetData(DataFormats.FileDrop, new string[] { ((FileStream)_BigImage.StreamSource).Name });
+			Clipboard.SetDataObject(dataObject, true);
 			Status = Localization.Loc.Copied2Clipboard;
 			await Task.Run(() => Thread.Sleep(1000));
 			Status = string.Empty;
