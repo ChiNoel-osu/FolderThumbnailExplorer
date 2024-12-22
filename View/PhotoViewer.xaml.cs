@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Shell;
 
 namespace FolderThumbnailExplorer.View
 {
@@ -114,12 +115,13 @@ namespace FolderThumbnailExplorer.View
 		}
 		#endregion
 
-		private PhotoViewerViewModel PVVM;  //Each viewer gets its own viewmodel
+		private PhotoViewerViewModel PVVM;  // Each viewer gets its own viewmodel
 		public PhotoViewer(string folderPath)
 		{
-			this.Tag = folderPath;  //Set tag so ImageControl can use it.
+			this.Tag = folderPath;  // Set tag so ImageControl can use it.
 			PVVM = new PhotoViewerViewModel(folderPath, this);
 			this.DataContext = PVVM;
+			WindowChrome.SetWindowChrome(this, normalWndChrome);
 			InitializeComponent();
 		}
 		#region Shown image zoom & pan
@@ -191,13 +193,27 @@ namespace FolderThumbnailExplorer.View
 		double lastTop = 0;
 		double lastWidth = 0;
 		double lastHeight = 0;
+		private bool isFullScreen = false;
+		// Window chromes for different window state
+		readonly WindowChrome normalWndChrome = new WindowChrome { CaptionHeight = 26, ResizeBorderThickness = new Thickness(8) };
+		readonly WindowChrome maxWndChrome = new WindowChrome { CaptionHeight = 26, ResizeBorderThickness = new Thickness(0) };
+		readonly WindowChrome fullscrnWndChrome = new WindowChrome { CaptionHeight = 0, ResizeBorderThickness = new Thickness(0) };
 		private void CloseClick(object sender, RoutedEventArgs e)
 		{
 			Close();
 		}
 		private void MaxResClick(object sender, RoutedEventArgs e)
 		{
-			if (WindowState == WindowState.Normal)
+			if (isFullScreen)
+			{
+				Left = lastLeft;
+				Top = lastTop;
+				Width = lastWidth;
+				Height = lastHeight;
+				isFullScreen = false;
+				WindowChrome.SetWindowChrome(this, normalWndChrome);
+			}
+			else if (WindowState == WindowState.Normal)
 			{
 				lastLeft = Left;
 				lastTop = Top;
@@ -206,7 +222,9 @@ namespace FolderThumbnailExplorer.View
 				WindowState = WindowState.Maximized;
 			}
 			else
+			{
 				WindowState = WindowState.Normal;
+			}
 		}
 		private void MinClick(object sender, RoutedEventArgs e)
 		{
@@ -217,15 +235,18 @@ namespace FolderThumbnailExplorer.View
 			// Cast Width and Height because they don't always match up.
 			if (Left == 0 && Top == 0 && (int)Width == (int)SystemParameters.PrimaryScreenWidth && (int)Height == (int)SystemParameters.PrimaryScreenHeight)
 			{   // Exit Fullscreen
+				isFullScreen = false;
 				if (WindowState == WindowState.Maximized)
 					WindowState = WindowState.Normal;
 				Left = lastLeft;
 				Top = lastTop;
 				Width = lastWidth;
 				Height = lastHeight;
+				WindowChrome.SetWindowChrome(this, normalWndChrome);
 			}
 			else
 			{   // Enter Fullscreen
+				isFullScreen = true;
 				lastLeft = Left;
 				lastTop = Top;
 				lastWidth = Width;
@@ -240,6 +261,7 @@ namespace FolderThumbnailExplorer.View
 				Top = 0;
 				Width = System.Windows.SystemParameters.PrimaryScreenWidth;
 				Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+				WindowChrome.SetWindowChrome(this, fullscrnWndChrome);
 			}
 		}
 		private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -271,6 +293,19 @@ namespace FolderThumbnailExplorer.View
 				ImageList.SelectedIndex--;
 			else if (mousePosition.X > halfWidth && ImageList.SelectedIndex < ((ObservableCollection<CustomListItem>)ImageList.ItemsSource).Count)  // Right half of the Grid was clicked
 				ImageList.SelectedIndex++;
+		}
+
+		private void Window_StateChanged(object sender, EventArgs e)
+		{	// Handle WindowChrome change, including when user is not clicking buttons.
+			switch(((Window)sender).WindowState)
+			{
+				case WindowState.Normal:
+					WindowChrome.SetWindowChrome(this, normalWndChrome);
+					break;
+				case WindowState.Maximized:
+					WindowChrome.SetWindowChrome(this, maxWndChrome);
+					break;
+			}
 		}
 	}
 }

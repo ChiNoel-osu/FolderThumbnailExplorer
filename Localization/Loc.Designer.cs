@@ -314,7 +314,7 @@ namespace FolderThumbnailExplorer.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Save Photo Viewer&apos;s position &amp; size so it will be spawned at your desired location.
         ///The setting file is in [%USERPROFILE%\AppData\Local\%USERNAME%].
-        ///Right click the button to reset 480*600@(0,0)..
+        ///Right click the button to reset 480*600@(100,100)..
         /// </summary>
         public static string PVPopUpSettingsSavePosTT {
             get {

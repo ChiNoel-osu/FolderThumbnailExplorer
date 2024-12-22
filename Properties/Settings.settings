@@ -12,7 +12,7 @@
       <Value Profile="(Default)">600</Value>
     </Setting>
     <Setting Name="PV_Top" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="PV_LoadThreshold" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">20</Value>
@@ -30,7 +30,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="PV_Left" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="TE_SortingMethod" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

@@ -226,7 +226,7 @@ This flips that.</value>
   <data name="PVPopUpSettingsSavePosTT" xml:space="preserve">
     <value>Save Photo Viewer's position &amp; size so it will be spawned at your desired location.
 The setting file is in [%USERPROFILE%\AppData\Local\%USERNAME%].
-Right click the button to reset 480*600@(0,0).</value>
+Right click the button to reset 480*600@(100,100).</value>
   </data>
   <data name="Add2FavGroup" xml:space="preserve">
     <value>Add favorites to group</value>

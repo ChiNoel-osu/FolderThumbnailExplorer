@@ -226,7 +226,7 @@ Ctrl+C - 将当前图片复制到剪贴板以供粘贴为图片或文件.</value
   <data name="PVPopUpSettingsSavePosTT" xml:space="preserve">
     <value>保存图片浏览器的位置和大小以让其在设定的方位打开.
 你可以在[%USERPROFILE%\AppData\Local\%USERNAME%]中找到这些设置.
-右键按钮可重置为480*600@(0,0).</value>
+右键按钮可重置为480*600@(100,100).</value>
   </data>
   <data name="Add2FavGroup" xml:space="preserve">
     <value>添加文件夹至分类</value>

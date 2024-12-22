@@ -179,8 +179,8 @@ namespace FolderThumbnailExplorer.ViewModel
 			PosFlag = 0;
 			Properties.Settings.Default.PV_Width = 480;
 			Properties.Settings.Default.PV_Height = 600;
-			Properties.Settings.Default.PV_Left = 0;
-			Properties.Settings.Default.PV_Top = 0;
+			Properties.Settings.Default.PV_Left = 100;
+			Properties.Settings.Default.PV_Top = 100;
 			Properties.Settings.Default.Save();
 			PosFlag = -1;
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
