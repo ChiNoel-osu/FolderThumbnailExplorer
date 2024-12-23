@@ -32,16 +32,18 @@
 			<ListBox.ItemContainerStyle>
 				<Style TargetType="{x:Type ListBoxItem}">
 					<Setter Property="ToolTipService.ToolTip"
-							Value="{Binding}" />	<!--Bind to whatever the source is-->
+							Value="{Binding}" />
+					<!--Bind to whatever the source is-->
 				</Style>
 			</ListBox.ItemContainerStyle>
 		</ListBox>
 		<Button Grid.Row="1"
+				HorizontalAlignment="Stretch"
 				Content="{x:Static loc:Loc.RefreshDriveBtn}"
-				Command="{Binding MainPageViewModel.RefreshFavGroupCommand, Mode=OneWay}"
+				ToolTip="{x:Static loc:Loc.RefreshDriveBtnTT}"
+				Padding="0,8"
 				FontSize="14"
-				Template="{DynamicResource ButtonTemplate1}"
-				Background="Transparent"
-				Foreground="White" />
+				Command="{Binding MainPageViewModel.RefreshFavGroupCommand, Mode=OneWay}"
+				Foreground="White"/>
 	</Grid>
 </UserControl>

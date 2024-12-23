@@ -26,6 +26,7 @@
 		</Grid.RowDefinitions>
 		<ListBox Template="{DynamicResource ListBoxNavTemplate}"
 				 SelectedIndex="{Binding NavSideBarViewModel.SelectedIndex}"
+				 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 				 Grid.Row="0"
 				 Background="Transparent"
 				 BorderBrush="Transparent"
@@ -46,10 +47,10 @@
 		<StackPanel Grid.Row="2"
 					Margin="4,4,4,35">
 			<TextBlock Text="{x:Static loc:Loc.SortingMethod}"
-					   Margin="0,0,0,2"
+					   Margin="2,0,0,2"
 					   Foreground="White" />
-			<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
-					  Foreground="White"
+			<ComboBox Foreground="White"
+					  Padding="6,3,-30,5"
 					  SelectedIndex="{Binding MainPageViewModel.SortingMethodIndex, Mode=TwoWay}"
 					  VerticalAlignment="Top">
 				<ComboBox.Resources>
@@ -83,22 +84,23 @@
 			   ToolTipService.InitialShowDelay="0"
 			   ToolTipService.ShowDuration="88888888">
 			<Label.ToolTip>
-				<ToolTip Placement="Top">
+				<ToolTip Placement="Top"
+						 Background="Black">
 					<ToolTip.Content>
-						<Grid>
-							<Rectangle Fill="Black"
-									   Margin="-8" />
-							<StackPanel>
-								<Label Content="{x:Static loc:Loc.MainToolTipTitle}"
+						<StackPanel>
+							<TextBlock Text="{x:Static loc:Loc.MainToolTipTitle}"
 									   Foreground="White"
 									   FontWeight="Medium"
-									   Padding="5,2,5,0" />
-								<Separator Margin="0,7,0,0" />
-								<Label Foreground="White"
-									   Content="{x:Static loc:Loc.MainToolTip}" />
-							</StackPanel>
-						</Grid>
+									   Padding="0,2,5,0" />
+							<Separator Margin="-5,4,-5,2"
+									   BorderBrush="Gray" />
+							<TextBlock Foreground="White"
+									   Text="{x:Static loc:Loc.MainToolTip}" />
+						</StackPanel>
 					</ToolTip.Content>
+					<ToolTip.Style>
+						<Style TargetType="{x:Type ToolTip}" />
+					</ToolTip.Style>
 				</ToolTip>
 			</Label.ToolTip>
 		</Label>

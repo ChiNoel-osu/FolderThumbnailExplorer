@@ -6,6 +6,7 @@
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 			 xmlns:Converter="clr-namespace:FolderThumbnailExplorer.Converter"
+			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 			 x:Class="FolderThumbnailExplorer.View.SettingsPage"
 			 d:DataContext="{d:DesignInstance Type={x:Type viewmodel:MainViewModel}}"
 			 mc:Ignorable="d"
@@ -38,13 +39,13 @@
 						   FontSize="25"
 						   FontWeight="Medium"
 						   Text="{x:Static loc:Loc.SettingsGeneral}" />
-				<TextBlock Text="{x:Static loc:Loc.SettingsLang}"
-						   Margin="0,0,0,5" />
 				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{x:Static loc:Loc.SettingsLang}"
+							   Margin="0,0,20,5" />
 					<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
 							  SelectedIndex="{Binding SettingsPageViewModel.LanguageIndex}"
+							  VerticalContentAlignment="Center"
 							  FontSize="15"
-							  HorizontalAlignment="Left"
 							  Width="100"
 							  Foreground="White">
 						<ComboBox.Resources>
@@ -57,7 +58,7 @@
 						<ComboBoxItem Content="中文" />
 					</ComboBox>
 					<TextBlock Text="!"
-							   Margin="10,-2,0,0"
+							   Margin="10,0,0,0"
 							   Padding="10,0,10,0"
 							   ToolTipService.InitialShowDelay="0"
 							   Cursor="Hand"
@@ -65,10 +66,56 @@
 							   ToolTip="{Binding SettingsPageViewModel.LanguageRestartTT, Mode=OneWay}"
 							   Visibility="{Binding SettingsPageViewModel.IsLangRestartVisible, Converter={StaticResource Bool2CollapseVisibilityConverter}}">
 						<TextBlock.InputBindings>
-							<MouseBinding MouseAction="LeftClick" Command="{Binding RestartApplicationCommand}" />
+							<MouseBinding MouseAction="LeftClick"
+										  Command="{Binding RestartApplicationCommand}" />
 						</TextBlock.InputBindings>
 					</TextBlock>
 				</StackPanel>
+				<TextBlock Margin="0,10,0,5"
+						   Foreground="Chartreuse"
+						   FontSize="25"
+						   FontWeight="Medium"
+						   Text="{x:Static loc:Loc.SettingsThumbnailExp}" />
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{x:Static loc:Loc.SettingsUseCache}"
+							   Margin="0,0,20,5" />
+					<ui:ToggleSwitch />
+					<ToggleButton DockPanel.Dock="Right"
+								  HorizontalAlignment="Right"
+								  Height="20"
+								  Width="40"
+								  Margin="0,0,0,4"
+								  Focusable="False"
+								  IsChecked="True"
+								  Style="{DynamicResource ToggleButtonTemplateStyle}" />
+				</StackPanel>
+				<DockPanel>
+					<TextBlock Text="{x:Static loc:Loc.SettingsCacheQuality}"
+							   Margin="0,0,20,5" />
+					<Button DockPanel.Dock="Right"
+							Width="40"
+							Background="Transparent"
+							Foreground="White"
+							Content="Save"
+							Margin="0,0,20,0"
+							Template="{DynamicResource ButtonTemplate1}" />
+					<TextBlock DockPanel.Dock="Right"
+							   Text="{Binding ElementName=CacheQualitySlider, Path=Value, Mode=OneWay}"
+							   Margin="20,0,20,0" />
+					<Slider x:Name="CacheQualitySlider"
+							Style="{DynamicResource SliderStyle1}"
+							Margin="0,6,0,0"
+							Minimum="1"
+							Maximum="100"
+							IsSnapToTickEnabled="True"
+							LargeChange="8"
+							SmallChange="1" />
+				</DockPanel>
+				<TextBlock Margin="0,10,0,5"
+						   Foreground="Chartreuse"
+						   FontSize="25"
+						   FontWeight="Medium"
+						   Text="{x:Static loc:Loc.SettingsPhotoViewer}" />
 			</StackPanel>
 		</ScrollViewer>
 	</DockPanel>

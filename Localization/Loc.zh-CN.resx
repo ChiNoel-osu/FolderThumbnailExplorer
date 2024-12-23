@@ -139,9 +139,6 @@ Ctrl+F2 - 随机图片文件夹.</value>
   <data name="ANFPath" xml:space="preserve">
     <value> 路径</value>
   </data>
-  <data name="ANFName" xml:space="preserve">
-    <value> 名称</value>
-  </data>
   <data name="ANFSave" xml:space="preserve">
     <value>保存</value>
   </data>
@@ -316,5 +313,20 @@ Ctrl+C - 将当前图片复制到剪贴板以供粘贴为图片或文件.</value
   </data>
   <data name="PVFullTT" xml:space="preserve">
     <value>全屏窗口 (F)</value>
+  </data>
+  <data name="SettingsThumbnailExp" xml:space="preserve">
+    <value>文件夹预览</value>
+  </data>
+  <data name="SettingsPhotoViewer" xml:space="preserve">
+    <value>图片查看</value>
+  </data>
+  <data name="SettingsUseCache" xml:space="preserve">
+    <value>使用缓存</value>
+  </data>
+  <data name="SettingsCacheQuality" xml:space="preserve">
+    <value>缓存质量</value>
+  </data>
+  <data name="ANFName" xml:space="preserve">
+    <value> 名称....</value>
   </data>
 </root>

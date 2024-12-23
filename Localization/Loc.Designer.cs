@@ -97,7 +97,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Name.
+        ///   Looks up a localized string similar to  Name.....
         /// </summary>
         public static string ANFName {
             get {
@@ -512,6 +512,15 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cache Quality.
+        /// </summary>
+        public static string SettingsCacheQuality {
+            get {
+                return ResourceManager.GetString("SettingsCacheQuality", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string SettingsGeneral {
@@ -536,6 +545,33 @@ namespace FolderThumbnailExplorer.Localization {
         public static string SettingsLangRestartTT {
             get {
                 return ResourceManager.GetString("SettingsLangRestartTT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photo Viewer.
+        /// </summary>
+        public static string SettingsPhotoViewer {
+            get {
+                return ResourceManager.GetString("SettingsPhotoViewer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thumbnail Explorer.
+        /// </summary>
+        public static string SettingsThumbnailExp {
+            get {
+                return ResourceManager.GetString("SettingsThumbnailExp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Cache.
+        /// </summary>
+        public static string SettingsUseCache {
+            get {
+                return ResourceManager.GetString("SettingsUseCache", resourceCulture);
             }
         }
         

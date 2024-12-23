@@ -21,9 +21,9 @@
 	</Window.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"
+			<ColumnDefinition Width="100"
 							  MaxWidth="200" />
-			<ColumnDefinition Width="8*" />
+			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
 		<view:NavSideBar Grid.Column="0"
 						 Margin="0,0,5,0" />

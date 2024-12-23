@@ -5,9 +5,6 @@
 		public string value;
 		public string tag;
 
-		public override string ToString()
-		{
-			return value;
-		}
+		public override string ToString() => value;
 	}
 }
