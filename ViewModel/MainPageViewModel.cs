@@ -545,7 +545,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		}
 		#endregion
 
-		//TODO: REDO FAVORITE FOLDER SYSTEM! move to ReGetContent maybe
+		//TODO: REDO FAVORITE FOLDER SYSTEM! Simply change PATHtoSHOW
 		partial void OnSelectedFavChanged(TaggedString value)
 		{
 			favFolderToLoad = value;

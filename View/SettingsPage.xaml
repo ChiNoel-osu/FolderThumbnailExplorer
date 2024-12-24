@@ -6,7 +6,6 @@
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 			 xmlns:Converter="clr-namespace:FolderThumbnailExplorer.Converter"
-			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 			 x:Class="FolderThumbnailExplorer.View.SettingsPage"
 			 d:DataContext="{d:DesignInstance Type={x:Type viewmodel:MainViewModel}}"
 			 mc:Ignorable="d"
@@ -45,6 +44,7 @@
 					<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
 							  SelectedIndex="{Binding SettingsPageViewModel.LanguageIndex}"
 							  VerticalContentAlignment="Center"
+							  Padding="10,0,0,2"
 							  FontSize="15"
 							  Width="100"
 							  Foreground="White">
@@ -79,14 +79,13 @@
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="{x:Static loc:Loc.SettingsUseCache}"
 							   Margin="0,0,20,5" />
-					<ui:ToggleSwitch />
 					<ToggleButton DockPanel.Dock="Right"
 								  HorizontalAlignment="Right"
 								  Height="20"
 								  Width="40"
 								  Margin="0,0,0,4"
 								  Focusable="False"
-								  IsChecked="True"
+								  IsChecked="{Binding SettingsPageViewModel.UseCache, Mode=TwoWay}"
 								  Style="{DynamicResource ToggleButtonTemplateStyle}" />
 				</StackPanel>
 				<DockPanel>

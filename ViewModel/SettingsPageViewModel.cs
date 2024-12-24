@@ -14,6 +14,8 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		bool _UseCache = false;
 
+		// TODO: Cache quality setting
+
 		bool langInit = true;
 		bool usecacheInit = true;
 		partial void OnLanguageIndexChanged(int value)
@@ -48,6 +50,11 @@ namespace FolderThumbnailExplorer.ViewModel
 			{   //Ignore first trigger.
 				usecacheInit = false;
 				return;
+			}
+			else
+			{
+				Properties.Settings.Default.TE_UseCache = value;
+				Properties.Settings.Default.Save();
 			}
 		}
 

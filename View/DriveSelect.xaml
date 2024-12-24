@@ -44,11 +44,13 @@
 		</ListBox>
 		<Button Grid.Row="1"
 				HorizontalAlignment="Stretch"
+				Template="{DynamicResource ButtonTemplate1}"
 				Content="{x:Static loc:Loc.RefreshDriveBtn}"
 				ToolTip="{x:Static loc:Loc.RefreshDriveBtnTT}"
 				Padding="0,8"
 				FontSize="14"
 				Foreground="White"
+				Background="Transparent"
 				Command="{Binding MainPageViewModel.RefreshDrivesCommand}" />
 	</Grid>
 </UserControl>

@@ -49,8 +49,8 @@
 			<TextBlock Text="{x:Static loc:Loc.SortingMethod}"
 					   Margin="2,0,0,2"
 					   Foreground="White" />
-			<ComboBox Foreground="White"
-					  Padding="6,3,-30,5"
+			<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
+					  Foreground="White"
 					  SelectedIndex="{Binding MainPageViewModel.SortingMethodIndex, Mode=TwoWay}"
 					  VerticalAlignment="Top">
 				<ComboBox.Resources>

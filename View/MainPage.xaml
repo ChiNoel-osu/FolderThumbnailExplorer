@@ -7,7 +7,6 @@
 			 xmlns:local="clr-namespace:FolderThumbnailExplorer.View"
 			 xmlns:converter="clr-namespace:FolderThumbnailExplorer.Converter"
 			 xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
-			 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
 			 d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 			 Focusable="True"
 			 FocusVisualStyle="{x:Null}"
@@ -81,6 +80,7 @@
 						Width="20"
 						ToolTip="{x:Static loc:Loc.GoUpBtnTT}"
 						Cursor="UpArrow"
+						Template="{DynamicResource ButtonTemplate1}"
 						Command="{Binding MainPageViewModel.GoUpCommand}"
 						Background="{x:Null}"
 						Foreground="MediumPurple"
@@ -125,6 +125,7 @@
 					 Text="{Binding MainPageViewModel.PATHtoShow, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
 					 Grid.Column="1"
 					 FontSize="16"
+					 Style="{DynamicResource UniTextBoxStyle}"
 					 Margin="0,1,0,0"
 					 Padding="2,0,0,0"/>
 			<Button Grid.Column="2"
@@ -166,14 +167,13 @@
 					</Style>
 				</Button.Style>
 			</Button>
-			<ComboBox Grid.Column="3"
+			<ComboBox Template="{DynamicResource ComboBoxTemplate1}"
+					  Grid.Column="3"
 					  Foreground="White"
-					  Margin="0,1,1,0"
-					  Padding="5,1,0,0"
+					  Margin="0,0,0,-1"
 					  ItemsSource="{Binding MainPageViewModel.ComboBoxItems}"
 					  SelectedItem="{Binding MainPageViewModel.CBBoxSelected, Mode=OneWayToSource}"
-					  Height="21"
-					  VerticalAlignment="Top">
+					  VerticalAlignment="Center">
 				<ComboBox.ItemContainerStyle>
 					<Style TargetType="ComboBoxItem">
 						<Setter Property="Background"
@@ -191,7 +191,6 @@
 				</ComboBox.ItemContainerStyle>
 			</ComboBox>
 			<Slider x:Name="ScaleSlider"
-					Focusable="False"
 					Style="{DynamicResource SliderStyle1}"
 					Grid.Column="4"
 					Margin="2,3,2,0"
@@ -202,13 +201,13 @@
 					Value="{Binding MainPageViewModel.SliderValue}"
 					ToolTip="{x:Static loc:Loc.ScaleSliderTT}" />
 			<Button Grid.Column="5"
-					Focusable="False"
-					IsEnabled="{Binding MainPageViewModel.NotAddingItem, Mode=OneWay}"
 					Template="{DynamicResource ButtonTemplate1}"
-					Background="{x:Null}"
+					IsEnabled="{Binding MainPageViewModel.NotAddingItem, Mode=OneWay}"
+					Background="Transparent"
 					ToolTip="{x:Static loc:Loc.RefreshViewTT}"
+					FontSize="20"
 					Margin="0,1,1,0"
-					Padding="0,-4,1,0"
+					Padding="0,-5,0.5,0"
 					Foreground="White"
 					Command="{Binding MainPageViewModel.ReGetContentCommand}">
 				<Button.Style>
