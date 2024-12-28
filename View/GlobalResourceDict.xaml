@@ -1414,74 +1414,6 @@
 		</Style.Triggers>
 	</Style>
 	<!--#endregion-->
-	<!--#region ToggleButtonTemplateStyle-->
-	<Style TargetType="{x:Type ToggleButton}"
-		   x:Key="ToggleButtonTemplateStyle">
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type ToggleButton}">
-					<Viewbox>
-						<Border Name="Border"
-								CornerRadius="10"
-								Background="Transparent"
-								BorderBrush="Gray"
-								BorderThickness="1"
-								Width="40"
-								Height="20">
-							<Ellipse Name="Ellipse"
-									 Fill="Transparent"
-									 Stretch="Uniform"
-									 Margin="2 1 2 1"
-									 Stroke="DarkGray"
-									 StrokeThickness="2"
-									 HorizontalAlignment="Stretch" />
-						</Border>
-					</Viewbox>
-					<ControlTemplate.Triggers>
-						<EventTrigger RoutedEvent="Checked">
-							<BeginStoryboard>
-								<Storyboard>
-									<ColorAnimation Storyboard.TargetName="Border"
-													Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-													To="Lime"
-													Duration="0:0:0.2" />
-									<ColorAnimation Storyboard.TargetName="Ellipse"
-													Storyboard.TargetProperty="(Ellipse.Stroke).(SolidColorBrush.Color)"
-													To="CornflowerBlue"
-													Duration="0:0:0.2" />
-									<ThicknessAnimation Storyboard.TargetName="Ellipse"
-														Storyboard.TargetProperty="Margin"
-														DecelerationRatio="0.88"
-														To="20 1 1 1"
-														Duration="0:0:0.4" />
-								</Storyboard>
-							</BeginStoryboard>
-						</EventTrigger>
-						<EventTrigger RoutedEvent="Unchecked">
-							<BeginStoryboard>
-								<Storyboard>
-									<ColorAnimation Storyboard.TargetName="Border"
-													Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-													To="Transparent"
-													Duration="0:0:0.2" />
-									<ColorAnimation Storyboard.TargetName="Ellipse"
-													Storyboard.TargetProperty="(Ellipse.Stroke).(SolidColorBrush.Color)"
-													To="DarkGray"
-													Duration="0:0:0.2" />
-									<ThicknessAnimation Storyboard.TargetName="Ellipse"
-														Storyboard.TargetProperty="Margin"
-														DecelerationRatio="0.88"
-														To="1 1 2 1"
-														Duration="0:0:0.4" />
-								</Storyboard>
-							</BeginStoryboard>
-						</EventTrigger>
-					</ControlTemplate.Triggers>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-	<!--#endregion-->
 	<!--#region ListBoxNavTemplate-->
 	<SolidColorBrush x:Key="ListBox.Disabled.Background"
 					 Color="#FFFFFFFF" />
@@ -1630,6 +1562,93 @@
 			</Trigger>
 		</Style.Triggers>
 	</Style>
+	<!--#endregion-->
+	<!--#region ToggleButtonTemplateStyle-->
+	<Style TargetType="{x:Type ToggleButton}"
+		   x:Key="ToggleButtonTemplateStyle">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ToggleButton}">
+					<!-- Viewbox containing the Border and Ellipse -->
+					<Viewbox>
+						<Border Name="Border"
+								CornerRadius="10"
+								Background="Transparent"
+								BorderBrush="Gray"
+								BorderThickness="1"
+								Width="40"
+								Height="20">
+							<Ellipse Name="Ellipse"
+									 Fill="Transparent"
+									 Stretch="Uniform"
+									 Margin="1 1 2 1"
+									 Stroke="DarkGray"
+									 StrokeThickness="2"
+									 HorizontalAlignment="Stretch" />
+						</Border>
+					</Viewbox>
+					<!-- Triggers to handle both initial state and interactions -->
+					<ControlTemplate.Triggers>
+						<!-- Initial state for when IsChecked is True -->
+						<DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}, Mode=OneTime}"
+									 Value="True">
+							<Setter TargetName="Border"
+									Property="Background"
+									Value="Lime" />
+							<Setter TargetName="Ellipse"
+									Property="Stroke"
+									Value="CornflowerBlue" />
+							<Setter TargetName="Ellipse"
+									Property="Margin"
+									Value="20 1 1 1" />
+						</DataTrigger>
+						<Trigger Property="IsChecked"
+								 Value="True">
+							<Trigger.EnterActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<ColorAnimation Storyboard.TargetName="Border"
+														Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+														To="Lime"
+														Duration="0:0:0.2" />
+										<ColorAnimation Storyboard.TargetName="Ellipse"
+														Storyboard.TargetProperty="(Ellipse.Stroke).(SolidColorBrush.Color)"
+														To="CornflowerBlue"
+														Duration="0:0:0.2" />
+										<ThicknessAnimation Storyboard.TargetName="Ellipse"
+															Storyboard.TargetProperty="Margin"
+															DecelerationRatio="0.88"
+															To="20 1 1 1"
+															Duration="0:0:0.4" />
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.EnterActions>
+							<Trigger.ExitActions>
+								<BeginStoryboard>
+									<Storyboard>
+										<ColorAnimation Storyboard.TargetName="Border"
+														Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+														To="Transparent"
+														Duration="0:0:0.2" />
+										<ColorAnimation Storyboard.TargetName="Ellipse"
+														Storyboard.TargetProperty="(Ellipse.Stroke).(SolidColorBrush.Color)"
+														To="DarkGray"
+														Duration="0:0:0.2" />
+										<ThicknessAnimation Storyboard.TargetName="Ellipse"
+															Storyboard.TargetProperty="Margin"
+															DecelerationRatio="0.88"
+															To="1 1 2 1"
+															Duration="0:0:0.4" />
+									</Storyboard>
+								</BeginStoryboard>
+							</Trigger.ExitActions>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
 	<!--#endregion-->
 	<converter:LabelSizeConverter x:Key="LSConverter" />
 	<converter:SliderLengthConverter x:Key="SLConverter" />

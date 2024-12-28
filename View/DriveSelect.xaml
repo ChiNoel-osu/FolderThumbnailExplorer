@@ -27,20 +27,30 @@
 				 BorderBrush="Transparent"
 				 Background="Transparent"
 				 Foreground="White"
-				 FontSize="20"
+				 Margin="0"
+				 FontWeight="Bold"
 				 ItemsSource="{Binding MainPageViewModel.Drives, Mode=OneWay}"
 				 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
 				 ScrollViewer.VerticalScrollBarVisibility="Hidden"
-				 SelectedItem="{Binding MainPageViewModel.PATHtoShow, Mode=OneWayToSource}"
+				 SelectedItem="{Binding MainPageViewModel.CurrentDriveString, Mode=TwoWay}"
 				 d:ItemsSource="{d:SampleData ItemCount=3}"
-				 KeyDown="ListBox_KeyDown" />
+				 KeyDown="ListBox_KeyDown">
+			<ListBox.ItemContainerStyle>
+				<Style TargetType="{x:Type ListBoxItem}">
+					<Setter Property="Padding"
+							Value="8" />
+				</Style>
+			</ListBox.ItemContainerStyle>
+		</ListBox>
 		<Button Grid.Row="1"
+				HorizontalAlignment="Stretch"
+				Template="{DynamicResource ButtonTemplate1}"
 				Content="{x:Static loc:Loc.RefreshDriveBtn}"
 				ToolTip="{x:Static loc:Loc.RefreshDriveBtnTT}"
+				Padding="0,8"
 				FontSize="14"
-				Template="{DynamicResource ButtonTemplate1}"
-				Background="Transparent"
 				Foreground="White"
+				Background="Transparent"
 				Command="{Binding MainPageViewModel.RefreshDrivesCommand}" />
 	</Grid>
 </UserControl>

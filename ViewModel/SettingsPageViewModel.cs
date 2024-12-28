@@ -11,13 +11,18 @@ namespace FolderThumbnailExplorer.ViewModel
 		bool _IsLangRestartVisible = false;
 		[ObservableProperty]
 		string _LanguageRestartTT;
+		[ObservableProperty]
+		bool _UseCache = false;
 
-		bool init = true;
+		// TODO: Cache quality setting
+
+		bool langInit = true;
+		bool usecacheInit = true;
 		partial void OnLanguageIndexChanged(int value)
 		{
-			if (init)
+			if (langInit)
 			{   //Ignore first trigger.
-				init = false;
+				langInit = false;
 				return;
 			}
 			switch (value)
@@ -39,6 +44,19 @@ namespace FolderThumbnailExplorer.ViewModel
 			LanguageRestartTT = Localization.Loc.ResourceManager.GetString("SettingsLangRestartTT", new CultureInfo(Properties.Settings.Default.Locale));
 			IsLangRestartVisible = true;
 		}
+		partial void OnUseCacheChanged(bool value)
+		{
+			if (usecacheInit)
+			{   //Ignore first trigger.
+				usecacheInit = false;
+				return;
+			}
+			else
+			{
+				Properties.Settings.Default.TE_UseCache = value;
+				Properties.Settings.Default.Save();
+			}
+		}
 
 		public SettingsPageViewModel()
 		{
@@ -55,6 +73,8 @@ namespace FolderThumbnailExplorer.ViewModel
 					LanguageIndex = 0;
 					break;
 			}
+			UseCache = Properties.Settings.Default.TE_UseCache;
+			usecacheInit = false;
 		}
 	}
 }

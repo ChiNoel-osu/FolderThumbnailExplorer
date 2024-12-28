@@ -51,8 +51,9 @@ namespace FolderThumbnailExplorer.ViewModel
 		short historyIndex = -1;
 		bool requestingBackForward = false;
 
-		bool isLastPathValid = false;   //For validation use.
+		bool isLastPathValid = true;   //For validation use.
 		string lastValidPath;
+		TaggedString favFolderToLoad;
 
 		string _PATHtoShow; //DirBox.Text
 		public string PATHtoShow
@@ -67,6 +68,7 @@ namespace FolderThumbnailExplorer.ViewModel
 				{   //Getting favorite folders, notify property changed but don't call ReGetContent();
 					_PATHtoShow = value;
 					OnPropertyChanged(nameof(PATHtoShow));
+					LoadFavoriteFolder(favFolderToLoad);
 				}
 				else
 				{
@@ -91,6 +93,17 @@ namespace FolderThumbnailExplorer.ViewModel
 						isLastPathValid = false;
 				}
 			}
+		}
+		public string CurrentDriveString
+		{
+			get
+			{
+				if (PATHtoShow is null)
+					return null;
+				else
+					return PATHtoShow[..3];
+			}
+			set => PATHtoShow = value;
 		}
 
 		readonly BitmapImage defFolderIcon = new BitmapImage();
@@ -534,10 +547,16 @@ namespace FolderThumbnailExplorer.ViewModel
 		}
 		#endregion
 
+		//TODO: REDO FAVORITE FOLDER SYSTEM! Simply change PATHtoSHOW
 		partial void OnSelectedFavChanged(TaggedString value)
 		{
+			favFolderToLoad = value;
 			PATHtoShow = "FavoriteFolder: " + value.value;
-			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name}.");
+		}
+		private void LoadFavoriteFolder(TaggedString value)
+		{
+			if (value.value is null) return;
+			isLastPathValid = Directory.Exists(value.tag);
 			NotAddingItem = false;
 			if (addItemTask != null && !addItemTask.IsCompleted)
 			{
