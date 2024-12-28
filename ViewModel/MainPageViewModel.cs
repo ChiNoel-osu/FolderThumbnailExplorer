@@ -103,6 +103,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				Properties.Settings.Default.TE_SortingMethod = sortingMethodIndex = value;
 				Properties.Settings.Default.Save();
+				ReGetContent();
 			}
 		}
 
@@ -213,7 +214,7 @@ namespace FolderThumbnailExplorer.ViewModel
 							case 7: //Natural sorting
 								break;
 						}
-						if (doDescSort is null && SortingMethodIndex != 7)      //Method Unchanged
+						if (doDescSort is null && SortingMethodIndex != 7)  //-1, 0
 							AddContents(dirs, ct);  //Default method: Name.
 						else if (SortingMethodIndex == 7)   //Natural sorting.
 						{
@@ -236,6 +237,7 @@ namespace FolderThumbnailExplorer.ViewModel
 																 _ => throw new NotImplementedException(),
 															 }
 															 select directoryInfo.FullName;
+							doDescSort ??= false;
 							AddContents((bool)doDescSort ? sortedDirs.Reverse().ToArray() : sortedDirs.ToArray(), ct);
 						}
 					}
