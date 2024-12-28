@@ -29,6 +29,7 @@
 				 Foreground="White"
 				 Margin="0"
 				 FontWeight="Bold"
+				 FontSize="15"
 				 ItemsSource="{Binding MainPageViewModel.Drives, Mode=OneWay}"
 				 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
 				 ScrollViewer.VerticalScrollBarVisibility="Hidden"
@@ -38,7 +39,7 @@
 			<ListBox.ItemContainerStyle>
 				<Style TargetType="{x:Type ListBoxItem}">
 					<Setter Property="Padding"
-							Value="8" />
+							Value="4,2,4,4" />
 				</Style>
 			</ListBox.ItemContainerStyle>
 		</ListBox>
