@@ -21,7 +21,7 @@
 	</Window.Resources>
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="100"
+			<ColumnDefinition Width="88"
 							  MaxWidth="200" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
