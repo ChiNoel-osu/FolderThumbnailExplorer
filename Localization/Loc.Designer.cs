@@ -648,6 +648,15 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name, Desc.
+        /// </summary>
+        public static string SortMethodNameDesc {
+            get {
+                return ResourceManager.GetString("SortMethodNameDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Natural, Default.
         /// </summary>
         public static string SortMethodNatural {

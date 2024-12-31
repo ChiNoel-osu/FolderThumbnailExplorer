@@ -266,6 +266,9 @@ Negative value = Reverse scrolling direction.</value>
   <data name="SortMethodNameAsc" xml:space="preserve">
     <value>Name, Asc</value>
   </data>
+  <data name="SortMethodNameDesc" xml:space="preserve">
+    <value>Name, Desc</value>
+  </data>
   <data name="SortMethodCreateDesc" xml:space="preserve">
     <value>Creation Date, Desc</value>
   </data>

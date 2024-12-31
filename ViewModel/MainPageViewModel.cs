@@ -227,9 +227,13 @@ namespace FolderThumbnailExplorer.ViewModel
 							case 6: //Access date ascending
 								doDescSort = false;
 								break;
-							case 7: //Default Name sorting
-								string[] sortedDirectories = dirs.OrderBy(fullDir => Path.GetFileName(fullDir)).ToArray();
-								AddContents(sortedDirectories, ct);  //Default method: Name.
+							case 7: //Name sorting ascending
+								string[] sortedDirectoriesA = dirs.OrderBy(fullDir => Path.GetFileName(fullDir)).ToArray();
+								AddContents(sortedDirectoriesA, ct);
+								break;
+							case 8: //Name sorting descending
+								string[] sortedDirectoriesD = dirs.OrderBy(fullDir => Path.GetFileName(fullDir)).Reverse().ToArray();
+								AddContents(sortedDirectoriesD, ct);
 								break;
 						}
 						if (doDescSort is not null)
