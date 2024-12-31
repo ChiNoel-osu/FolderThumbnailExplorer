@@ -264,7 +264,7 @@ Negative value = Reverse scrolling direction.</value>
     <value>Sorting</value>
   </data>
   <data name="SortMethodNameAsc" xml:space="preserve">
-    <value>Name, Asc, Default</value>
+    <value>Name, Asc</value>
   </data>
   <data name="SortMethodCreateDesc" xml:space="preserve">
     <value>Creation Date, Desc</value>
@@ -312,7 +312,7 @@ You can also use &lt;XButton1&gt; to do this.</value>
 You can also use &lt;XButton2&gt; to do this.</value>
   </data>
   <data name="SortMethodNatural" xml:space="preserve">
-    <value>Natural</value>
+    <value>Natural, Default</value>
   </data>
   <data name="PVFullTT" xml:space="preserve">
     <value>Set Full Screen (F)</value>

@@ -139,6 +139,9 @@ Ctrl+F2 - 随机图片文件夹.</value>
   <data name="ANFPath" xml:space="preserve">
     <value> 路径</value>
   </data>
+  <data name="ANFName" xml:space="preserve">
+    <value> 名称....</value>
+  </data>
   <data name="ANFSave" xml:space="preserve">
     <value>保存</value>
   </data>
@@ -261,7 +264,7 @@ Ctrl+C - 将当前图片复制到剪贴板以供粘贴为图片或文件.</value
     <value>排序方式</value>
   </data>
   <data name="SortMethodNameAsc" xml:space="preserve">
-    <value>名称, 顺序, 默认</value>
+    <value>名称, 顺序</value>
   </data>
   <data name="SortMethodCreateDesc" xml:space="preserve">
     <value>创建时间, 倒序</value>
@@ -309,7 +312,7 @@ Ctrl+C - 将当前图片复制到剪贴板以供粘贴为图片或文件.</value
 你也可以使用&lt;XButton2&gt;(鼠标侧键2)来前进.</value>
   </data>
   <data name="SortMethodNatural" xml:space="preserve">
-    <value>自然排序</value>
+    <value>自然排序, 默认</value>
   </data>
   <data name="PVFullTT" xml:space="preserve">
     <value>全屏窗口 (F)</value>
@@ -325,8 +328,5 @@ Ctrl+C - 将当前图片复制到剪贴板以供粘贴为图片或文件.</value
   </data>
   <data name="SettingsCacheQuality" xml:space="preserve">
     <value>缓存质量</value>
-  </data>
-  <data name="ANFName" xml:space="preserve">
-    <value> 名称....</value>
   </data>
 </root>

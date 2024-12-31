@@ -210,9 +210,12 @@ namespace FolderThumbnailExplorer.ViewModel
 						bool? doDescSort = null;
 						switch (SortingMethodIndex)
 						{   //Check sorting method
-							case -1:    //Name, ascending
+							case -1:    //Natural Sorting
 							case 0:
 							default:
+								List<string> folders = (from dir in dirs select Path.GetFileName(dir)).ToList();
+								folders.Sort(new NaturalStringComparer());
+								AddContents(folders.Select(str => str = Path.Join(_PATHtoShow, str)).ToArray(), ct);
 								break;
 							case 1: //Creation date descending
 							case 3: //Modify date descending
@@ -224,21 +227,12 @@ namespace FolderThumbnailExplorer.ViewModel
 							case 6: //Access date ascending
 								doDescSort = false;
 								break;
-							case 7: //Natural sorting
+							case 7: //Default Name sorting
+								string[] sortedDirectories = dirs.OrderBy(fullDir => Path.GetFileName(fullDir)).ToArray();
+								AddContents(sortedDirectories, ct);  //Default method: Name.
 								break;
 						}
-						if (doDescSort is null && SortingMethodIndex != 7)  //-1, 0
-						{   // Using GetFileName to get the folder name only works when the path doesn't end with a slash.
-							string[] sortedDirectories = dirs.OrderBy(fullDir => Path.GetFileName(fullDir)).ToArray();
-							AddContents(sortedDirectories, ct);  //Default method: Name.
-						}
-						else if (SortingMethodIndex == 7)   //Natural sorting.
-						{
-							List<string> folders = (from dir in dirs select Path.GetFileName(dir)).ToList();
-							folders.Sort(new NaturalStringComparer());
-							AddContents(folders.Select(str => str = Path.Join(_PATHtoShow, str)).ToArray(), ct);
-						}
-						else
+						if (doDescSort is not null)
 						{
 							IEnumerable<string> sortedDirs = from dir in dirs
 															 let directoryInfo = new DirectoryInfo(dir)

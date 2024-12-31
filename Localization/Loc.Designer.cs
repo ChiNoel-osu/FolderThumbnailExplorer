@@ -639,7 +639,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name, Asc, Default.
+        ///   Looks up a localized string similar to Name, Asc.
         /// </summary>
         public static string SortMethodNameAsc {
             get {
@@ -648,7 +648,7 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Natural.
+        ///   Looks up a localized string similar to Natural, Default.
         /// </summary>
         public static string SortMethodNatural {
             get {
