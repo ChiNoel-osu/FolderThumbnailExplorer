@@ -203,7 +203,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			{
 				if (Directory.Exists(_PATHtoShow) || File.Exists(_PATHtoShow))
 				{
-					string[] dirs = Directory.GetDirectories(_PATHtoShow);
+					string[] dirs = Directory.GetDirectories(_PATHtoShow);  // Will not end with a backslash
 					if (dirs.Length > 0)
 					{
 						// Going to sort folders.
@@ -228,10 +228,13 @@ namespace FolderThumbnailExplorer.ViewModel
 								break;
 						}
 						if (doDescSort is null && SortingMethodIndex != 7)  //-1, 0
-							AddContents(dirs, ct);  //Default method: Name.
+						{   // Using GetFileName to get the folder name only works when the path doesn't end with a slash.
+							string[] sortedDirectories = dirs.OrderBy(fullDir => Path.GetFileName(fullDir)).ToArray();
+							AddContents(sortedDirectories, ct);  //Default method: Name.
+						}
 						else if (SortingMethodIndex == 7)   //Natural sorting.
 						{
-							List<string> folders = (from dir in dirs select dir[(dir.LastIndexOf(Path.DirectorySeparatorChar) + 1)..]).ToList();
+							List<string> folders = (from dir in dirs select Path.GetFileName(dir)).ToList();
 							folders.Sort(new NaturalStringComparer());
 							AddContents(folders.Select(str => str = Path.Join(_PATHtoShow, str)).ToArray(), ct);
 						}
