@@ -129,7 +129,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		ObservableCollection<CustomContentItem> _Content = new ObservableCollection<CustomContentItem>();
 		[ObservableProperty]
-		ushort _SliderValue = 156;
+		ushort _SliderValue;
 		[ObservableProperty]
 		bool _NotAddingItem = true;   //For RefreshButton IsEnabled.
 
@@ -582,6 +582,7 @@ namespace FolderThumbnailExplorer.ViewModel
 
 		public MainPageViewModel()
 		{
+			SliderValue = Properties.Settings.Default.TE_ThumbnailSize;
 			#region Initialize default folder icon
 			defFolderIcon.BeginInit();
 			defFolderIcon.DecodePixelWidth = SliderValue + 128;

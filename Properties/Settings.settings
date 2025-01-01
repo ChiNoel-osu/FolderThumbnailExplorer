@@ -20,7 +20,7 @@
     <Setting Name="TE_UseCache" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="TE_CacheQuality" Type="System.Int32" Scope="User">
+    <Setting Name="TE_CacheQuality" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">65</Value>
     </Setting>
     <Setting Name="PV_ScrollSpeedFactor" Type="System.Double" Scope="User">
@@ -34,6 +34,21 @@
     </Setting>
     <Setting Name="TE_SortingMethod" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="TE_ThumbnailSize" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">156</Value>
+    </Setting>
+    <Setting Name="WindowWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">800</Value>
+    </Setting>
+    <Setting Name="WindowHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">600</Value>
+    </Setting>
+    <Setting Name="WindowLeft" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">200</Value>
+    </Setting>
+    <Setting Name="WindowTop" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">200</Value>
     </Setting>
   </Settings>
 </SettingsFile>

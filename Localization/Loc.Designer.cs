@@ -558,6 +558,15 @@ namespace FolderThumbnailExplorer.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save Window&apos;s Position &amp; Size.
+        /// </summary>
+        public static string SettingsSaveWndPosSize {
+            get {
+                return ResourceManager.GetString("SettingsSaveWndPosSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thumbnail Explorer.
         /// </summary>
         public static string SettingsThumbnailExp {

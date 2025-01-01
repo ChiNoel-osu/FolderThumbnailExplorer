@@ -8,9 +8,9 @@
 		xmlns:viewmodel="clr-namespace:FolderThumbnailExplorer.ViewModel"
 		d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
 		mc:Ignorable="d"
-		Title="File Explorer"
-		Height="600"
-		Width="800"
+		Title="Folder Explorer"
+		d:Height="600"
+		d:Width="800"
 		Background="#1E1E1E">
 	<Window.Resources>
 		<ResourceDictionary>

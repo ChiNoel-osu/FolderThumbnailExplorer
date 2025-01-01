@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Globalization;
+using System.Windows;
 
 namespace FolderThumbnailExplorer.ViewModel
 {
@@ -10,11 +12,11 @@ namespace FolderThumbnailExplorer.ViewModel
 		[ObservableProperty]
 		bool _IsLangRestartVisible = false;
 		[ObservableProperty]
-		string _LanguageRestartTT;
+		string _LanguageRestartTT = "";
 		[ObservableProperty]
 		bool _UseCache = false;
-
-		// TODO: Cache quality setting
+		[ObservableProperty]
+		byte _CacheQuality;
 
 		bool langInit = true;
 		bool usecacheInit = true;
@@ -58,6 +60,32 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 		}
 
+		[RelayCommand]
+		public void SaveCacheQuality()
+		{
+			Properties.Settings.Default.TE_CacheQuality = _CacheQuality;
+			Properties.Settings.Default.Save();
+		}
+		[RelayCommand]
+		public void SaveWndPosSize(System.Windows.Controls.Button btn)
+		{
+			Window wnd = Window.GetWindow(btn);
+			Properties.Settings.Default.WindowLeft = wnd.Left;
+			Properties.Settings.Default.WindowTop = wnd.Top;
+			Properties.Settings.Default.WindowWidth = wnd.Width;
+			Properties.Settings.Default.WindowHeight = wnd.Height;
+			Properties.Settings.Default.Save();
+		}
+		[RelayCommand]
+		public void ResetWndPosSize()
+		{
+			Properties.Settings.Default.WindowLeft = 200;
+			Properties.Settings.Default.WindowTop = 200;
+			Properties.Settings.Default.WindowWidth = 800;
+			Properties.Settings.Default.WindowHeight = 600;
+			Properties.Settings.Default.Save();
+		}
+
 		public SettingsPageViewModel()
 		{
 			switch (Properties.Settings.Default.Locale)
@@ -74,6 +102,7 @@ namespace FolderThumbnailExplorer.ViewModel
 					break;
 			}
 			UseCache = Properties.Settings.Default.TE_UseCache;
+			CacheQuality = Properties.Settings.Default.TE_CacheQuality;
 			usecacheInit = false;
 		}
 	}

@@ -16,6 +16,10 @@ namespace FolderThumbnailExplorer
 			App.Logger.Info("Loading MainWindow and its components...");
 			MainVM.MainPageViewModel.PATHtoShow = path; //Command line argument.
 			DataContext = MainVM;
+			Left = Properties.Settings.Default.WindowLeft;
+			Top = Properties.Settings.Default.WindowTop;
+			Width = Properties.Settings.Default.WindowWidth;
+			Height = Properties.Settings.Default.WindowHeight;
 			InitializeComponent();
 			this.Closed += MainWindow_Closed;
 			App.Logger.Info("MainWindow loaded.");

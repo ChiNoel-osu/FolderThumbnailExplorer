@@ -332,4 +332,7 @@ Ctrl+C - 将当前图片复制到剪贴板以供粘贴为图片或文件.</value
   <data name="SettingsCacheQuality" xml:space="preserve">
     <value>缓存质量</value>
   </data>
+  <data name="SettingsSaveWndPosSize" xml:space="preserve">
+    <value>保存窗口的位置和大小</value>
+  </data>
 </root>

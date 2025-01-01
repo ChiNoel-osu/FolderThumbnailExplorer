@@ -332,4 +332,7 @@ You can also use &lt;XButton2&gt; to do this.</value>
   <data name="SettingsCacheQuality" xml:space="preserve">
     <value>Cache Quality</value>
   </data>
+  <data name="SettingsSaveWndPosSize" xml:space="preserve">
+    <value>Save Window's Position &amp; Size</value>
+  </data>
 </root>
