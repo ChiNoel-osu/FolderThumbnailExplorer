@@ -443,7 +443,7 @@ namespace FolderThumbnailExplorer.ViewModel
 			}
 			else if (e.ChangedButton == MouseButton.Right)  //Right click to Start explorer.exe
 			{
-				Process.Start("explorer.exe", folderFullPath);
+				Process.Start("explorer.exe", $"\"{folderFullPath}\"");
 				App.Logger.Info("Started explorer at: " + folderFullPath);
 			}
 		}

@@ -126,7 +126,7 @@ namespace FolderThumbnailExplorer.ViewModel
 		[RelayCommand]
 		public void OpenInExplorer()
 		{
-			Process.Start("explorer.exe", CurrentImageDir);
+			Process.Start("explorer.exe", $"\"{CurrentImageDir}\"");
 			App.Logger.Info($"User requested {System.Reflection.MethodBase.GetCurrentMethod().Name} and is completed.");
 		}
 		[RelayCommand]
